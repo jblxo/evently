@@ -1,0 +1,103 @@
+type Boards @pgTable(name: "boards") {
+  id: Int! @unique
+  description: String
+  id_event: Events @pgRelation(column: "id_event")
+  lists: [Lists!]!
+  title: String!
+}
+
+type Cards @pgTable(name: "cards") {
+  id: Int! @unique
+  created_at: DateTime!
+  description: String
+  id_list: Lists @pgRelation(column: "id_list")
+  id_user: Users @pgRelation(column: "id_user")
+  title: String!
+}
+
+type Comments @pgTable(name: "comments") {
+  id: Int! @unique @pgColumn(name: "id_user")
+  content: String!
+  created_at: DateTime!
+  id_event: Events @pgRelation(column: "id_event")
+  id_user: Users @pgRelation(column: "id_user")
+}
+
+type Event_admins @pgTable(name: "event_admins") {
+  id: Int! @unique @pgColumn(name: "id_user")
+  id_event: Events @pgRelation(column: "id_event")
+  id_role: Roles @pgRelation(column: "id_role")
+}
+
+type Events @pgTable(name: "events") {
+  id: Int! @unique
+  address1: String!
+  address2: String!
+  address3: String!
+  boards: [Boards!]!
+  budget: Int!
+  city: String!
+  comments: [Comments!]!
+  country: String!
+  description: String
+  entrance_tax: Int
+  event_admins: [Event_admins!]!
+  event_creation: DateTime!
+  event_date: DateTime!
+  expenses: [Expenses!]!
+  image_large: String
+  image_small: String
+  rating: Int!
+  reviews: [Reviews!]!
+  state: String!
+  title: String!
+  zip: String!
+}
+
+type Expenses @pgTable(name: "expenses") {
+  id: Int! @unique
+  amount: Float!
+  created_at: DateTime!
+  description: String
+  id_event: Events @pgRelation(column: "id_event")
+  id_user: Users @pgRelation(column: "id_user")
+  title: String!
+}
+
+type Lists @pgTable(name: "lists") {
+  id: Int! @unique
+  cards: [Cards!]!
+  created_at: DateTime!
+  description: String
+  id_board: Boards @pgRelation(column: "id_board")
+  title: String!
+}
+
+type Reviews @pgTable(name: "reviews") {
+  id: Int! @unique @pgColumn(name: "id_user")
+  created_at: DateTime!
+  description: String
+  id_events: Events @pgRelation(column: "id_events")
+  id_user: Users @pgRelation(column: "id_user")
+  rating: Int!
+}
+
+type Roles @pgTable(name: "roles") {
+  id: Int! @unique
+  event_admins: [Event_admins!]!
+  name: String!
+}
+
+type Users @pgTable(name: "users") {
+  id: Int! @unique
+  cards: [Cards!]!
+  comments: [Comments!]!
+  email: String! @unique
+  expenses: [Expenses!]!
+  first_name: String!
+  last_name: String!
+  password: String!
+  phone: Int @default(value: 0)
+  reviews: [Reviews!]!
+  username: String! @unique
+}
