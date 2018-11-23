@@ -1,3 +1,3 @@
-const Home = props => <div>Welcome to Evently!</div>;
+const Home = props => <div>Hi from NextJS!</div>;
 
 export default Home;
