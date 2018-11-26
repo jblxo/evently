@@ -1,43 +1,43 @@
 # source: http://localhost:4466
-# timestamp: Mon Nov 19 2018 18:02:05 GMT+0100 (GMT+01:00)
+# timestamp: Mon Nov 26 2018 10:42:03 GMT+0100 (GMT+01:00)
 
-type AggregateBoards {
+type AggregateBoard {
   count: Int!
 }
 
-type AggregateCards {
+type AggregateCard {
   count: Int!
 }
 
-type AggregateComments {
+type AggregateComment {
   count: Int!
 }
 
-type AggregateEvent_admins {
+type AggregateEvent {
   count: Int!
 }
 
-type AggregateEvents {
+type AggregateEvent_admin {
   count: Int!
 }
 
-type AggregateExpenses {
+type AggregateExpense {
   count: Int!
 }
 
-type AggregateLists {
+type AggregateList {
   count: Int!
 }
 
-type AggregateReviews {
+type AggregateReview {
   count: Int!
 }
 
-type AggregateRoles {
+type AggregateRole {
   count: Int!
 }
 
-type AggregateUsers {
+type AggregateUser {
   count: Int!
 }
 
@@ -46,63 +46,63 @@ type BatchPayload {
   count: Long!
 }
 
-type Boards {
+type Board {
   id: Int!
   description: String
-  id_event: Events
-  lists(where: ListsWhereInput, orderBy: ListsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Lists!]
+  id_event: Event
+  lists(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [List!]
   title: String!
 }
 
 """A connection to a list of items."""
-type BoardsConnection {
+type BoardConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [BoardsEdge]!
-  aggregate: AggregateBoards!
+  edges: [BoardEdge]!
+  aggregate: AggregateBoard!
 }
 
-input BoardsCreateInput {
+input BoardCreateInput {
   description: String
   title: String!
-  id_event: EventsCreateOneWithoutBoardsInput
-  lists: ListsCreateManyWithoutId_boardInput
+  id_event: EventCreateOneWithoutBoardsInput
+  lists: ListCreateManyWithoutId_boardInput
 }
 
-input BoardsCreateManyWithoutId_eventInput {
-  create: [BoardsCreateWithoutId_eventInput!]
-  connect: [BoardsWhereUniqueInput!]
+input BoardCreateManyWithoutId_eventInput {
+  create: [BoardCreateWithoutId_eventInput!]
+  connect: [BoardWhereUniqueInput!]
 }
 
-input BoardsCreateOneWithoutListsInput {
-  create: BoardsCreateWithoutListsInput
-  connect: BoardsWhereUniqueInput
+input BoardCreateOneWithoutListsInput {
+  create: BoardCreateWithoutListsInput
+  connect: BoardWhereUniqueInput
 }
 
-input BoardsCreateWithoutId_eventInput {
+input BoardCreateWithoutId_eventInput {
   description: String
   title: String!
-  lists: ListsCreateManyWithoutId_boardInput
+  lists: ListCreateManyWithoutId_boardInput
 }
 
-input BoardsCreateWithoutListsInput {
+input BoardCreateWithoutListsInput {
   description: String
   title: String!
-  id_event: EventsCreateOneWithoutBoardsInput
+  id_event: EventCreateOneWithoutBoardsInput
 }
 
 """An edge in a connection."""
-type BoardsEdge {
+type BoardEdge {
   """The item at the end of the edge."""
-  node: Boards!
+  node: Board!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum BoardsOrderByInput {
+enum BoardOrderByInput {
   id_ASC
   id_DESC
   description_ASC
@@ -111,28 +111,28 @@ enum BoardsOrderByInput {
   title_DESC
 }
 
-type BoardsPreviousValues {
+type BoardPreviousValues {
   id: Int!
   description: String
   title: String!
 }
 
-type BoardsSubscriptionPayload {
+type BoardSubscriptionPayload {
   mutation: MutationType!
-  node: Boards
+  node: Board
   updatedFields: [String!]
-  previousValues: BoardsPreviousValues
+  previousValues: BoardPreviousValues
 }
 
-input BoardsSubscriptionWhereInput {
+input BoardSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [BoardsSubscriptionWhereInput!]
+  AND: [BoardSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [BoardsSubscriptionWhereInput!]
+  OR: [BoardSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [BoardsSubscriptionWhereInput!]
+  NOT: [BoardSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -153,76 +153,76 @@ input BoardsSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: BoardsWhereInput
+  node: BoardWhereInput
 }
 
-input BoardsUpdateInput {
+input BoardUpdateInput {
   description: String
   title: String
-  id_event: EventsUpdateOneWithoutBoardsInput
-  lists: ListsUpdateManyWithoutId_boardInput
+  id_event: EventUpdateOneWithoutBoardsInput
+  lists: ListUpdateManyWithoutId_boardInput
 }
 
-input BoardsUpdateManyMutationInput {
+input BoardUpdateManyMutationInput {
   description: String
   title: String
 }
 
-input BoardsUpdateManyWithoutId_eventInput {
-  create: [BoardsCreateWithoutId_eventInput!]
-  connect: [BoardsWhereUniqueInput!]
-  disconnect: [BoardsWhereUniqueInput!]
-  delete: [BoardsWhereUniqueInput!]
-  update: [BoardsUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [BoardsUpsertWithWhereUniqueWithoutId_eventInput!]
+input BoardUpdateManyWithoutId_eventInput {
+  create: [BoardCreateWithoutId_eventInput!]
+  connect: [BoardWhereUniqueInput!]
+  disconnect: [BoardWhereUniqueInput!]
+  delete: [BoardWhereUniqueInput!]
+  update: [BoardUpdateWithWhereUniqueWithoutId_eventInput!]
+  upsert: [BoardUpsertWithWhereUniqueWithoutId_eventInput!]
 }
 
-input BoardsUpdateOneWithoutListsInput {
-  create: BoardsCreateWithoutListsInput
-  connect: BoardsWhereUniqueInput
+input BoardUpdateOneWithoutListsInput {
+  create: BoardCreateWithoutListsInput
+  connect: BoardWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: BoardsUpdateWithoutListsDataInput
-  upsert: BoardsUpsertWithoutListsInput
+  update: BoardUpdateWithoutListsDataInput
+  upsert: BoardUpsertWithoutListsInput
 }
 
-input BoardsUpdateWithoutId_eventDataInput {
+input BoardUpdateWithoutId_eventDataInput {
   description: String
   title: String
-  lists: ListsUpdateManyWithoutId_boardInput
+  lists: ListUpdateManyWithoutId_boardInput
 }
 
-input BoardsUpdateWithoutListsDataInput {
+input BoardUpdateWithoutListsDataInput {
   description: String
   title: String
-  id_event: EventsUpdateOneWithoutBoardsInput
+  id_event: EventUpdateOneWithoutBoardsInput
 }
 
-input BoardsUpdateWithWhereUniqueWithoutId_eventInput {
-  where: BoardsWhereUniqueInput!
-  data: BoardsUpdateWithoutId_eventDataInput!
+input BoardUpdateWithWhereUniqueWithoutId_eventInput {
+  where: BoardWhereUniqueInput!
+  data: BoardUpdateWithoutId_eventDataInput!
 }
 
-input BoardsUpsertWithoutListsInput {
-  update: BoardsUpdateWithoutListsDataInput!
-  create: BoardsCreateWithoutListsInput!
+input BoardUpsertWithoutListsInput {
+  update: BoardUpdateWithoutListsDataInput!
+  create: BoardCreateWithoutListsInput!
 }
 
-input BoardsUpsertWithWhereUniqueWithoutId_eventInput {
-  where: BoardsWhereUniqueInput!
-  update: BoardsUpdateWithoutId_eventDataInput!
-  create: BoardsCreateWithoutId_eventInput!
+input BoardUpsertWithWhereUniqueWithoutId_eventInput {
+  where: BoardWhereUniqueInput!
+  update: BoardUpdateWithoutId_eventDataInput!
+  create: BoardCreateWithoutId_eventInput!
 }
 
-input BoardsWhereInput {
+input BoardWhereInput {
   """Logical AND on all given filters."""
-  AND: [BoardsWhereInput!]
+  AND: [BoardWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [BoardsWhereInput!]
+  OR: [BoardWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [BoardsWhereInput!]
+  NOT: [BoardWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -325,110 +325,117 @@ input BoardsWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  id_event: EventsWhereInput
-  lists_every: ListsWhereInput
-  lists_some: ListsWhereInput
-  lists_none: ListsWhereInput
+  id_event: EventWhereInput
+  lists_every: ListWhereInput
+  lists_some: ListWhereInput
+  lists_none: ListWhereInput
 }
 
-input BoardsWhereUniqueInput {
+input BoardWhereUniqueInput {
   id: Int
 }
 
-type Cards {
+type Card {
   id: Int!
   created_at: DateTime!
   description: String
-  id_list: Lists
-  id_user: Users
+  id_list: List
+  id_user: User
+  order: Int!
   title: String!
 }
 
 """A connection to a list of items."""
-type CardsConnection {
+type CardConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [CardsEdge]!
-  aggregate: AggregateCards!
+  edges: [CardEdge]!
+  aggregate: AggregateCard!
 }
 
-input CardsCreateInput {
+input CardCreateInput {
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
-  id_list: ListsCreateOneWithoutCardsInput
-  id_user: UsersCreateOneWithoutCardsInput
+  id_list: ListCreateOneWithoutCardsInput
+  id_user: UserCreateOneWithoutCardsInput
 }
 
-input CardsCreateManyWithoutId_listInput {
-  create: [CardsCreateWithoutId_listInput!]
-  connect: [CardsWhereUniqueInput!]
+input CardCreateManyWithoutId_listInput {
+  create: [CardCreateWithoutId_listInput!]
+  connect: [CardWhereUniqueInput!]
 }
 
-input CardsCreateManyWithoutId_userInput {
-  create: [CardsCreateWithoutId_userInput!]
-  connect: [CardsWhereUniqueInput!]
+input CardCreateManyWithoutId_userInput {
+  create: [CardCreateWithoutId_userInput!]
+  connect: [CardWhereUniqueInput!]
 }
 
-input CardsCreateWithoutId_listInput {
+input CardCreateWithoutId_listInput {
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
-  id_user: UsersCreateOneWithoutCardsInput
+  id_user: UserCreateOneWithoutCardsInput
 }
 
-input CardsCreateWithoutId_userInput {
+input CardCreateWithoutId_userInput {
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
-  id_list: ListsCreateOneWithoutCardsInput
+  id_list: ListCreateOneWithoutCardsInput
 }
 
 """An edge in a connection."""
-type CardsEdge {
+type CardEdge {
   """The item at the end of the edge."""
-  node: Cards!
+  node: Card!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum CardsOrderByInput {
+enum CardOrderByInput {
   id_ASC
   id_DESC
   created_at_ASC
   created_at_DESC
   description_ASC
   description_DESC
+  order_ASC
+  order_DESC
   title_ASC
   title_DESC
 }
 
-type CardsPreviousValues {
+type CardPreviousValues {
   id: Int!
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
 }
 
-type CardsSubscriptionPayload {
+type CardSubscriptionPayload {
   mutation: MutationType!
-  node: Cards
+  node: Card
   updatedFields: [String!]
-  previousValues: CardsPreviousValues
+  previousValues: CardPreviousValues
 }
 
-input CardsSubscriptionWhereInput {
+input CardSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [CardsSubscriptionWhereInput!]
+  AND: [CardSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [CardsSubscriptionWhereInput!]
+  OR: [CardSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [CardsSubscriptionWhereInput!]
+  NOT: [CardSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -449,86 +456,90 @@ input CardsSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: CardsWhereInput
+  node: CardWhereInput
 }
 
-input CardsUpdateInput {
+input CardUpdateInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
-  id_list: ListsUpdateOneWithoutCardsInput
-  id_user: UsersUpdateOneWithoutCardsInput
+  id_list: ListUpdateOneWithoutCardsInput
+  id_user: UserUpdateOneWithoutCardsInput
 }
 
-input CardsUpdateManyMutationInput {
+input CardUpdateManyMutationInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
 }
 
-input CardsUpdateManyWithoutId_listInput {
-  create: [CardsCreateWithoutId_listInput!]
-  connect: [CardsWhereUniqueInput!]
-  disconnect: [CardsWhereUniqueInput!]
-  delete: [CardsWhereUniqueInput!]
-  update: [CardsUpdateWithWhereUniqueWithoutId_listInput!]
-  upsert: [CardsUpsertWithWhereUniqueWithoutId_listInput!]
+input CardUpdateManyWithoutId_listInput {
+  create: [CardCreateWithoutId_listInput!]
+  connect: [CardWhereUniqueInput!]
+  disconnect: [CardWhereUniqueInput!]
+  delete: [CardWhereUniqueInput!]
+  update: [CardUpdateWithWhereUniqueWithoutId_listInput!]
+  upsert: [CardUpsertWithWhereUniqueWithoutId_listInput!]
 }
 
-input CardsUpdateManyWithoutId_userInput {
-  create: [CardsCreateWithoutId_userInput!]
-  connect: [CardsWhereUniqueInput!]
-  disconnect: [CardsWhereUniqueInput!]
-  delete: [CardsWhereUniqueInput!]
-  update: [CardsUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [CardsUpsertWithWhereUniqueWithoutId_userInput!]
+input CardUpdateManyWithoutId_userInput {
+  create: [CardCreateWithoutId_userInput!]
+  connect: [CardWhereUniqueInput!]
+  disconnect: [CardWhereUniqueInput!]
+  delete: [CardWhereUniqueInput!]
+  update: [CardUpdateWithWhereUniqueWithoutId_userInput!]
+  upsert: [CardUpsertWithWhereUniqueWithoutId_userInput!]
 }
 
-input CardsUpdateWithoutId_listDataInput {
+input CardUpdateWithoutId_listDataInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
-  id_user: UsersUpdateOneWithoutCardsInput
+  id_user: UserUpdateOneWithoutCardsInput
 }
 
-input CardsUpdateWithoutId_userDataInput {
+input CardUpdateWithoutId_userDataInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
-  id_list: ListsUpdateOneWithoutCardsInput
+  id_list: ListUpdateOneWithoutCardsInput
 }
 
-input CardsUpdateWithWhereUniqueWithoutId_listInput {
-  where: CardsWhereUniqueInput!
-  data: CardsUpdateWithoutId_listDataInput!
+input CardUpdateWithWhereUniqueWithoutId_listInput {
+  where: CardWhereUniqueInput!
+  data: CardUpdateWithoutId_listDataInput!
 }
 
-input CardsUpdateWithWhereUniqueWithoutId_userInput {
-  where: CardsWhereUniqueInput!
-  data: CardsUpdateWithoutId_userDataInput!
+input CardUpdateWithWhereUniqueWithoutId_userInput {
+  where: CardWhereUniqueInput!
+  data: CardUpdateWithoutId_userDataInput!
 }
 
-input CardsUpsertWithWhereUniqueWithoutId_listInput {
-  where: CardsWhereUniqueInput!
-  update: CardsUpdateWithoutId_listDataInput!
-  create: CardsCreateWithoutId_listInput!
+input CardUpsertWithWhereUniqueWithoutId_listInput {
+  where: CardWhereUniqueInput!
+  update: CardUpdateWithoutId_listDataInput!
+  create: CardCreateWithoutId_listInput!
 }
 
-input CardsUpsertWithWhereUniqueWithoutId_userInput {
-  where: CardsWhereUniqueInput!
-  update: CardsUpdateWithoutId_userDataInput!
-  create: CardsCreateWithoutId_userInput!
+input CardUpsertWithWhereUniqueWithoutId_userInput {
+  where: CardWhereUniqueInput!
+  update: CardUpdateWithoutId_userDataInput!
+  create: CardCreateWithoutId_userInput!
 }
 
-input CardsWhereInput {
+input CardWhereInput {
   """Logical AND on all given filters."""
-  AND: [CardsWhereInput!]
+  AND: [CardWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [CardsWhereInput!]
+  OR: [CardWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [CardsWhereInput!]
+  NOT: [CardWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -613,6 +624,28 @@ input CardsWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  order: Int
+
+  """All values that are not equal to given value."""
+  order_not: Int
+
+  """All values that are contained in given list."""
+  order_in: [Int!]
+
+  """All values that are not contained in given list."""
+  order_not_in: [Int!]
+
+  """All values less than the given value."""
+  order_lt: Int
+
+  """All values less than or equal the given value."""
+  order_lte: Int
+
+  """All values greater than the given value."""
+  order_gt: Int
+
+  """All values greater than or equal the given value."""
+  order_gte: Int
   title: String
 
   """All values that are not equal to given value."""
@@ -653,71 +686,71 @@ input CardsWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  id_list: ListsWhereInput
-  id_user: UsersWhereInput
+  id_list: ListWhereInput
+  id_user: UserWhereInput
 }
 
-input CardsWhereUniqueInput {
+input CardWhereUniqueInput {
   id: Int
 }
 
-type Comments {
+type Comment {
   id: Int!
   content: String!
   created_at: DateTime!
-  id_event: Events
-  id_user: Users
+  id_event: Event
+  id_user: User
 }
 
 """A connection to a list of items."""
-type CommentsConnection {
+type CommentConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [CommentsEdge]!
-  aggregate: AggregateComments!
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
 }
 
-input CommentsCreateInput {
+input CommentCreateInput {
   content: String!
   created_at: DateTime!
-  id_event: EventsCreateOneWithoutCommentsInput
-  id_user: UsersCreateOneWithoutCommentsInput
+  id_event: EventCreateOneWithoutCommentsInput
+  id_user: UserCreateOneWithoutCommentsInput
 }
 
-input CommentsCreateManyWithoutId_eventInput {
-  create: [CommentsCreateWithoutId_eventInput!]
-  connect: [CommentsWhereUniqueInput!]
+input CommentCreateManyWithoutId_eventInput {
+  create: [CommentCreateWithoutId_eventInput!]
+  connect: [CommentWhereUniqueInput!]
 }
 
-input CommentsCreateManyWithoutId_userInput {
-  create: [CommentsCreateWithoutId_userInput!]
-  connect: [CommentsWhereUniqueInput!]
+input CommentCreateManyWithoutId_userInput {
+  create: [CommentCreateWithoutId_userInput!]
+  connect: [CommentWhereUniqueInput!]
 }
 
-input CommentsCreateWithoutId_eventInput {
+input CommentCreateWithoutId_eventInput {
   content: String!
   created_at: DateTime!
-  id_user: UsersCreateOneWithoutCommentsInput
+  id_user: UserCreateOneWithoutCommentsInput
 }
 
-input CommentsCreateWithoutId_userInput {
+input CommentCreateWithoutId_userInput {
   content: String!
   created_at: DateTime!
-  id_event: EventsCreateOneWithoutCommentsInput
+  id_event: EventCreateOneWithoutCommentsInput
 }
 
 """An edge in a connection."""
-type CommentsEdge {
+type CommentEdge {
   """The item at the end of the edge."""
-  node: Comments!
+  node: Comment!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum CommentsOrderByInput {
+enum CommentOrderByInput {
   id_ASC
   id_DESC
   content_ASC
@@ -726,28 +759,28 @@ enum CommentsOrderByInput {
   created_at_DESC
 }
 
-type CommentsPreviousValues {
+type CommentPreviousValues {
   id: Int!
   content: String!
   created_at: DateTime!
 }
 
-type CommentsSubscriptionPayload {
+type CommentSubscriptionPayload {
   mutation: MutationType!
-  node: Comments
+  node: Comment
   updatedFields: [String!]
-  previousValues: CommentsPreviousValues
+  previousValues: CommentPreviousValues
 }
 
-input CommentsSubscriptionWhereInput {
+input CommentSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [CommentsSubscriptionWhereInput!]
+  AND: [CommentSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [CommentsSubscriptionWhereInput!]
+  OR: [CommentSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [CommentsSubscriptionWhereInput!]
+  NOT: [CommentSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -768,82 +801,82 @@ input CommentsSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: CommentsWhereInput
+  node: CommentWhereInput
 }
 
-input CommentsUpdateInput {
+input CommentUpdateInput {
   content: String
   created_at: DateTime
-  id_event: EventsUpdateOneWithoutCommentsInput
-  id_user: UsersUpdateOneWithoutCommentsInput
+  id_event: EventUpdateOneWithoutCommentsInput
+  id_user: UserUpdateOneWithoutCommentsInput
 }
 
-input CommentsUpdateManyMutationInput {
+input CommentUpdateManyMutationInput {
   content: String
   created_at: DateTime
 }
 
-input CommentsUpdateManyWithoutId_eventInput {
-  create: [CommentsCreateWithoutId_eventInput!]
-  connect: [CommentsWhereUniqueInput!]
-  disconnect: [CommentsWhereUniqueInput!]
-  delete: [CommentsWhereUniqueInput!]
-  update: [CommentsUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [CommentsUpsertWithWhereUniqueWithoutId_eventInput!]
+input CommentUpdateManyWithoutId_eventInput {
+  create: [CommentCreateWithoutId_eventInput!]
+  connect: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutId_eventInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutId_eventInput!]
 }
 
-input CommentsUpdateManyWithoutId_userInput {
-  create: [CommentsCreateWithoutId_userInput!]
-  connect: [CommentsWhereUniqueInput!]
-  disconnect: [CommentsWhereUniqueInput!]
-  delete: [CommentsWhereUniqueInput!]
-  update: [CommentsUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [CommentsUpsertWithWhereUniqueWithoutId_userInput!]
+input CommentUpdateManyWithoutId_userInput {
+  create: [CommentCreateWithoutId_userInput!]
+  connect: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutId_userInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutId_userInput!]
 }
 
-input CommentsUpdateWithoutId_eventDataInput {
+input CommentUpdateWithoutId_eventDataInput {
   content: String
   created_at: DateTime
-  id_user: UsersUpdateOneWithoutCommentsInput
+  id_user: UserUpdateOneWithoutCommentsInput
 }
 
-input CommentsUpdateWithoutId_userDataInput {
+input CommentUpdateWithoutId_userDataInput {
   content: String
   created_at: DateTime
-  id_event: EventsUpdateOneWithoutCommentsInput
+  id_event: EventUpdateOneWithoutCommentsInput
 }
 
-input CommentsUpdateWithWhereUniqueWithoutId_eventInput {
-  where: CommentsWhereUniqueInput!
-  data: CommentsUpdateWithoutId_eventDataInput!
+input CommentUpdateWithWhereUniqueWithoutId_eventInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutId_eventDataInput!
 }
 
-input CommentsUpdateWithWhereUniqueWithoutId_userInput {
-  where: CommentsWhereUniqueInput!
-  data: CommentsUpdateWithoutId_userDataInput!
+input CommentUpdateWithWhereUniqueWithoutId_userInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutId_userDataInput!
 }
 
-input CommentsUpsertWithWhereUniqueWithoutId_eventInput {
-  where: CommentsWhereUniqueInput!
-  update: CommentsUpdateWithoutId_eventDataInput!
-  create: CommentsCreateWithoutId_eventInput!
+input CommentUpsertWithWhereUniqueWithoutId_eventInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutId_eventDataInput!
+  create: CommentCreateWithoutId_eventInput!
 }
 
-input CommentsUpsertWithWhereUniqueWithoutId_userInput {
-  where: CommentsWhereUniqueInput!
-  update: CommentsUpdateWithoutId_userDataInput!
-  create: CommentsCreateWithoutId_userInput!
+input CommentUpsertWithWhereUniqueWithoutId_userInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutId_userDataInput!
+  create: CommentCreateWithoutId_userInput!
 }
 
-input CommentsWhereInput {
+input CommentWhereInput {
   """Logical AND on all given filters."""
-  AND: [CommentsWhereInput!]
+  AND: [CommentWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [CommentsWhereInput!]
+  OR: [CommentWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [CommentsWhereInput!]
+  NOT: [CommentWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -928,89 +961,128 @@ input CommentsWhereInput {
 
   """All values greater than or equal the given value."""
   created_at_gte: DateTime
-  id_event: EventsWhereInput
-  id_user: UsersWhereInput
+  id_event: EventWhereInput
+  id_user: UserWhereInput
 }
 
-input CommentsWhereUniqueInput {
+input CommentWhereUniqueInput {
   id: Int
 }
 
 scalar DateTime
 
-type Event_admins {
+type Event {
   id: Int!
-  id_event: Events
-  id_role: Roles
+  address1: String!
+  address2: String!
+  address3: String!
+  boards(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Board!]
+  budget: Int!
+  city: String!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  country: String!
+  description: String
+  entrance_tax: Int
+  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin!]
+  event_creation: DateTime!
+  event_date: DateTime!
+  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense!]
+  image_large: String
+  image_small: String
+  rating: Int!
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  state: String!
+  title: String!
+  zip: String!
+}
+
+type Event_admin {
+  id: Int!
+  id_event: Event
+  id_role: Role
+  id_user: User
 }
 
 """A connection to a list of items."""
-type Event_adminsConnection {
+type Event_adminConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [Event_adminsEdge]!
-  aggregate: AggregateEvent_admins!
+  edges: [Event_adminEdge]!
+  aggregate: AggregateEvent_admin!
 }
 
-input Event_adminsCreateInput {
-  id_event: EventsCreateOneWithoutEvent_adminsInput
-  id_role: RolesCreateOneWithoutEvent_adminsInput
+input Event_adminCreateInput {
+  id_event: EventCreateOneWithoutEvent_adminsInput
+  id_role: RoleCreateOneWithoutEvent_adminsInput
+  id_user: UserCreateOneWithoutEvent_adminsInput
 }
 
-input Event_adminsCreateManyWithoutId_eventInput {
-  create: [Event_adminsCreateWithoutId_eventInput!]
-  connect: [Event_adminsWhereUniqueInput!]
+input Event_adminCreateManyWithoutId_eventInput {
+  create: [Event_adminCreateWithoutId_eventInput!]
+  connect: [Event_adminWhereUniqueInput!]
 }
 
-input Event_adminsCreateManyWithoutId_roleInput {
-  create: [Event_adminsCreateWithoutId_roleInput!]
-  connect: [Event_adminsWhereUniqueInput!]
+input Event_adminCreateManyWithoutId_roleInput {
+  create: [Event_adminCreateWithoutId_roleInput!]
+  connect: [Event_adminWhereUniqueInput!]
 }
 
-input Event_adminsCreateWithoutId_eventInput {
-  id_role: RolesCreateOneWithoutEvent_adminsInput
+input Event_adminCreateManyWithoutId_userInput {
+  create: [Event_adminCreateWithoutId_userInput!]
+  connect: [Event_adminWhereUniqueInput!]
 }
 
-input Event_adminsCreateWithoutId_roleInput {
-  id_event: EventsCreateOneWithoutEvent_adminsInput
+input Event_adminCreateWithoutId_eventInput {
+  id_role: RoleCreateOneWithoutEvent_adminsInput
+  id_user: UserCreateOneWithoutEvent_adminsInput
+}
+
+input Event_adminCreateWithoutId_roleInput {
+  id_event: EventCreateOneWithoutEvent_adminsInput
+  id_user: UserCreateOneWithoutEvent_adminsInput
+}
+
+input Event_adminCreateWithoutId_userInput {
+  id_event: EventCreateOneWithoutEvent_adminsInput
+  id_role: RoleCreateOneWithoutEvent_adminsInput
 }
 
 """An edge in a connection."""
-type Event_adminsEdge {
+type Event_adminEdge {
   """The item at the end of the edge."""
-  node: Event_admins!
+  node: Event_admin!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum Event_adminsOrderByInput {
+enum Event_adminOrderByInput {
   id_ASC
   id_DESC
 }
 
-type Event_adminsPreviousValues {
+type Event_adminPreviousValues {
   id: Int!
 }
 
-type Event_adminsSubscriptionPayload {
+type Event_adminSubscriptionPayload {
   mutation: MutationType!
-  node: Event_admins
+  node: Event_admin
   updatedFields: [String!]
-  previousValues: Event_adminsPreviousValues
+  previousValues: Event_adminPreviousValues
 }
 
-input Event_adminsSubscriptionWhereInput {
+input Event_adminSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [Event_adminsSubscriptionWhereInput!]
+  AND: [Event_adminSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [Event_adminsSubscriptionWhereInput!]
+  OR: [Event_adminSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [Event_adminsSubscriptionWhereInput!]
+  NOT: [Event_adminSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -1031,71 +1103,99 @@ input Event_adminsSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: Event_adminsWhereInput
+  node: Event_adminWhereInput
 }
 
-input Event_adminsUpdateInput {
-  id_event: EventsUpdateOneWithoutEvent_adminsInput
-  id_role: RolesUpdateOneWithoutEvent_adminsInput
+input Event_adminUpdateInput {
+  id_event: EventUpdateOneWithoutEvent_adminsInput
+  id_role: RoleUpdateOneWithoutEvent_adminsInput
+  id_user: UserUpdateOneWithoutEvent_adminsInput
 }
 
-input Event_adminsUpdateManyWithoutId_eventInput {
-  create: [Event_adminsCreateWithoutId_eventInput!]
-  connect: [Event_adminsWhereUniqueInput!]
-  disconnect: [Event_adminsWhereUniqueInput!]
-  delete: [Event_adminsWhereUniqueInput!]
-  update: [Event_adminsUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [Event_adminsUpsertWithWhereUniqueWithoutId_eventInput!]
+input Event_adminUpdateManyWithoutId_eventInput {
+  create: [Event_adminCreateWithoutId_eventInput!]
+  connect: [Event_adminWhereUniqueInput!]
+  disconnect: [Event_adminWhereUniqueInput!]
+  delete: [Event_adminWhereUniqueInput!]
+  update: [Event_adminUpdateWithWhereUniqueWithoutId_eventInput!]
+  upsert: [Event_adminUpsertWithWhereUniqueWithoutId_eventInput!]
 }
 
-input Event_adminsUpdateManyWithoutId_roleInput {
-  create: [Event_adminsCreateWithoutId_roleInput!]
-  connect: [Event_adminsWhereUniqueInput!]
-  disconnect: [Event_adminsWhereUniqueInput!]
-  delete: [Event_adminsWhereUniqueInput!]
-  update: [Event_adminsUpdateWithWhereUniqueWithoutId_roleInput!]
-  upsert: [Event_adminsUpsertWithWhereUniqueWithoutId_roleInput!]
+input Event_adminUpdateManyWithoutId_roleInput {
+  create: [Event_adminCreateWithoutId_roleInput!]
+  connect: [Event_adminWhereUniqueInput!]
+  disconnect: [Event_adminWhereUniqueInput!]
+  delete: [Event_adminWhereUniqueInput!]
+  update: [Event_adminUpdateWithWhereUniqueWithoutId_roleInput!]
+  upsert: [Event_adminUpsertWithWhereUniqueWithoutId_roleInput!]
 }
 
-input Event_adminsUpdateWithoutId_eventDataInput {
-  id_role: RolesUpdateOneWithoutEvent_adminsInput
+input Event_adminUpdateManyWithoutId_userInput {
+  create: [Event_adminCreateWithoutId_userInput!]
+  connect: [Event_adminWhereUniqueInput!]
+  disconnect: [Event_adminWhereUniqueInput!]
+  delete: [Event_adminWhereUniqueInput!]
+  update: [Event_adminUpdateWithWhereUniqueWithoutId_userInput!]
+  upsert: [Event_adminUpsertWithWhereUniqueWithoutId_userInput!]
 }
 
-input Event_adminsUpdateWithoutId_roleDataInput {
-  id_event: EventsUpdateOneWithoutEvent_adminsInput
+input Event_adminUpdateWithoutId_eventDataInput {
+  id_role: RoleUpdateOneWithoutEvent_adminsInput
+  id_user: UserUpdateOneWithoutEvent_adminsInput
 }
 
-input Event_adminsUpdateWithWhereUniqueWithoutId_eventInput {
-  where: Event_adminsWhereUniqueInput!
-  data: Event_adminsUpdateWithoutId_eventDataInput!
+input Event_adminUpdateWithoutId_roleDataInput {
+  id_event: EventUpdateOneWithoutEvent_adminsInput
+  id_user: UserUpdateOneWithoutEvent_adminsInput
 }
 
-input Event_adminsUpdateWithWhereUniqueWithoutId_roleInput {
-  where: Event_adminsWhereUniqueInput!
-  data: Event_adminsUpdateWithoutId_roleDataInput!
+input Event_adminUpdateWithoutId_userDataInput {
+  id_event: EventUpdateOneWithoutEvent_adminsInput
+  id_role: RoleUpdateOneWithoutEvent_adminsInput
 }
 
-input Event_adminsUpsertWithWhereUniqueWithoutId_eventInput {
-  where: Event_adminsWhereUniqueInput!
-  update: Event_adminsUpdateWithoutId_eventDataInput!
-  create: Event_adminsCreateWithoutId_eventInput!
+input Event_adminUpdateWithWhereUniqueWithoutId_eventInput {
+  where: Event_adminWhereUniqueInput!
+  data: Event_adminUpdateWithoutId_eventDataInput!
 }
 
-input Event_adminsUpsertWithWhereUniqueWithoutId_roleInput {
-  where: Event_adminsWhereUniqueInput!
-  update: Event_adminsUpdateWithoutId_roleDataInput!
-  create: Event_adminsCreateWithoutId_roleInput!
+input Event_adminUpdateWithWhereUniqueWithoutId_roleInput {
+  where: Event_adminWhereUniqueInput!
+  data: Event_adminUpdateWithoutId_roleDataInput!
 }
 
-input Event_adminsWhereInput {
+input Event_adminUpdateWithWhereUniqueWithoutId_userInput {
+  where: Event_adminWhereUniqueInput!
+  data: Event_adminUpdateWithoutId_userDataInput!
+}
+
+input Event_adminUpsertWithWhereUniqueWithoutId_eventInput {
+  where: Event_adminWhereUniqueInput!
+  update: Event_adminUpdateWithoutId_eventDataInput!
+  create: Event_adminCreateWithoutId_eventInput!
+}
+
+input Event_adminUpsertWithWhereUniqueWithoutId_roleInput {
+  where: Event_adminWhereUniqueInput!
+  update: Event_adminUpdateWithoutId_roleDataInput!
+  create: Event_adminCreateWithoutId_roleInput!
+}
+
+input Event_adminUpsertWithWhereUniqueWithoutId_userInput {
+  where: Event_adminWhereUniqueInput!
+  update: Event_adminUpdateWithoutId_userDataInput!
+  create: Event_adminCreateWithoutId_userInput!
+}
+
+input Event_adminWhereInput {
   """Logical AND on all given filters."""
-  AND: [Event_adminsWhereInput!]
+  AND: [Event_adminWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [Event_adminsWhereInput!]
+  OR: [Event_adminWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [Event_adminsWhereInput!]
+  NOT: [Event_adminWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -1118,50 +1218,26 @@ input Event_adminsWhereInput {
 
   """All values greater than or equal the given value."""
   id_gte: Int
-  id_event: EventsWhereInput
-  id_role: RolesWhereInput
+  id_event: EventWhereInput
+  id_role: RoleWhereInput
+  id_user: UserWhereInput
 }
 
-input Event_adminsWhereUniqueInput {
+input Event_adminWhereUniqueInput {
   id: Int
 }
 
-type Events {
-  id: Int!
-  address1: String!
-  address2: String!
-  address3: String!
-  boards(where: BoardsWhereInput, orderBy: BoardsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Boards!]
-  budget: Int!
-  city: String!
-  comments(where: CommentsWhereInput, orderBy: CommentsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comments!]
-  country: String!
-  description: String
-  entrance_tax: Int
-  event_admins(where: Event_adminsWhereInput, orderBy: Event_adminsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admins!]
-  event_creation: DateTime!
-  event_date: DateTime!
-  expenses(where: ExpensesWhereInput, orderBy: ExpensesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expenses!]
-  image_large: String
-  image_small: String
-  rating: Int!
-  reviews(where: ReviewsWhereInput, orderBy: ReviewsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reviews!]
-  state: String!
-  title: String!
-  zip: String!
-}
-
 """A connection to a list of items."""
-type EventsConnection {
+type EventConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [EventsEdge]!
-  aggregate: AggregateEvents!
+  edges: [EventEdge]!
+  aggregate: AggregateEvent!
 }
 
-input EventsCreateInput {
+input EventCreateInput {
   address1: String!
   address2: String!
   address3: String!
@@ -1178,39 +1254,39 @@ input EventsCreateInput {
   state: String!
   title: String!
   zip: String!
-  boards: BoardsCreateManyWithoutId_eventInput
-  comments: CommentsCreateManyWithoutId_eventInput
-  event_admins: Event_adminsCreateManyWithoutId_eventInput
-  expenses: ExpensesCreateManyWithoutId_eventInput
-  reviews: ReviewsCreateManyWithoutId_eventsInput
+  boards: BoardCreateManyWithoutId_eventInput
+  comments: CommentCreateManyWithoutId_eventInput
+  event_admins: Event_adminCreateManyWithoutId_eventInput
+  expenses: ExpenseCreateManyWithoutId_eventInput
+  reviews: ReviewCreateManyWithoutId_eventsInput
 }
 
-input EventsCreateOneWithoutBoardsInput {
-  create: EventsCreateWithoutBoardsInput
-  connect: EventsWhereUniqueInput
+input EventCreateOneWithoutBoardsInput {
+  create: EventCreateWithoutBoardsInput
+  connect: EventWhereUniqueInput
 }
 
-input EventsCreateOneWithoutCommentsInput {
-  create: EventsCreateWithoutCommentsInput
-  connect: EventsWhereUniqueInput
+input EventCreateOneWithoutCommentsInput {
+  create: EventCreateWithoutCommentsInput
+  connect: EventWhereUniqueInput
 }
 
-input EventsCreateOneWithoutEvent_adminsInput {
-  create: EventsCreateWithoutEvent_adminsInput
-  connect: EventsWhereUniqueInput
+input EventCreateOneWithoutEvent_adminsInput {
+  create: EventCreateWithoutEvent_adminsInput
+  connect: EventWhereUniqueInput
 }
 
-input EventsCreateOneWithoutExpensesInput {
-  create: EventsCreateWithoutExpensesInput
-  connect: EventsWhereUniqueInput
+input EventCreateOneWithoutExpensesInput {
+  create: EventCreateWithoutExpensesInput
+  connect: EventWhereUniqueInput
 }
 
-input EventsCreateOneWithoutReviewsInput {
-  create: EventsCreateWithoutReviewsInput
-  connect: EventsWhereUniqueInput
+input EventCreateOneWithoutReviewsInput {
+  create: EventCreateWithoutReviewsInput
+  connect: EventWhereUniqueInput
 }
 
-input EventsCreateWithoutBoardsInput {
+input EventCreateWithoutBoardsInput {
   address1: String!
   address2: String!
   address3: String!
@@ -1227,13 +1303,13 @@ input EventsCreateWithoutBoardsInput {
   state: String!
   title: String!
   zip: String!
-  comments: CommentsCreateManyWithoutId_eventInput
-  event_admins: Event_adminsCreateManyWithoutId_eventInput
-  expenses: ExpensesCreateManyWithoutId_eventInput
-  reviews: ReviewsCreateManyWithoutId_eventsInput
+  comments: CommentCreateManyWithoutId_eventInput
+  event_admins: Event_adminCreateManyWithoutId_eventInput
+  expenses: ExpenseCreateManyWithoutId_eventInput
+  reviews: ReviewCreateManyWithoutId_eventsInput
 }
 
-input EventsCreateWithoutCommentsInput {
+input EventCreateWithoutCommentsInput {
   address1: String!
   address2: String!
   address3: String!
@@ -1250,13 +1326,13 @@ input EventsCreateWithoutCommentsInput {
   state: String!
   title: String!
   zip: String!
-  boards: BoardsCreateManyWithoutId_eventInput
-  event_admins: Event_adminsCreateManyWithoutId_eventInput
-  expenses: ExpensesCreateManyWithoutId_eventInput
-  reviews: ReviewsCreateManyWithoutId_eventsInput
+  boards: BoardCreateManyWithoutId_eventInput
+  event_admins: Event_adminCreateManyWithoutId_eventInput
+  expenses: ExpenseCreateManyWithoutId_eventInput
+  reviews: ReviewCreateManyWithoutId_eventsInput
 }
 
-input EventsCreateWithoutEvent_adminsInput {
+input EventCreateWithoutEvent_adminsInput {
   address1: String!
   address2: String!
   address3: String!
@@ -1273,13 +1349,13 @@ input EventsCreateWithoutEvent_adminsInput {
   state: String!
   title: String!
   zip: String!
-  boards: BoardsCreateManyWithoutId_eventInput
-  comments: CommentsCreateManyWithoutId_eventInput
-  expenses: ExpensesCreateManyWithoutId_eventInput
-  reviews: ReviewsCreateManyWithoutId_eventsInput
+  boards: BoardCreateManyWithoutId_eventInput
+  comments: CommentCreateManyWithoutId_eventInput
+  expenses: ExpenseCreateManyWithoutId_eventInput
+  reviews: ReviewCreateManyWithoutId_eventsInput
 }
 
-input EventsCreateWithoutExpensesInput {
+input EventCreateWithoutExpensesInput {
   address1: String!
   address2: String!
   address3: String!
@@ -1296,13 +1372,13 @@ input EventsCreateWithoutExpensesInput {
   state: String!
   title: String!
   zip: String!
-  boards: BoardsCreateManyWithoutId_eventInput
-  comments: CommentsCreateManyWithoutId_eventInput
-  event_admins: Event_adminsCreateManyWithoutId_eventInput
-  reviews: ReviewsCreateManyWithoutId_eventsInput
+  boards: BoardCreateManyWithoutId_eventInput
+  comments: CommentCreateManyWithoutId_eventInput
+  event_admins: Event_adminCreateManyWithoutId_eventInput
+  reviews: ReviewCreateManyWithoutId_eventsInput
 }
 
-input EventsCreateWithoutReviewsInput {
+input EventCreateWithoutReviewsInput {
   address1: String!
   address2: String!
   address3: String!
@@ -1319,22 +1395,22 @@ input EventsCreateWithoutReviewsInput {
   state: String!
   title: String!
   zip: String!
-  boards: BoardsCreateManyWithoutId_eventInput
-  comments: CommentsCreateManyWithoutId_eventInput
-  event_admins: Event_adminsCreateManyWithoutId_eventInput
-  expenses: ExpensesCreateManyWithoutId_eventInput
+  boards: BoardCreateManyWithoutId_eventInput
+  comments: CommentCreateManyWithoutId_eventInput
+  event_admins: Event_adminCreateManyWithoutId_eventInput
+  expenses: ExpenseCreateManyWithoutId_eventInput
 }
 
 """An edge in a connection."""
-type EventsEdge {
+type EventEdge {
   """The item at the end of the edge."""
-  node: Events!
+  node: Event!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum EventsOrderByInput {
+enum EventOrderByInput {
   id_ASC
   id_DESC
   address1_ASC
@@ -1371,7 +1447,7 @@ enum EventsOrderByInput {
   zip_DESC
 }
 
-type EventsPreviousValues {
+type EventPreviousValues {
   id: Int!
   address1: String!
   address2: String!
@@ -1391,22 +1467,22 @@ type EventsPreviousValues {
   zip: String!
 }
 
-type EventsSubscriptionPayload {
+type EventSubscriptionPayload {
   mutation: MutationType!
-  node: Events
+  node: Event
   updatedFields: [String!]
-  previousValues: EventsPreviousValues
+  previousValues: EventPreviousValues
 }
 
-input EventsSubscriptionWhereInput {
+input EventSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [EventsSubscriptionWhereInput!]
+  AND: [EventSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [EventsSubscriptionWhereInput!]
+  OR: [EventSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [EventsSubscriptionWhereInput!]
+  NOT: [EventSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -1427,10 +1503,10 @@ input EventsSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: EventsWhereInput
+  node: EventWhereInput
 }
 
-input EventsUpdateInput {
+input EventUpdateInput {
   address1: String
   address2: String
   address3: String
@@ -1447,14 +1523,14 @@ input EventsUpdateInput {
   state: String
   title: String
   zip: String
-  boards: BoardsUpdateManyWithoutId_eventInput
-  comments: CommentsUpdateManyWithoutId_eventInput
-  event_admins: Event_adminsUpdateManyWithoutId_eventInput
-  expenses: ExpensesUpdateManyWithoutId_eventInput
-  reviews: ReviewsUpdateManyWithoutId_eventsInput
+  boards: BoardUpdateManyWithoutId_eventInput
+  comments: CommentUpdateManyWithoutId_eventInput
+  event_admins: Event_adminUpdateManyWithoutId_eventInput
+  expenses: ExpenseUpdateManyWithoutId_eventInput
+  reviews: ReviewUpdateManyWithoutId_eventsInput
 }
 
-input EventsUpdateManyMutationInput {
+input EventUpdateManyMutationInput {
   address1: String
   address2: String
   address3: String
@@ -1473,52 +1549,52 @@ input EventsUpdateManyMutationInput {
   zip: String
 }
 
-input EventsUpdateOneWithoutBoardsInput {
-  create: EventsCreateWithoutBoardsInput
-  connect: EventsWhereUniqueInput
+input EventUpdateOneWithoutBoardsInput {
+  create: EventCreateWithoutBoardsInput
+  connect: EventWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: EventsUpdateWithoutBoardsDataInput
-  upsert: EventsUpsertWithoutBoardsInput
+  update: EventUpdateWithoutBoardsDataInput
+  upsert: EventUpsertWithoutBoardsInput
 }
 
-input EventsUpdateOneWithoutCommentsInput {
-  create: EventsCreateWithoutCommentsInput
-  connect: EventsWhereUniqueInput
+input EventUpdateOneWithoutCommentsInput {
+  create: EventCreateWithoutCommentsInput
+  connect: EventWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: EventsUpdateWithoutCommentsDataInput
-  upsert: EventsUpsertWithoutCommentsInput
+  update: EventUpdateWithoutCommentsDataInput
+  upsert: EventUpsertWithoutCommentsInput
 }
 
-input EventsUpdateOneWithoutEvent_adminsInput {
-  create: EventsCreateWithoutEvent_adminsInput
-  connect: EventsWhereUniqueInput
+input EventUpdateOneWithoutEvent_adminsInput {
+  create: EventCreateWithoutEvent_adminsInput
+  connect: EventWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: EventsUpdateWithoutEvent_adminsDataInput
-  upsert: EventsUpsertWithoutEvent_adminsInput
+  update: EventUpdateWithoutEvent_adminsDataInput
+  upsert: EventUpsertWithoutEvent_adminsInput
 }
 
-input EventsUpdateOneWithoutExpensesInput {
-  create: EventsCreateWithoutExpensesInput
-  connect: EventsWhereUniqueInput
+input EventUpdateOneWithoutExpensesInput {
+  create: EventCreateWithoutExpensesInput
+  connect: EventWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: EventsUpdateWithoutExpensesDataInput
-  upsert: EventsUpsertWithoutExpensesInput
+  update: EventUpdateWithoutExpensesDataInput
+  upsert: EventUpsertWithoutExpensesInput
 }
 
-input EventsUpdateOneWithoutReviewsInput {
-  create: EventsCreateWithoutReviewsInput
-  connect: EventsWhereUniqueInput
+input EventUpdateOneWithoutReviewsInput {
+  create: EventCreateWithoutReviewsInput
+  connect: EventWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: EventsUpdateWithoutReviewsDataInput
-  upsert: EventsUpsertWithoutReviewsInput
+  update: EventUpdateWithoutReviewsDataInput
+  upsert: EventUpsertWithoutReviewsInput
 }
 
-input EventsUpdateWithoutBoardsDataInput {
+input EventUpdateWithoutBoardsDataInput {
   address1: String
   address2: String
   address3: String
@@ -1535,13 +1611,13 @@ input EventsUpdateWithoutBoardsDataInput {
   state: String
   title: String
   zip: String
-  comments: CommentsUpdateManyWithoutId_eventInput
-  event_admins: Event_adminsUpdateManyWithoutId_eventInput
-  expenses: ExpensesUpdateManyWithoutId_eventInput
-  reviews: ReviewsUpdateManyWithoutId_eventsInput
+  comments: CommentUpdateManyWithoutId_eventInput
+  event_admins: Event_adminUpdateManyWithoutId_eventInput
+  expenses: ExpenseUpdateManyWithoutId_eventInput
+  reviews: ReviewUpdateManyWithoutId_eventsInput
 }
 
-input EventsUpdateWithoutCommentsDataInput {
+input EventUpdateWithoutCommentsDataInput {
   address1: String
   address2: String
   address3: String
@@ -1558,13 +1634,13 @@ input EventsUpdateWithoutCommentsDataInput {
   state: String
   title: String
   zip: String
-  boards: BoardsUpdateManyWithoutId_eventInput
-  event_admins: Event_adminsUpdateManyWithoutId_eventInput
-  expenses: ExpensesUpdateManyWithoutId_eventInput
-  reviews: ReviewsUpdateManyWithoutId_eventsInput
+  boards: BoardUpdateManyWithoutId_eventInput
+  event_admins: Event_adminUpdateManyWithoutId_eventInput
+  expenses: ExpenseUpdateManyWithoutId_eventInput
+  reviews: ReviewUpdateManyWithoutId_eventsInput
 }
 
-input EventsUpdateWithoutEvent_adminsDataInput {
+input EventUpdateWithoutEvent_adminsDataInput {
   address1: String
   address2: String
   address3: String
@@ -1581,13 +1657,13 @@ input EventsUpdateWithoutEvent_adminsDataInput {
   state: String
   title: String
   zip: String
-  boards: BoardsUpdateManyWithoutId_eventInput
-  comments: CommentsUpdateManyWithoutId_eventInput
-  expenses: ExpensesUpdateManyWithoutId_eventInput
-  reviews: ReviewsUpdateManyWithoutId_eventsInput
+  boards: BoardUpdateManyWithoutId_eventInput
+  comments: CommentUpdateManyWithoutId_eventInput
+  expenses: ExpenseUpdateManyWithoutId_eventInput
+  reviews: ReviewUpdateManyWithoutId_eventsInput
 }
 
-input EventsUpdateWithoutExpensesDataInput {
+input EventUpdateWithoutExpensesDataInput {
   address1: String
   address2: String
   address3: String
@@ -1604,13 +1680,13 @@ input EventsUpdateWithoutExpensesDataInput {
   state: String
   title: String
   zip: String
-  boards: BoardsUpdateManyWithoutId_eventInput
-  comments: CommentsUpdateManyWithoutId_eventInput
-  event_admins: Event_adminsUpdateManyWithoutId_eventInput
-  reviews: ReviewsUpdateManyWithoutId_eventsInput
+  boards: BoardUpdateManyWithoutId_eventInput
+  comments: CommentUpdateManyWithoutId_eventInput
+  event_admins: Event_adminUpdateManyWithoutId_eventInput
+  reviews: ReviewUpdateManyWithoutId_eventsInput
 }
 
-input EventsUpdateWithoutReviewsDataInput {
+input EventUpdateWithoutReviewsDataInput {
   address1: String
   address2: String
   address3: String
@@ -1627,46 +1703,46 @@ input EventsUpdateWithoutReviewsDataInput {
   state: String
   title: String
   zip: String
-  boards: BoardsUpdateManyWithoutId_eventInput
-  comments: CommentsUpdateManyWithoutId_eventInput
-  event_admins: Event_adminsUpdateManyWithoutId_eventInput
-  expenses: ExpensesUpdateManyWithoutId_eventInput
+  boards: BoardUpdateManyWithoutId_eventInput
+  comments: CommentUpdateManyWithoutId_eventInput
+  event_admins: Event_adminUpdateManyWithoutId_eventInput
+  expenses: ExpenseUpdateManyWithoutId_eventInput
 }
 
-input EventsUpsertWithoutBoardsInput {
-  update: EventsUpdateWithoutBoardsDataInput!
-  create: EventsCreateWithoutBoardsInput!
+input EventUpsertWithoutBoardsInput {
+  update: EventUpdateWithoutBoardsDataInput!
+  create: EventCreateWithoutBoardsInput!
 }
 
-input EventsUpsertWithoutCommentsInput {
-  update: EventsUpdateWithoutCommentsDataInput!
-  create: EventsCreateWithoutCommentsInput!
+input EventUpsertWithoutCommentsInput {
+  update: EventUpdateWithoutCommentsDataInput!
+  create: EventCreateWithoutCommentsInput!
 }
 
-input EventsUpsertWithoutEvent_adminsInput {
-  update: EventsUpdateWithoutEvent_adminsDataInput!
-  create: EventsCreateWithoutEvent_adminsInput!
+input EventUpsertWithoutEvent_adminsInput {
+  update: EventUpdateWithoutEvent_adminsDataInput!
+  create: EventCreateWithoutEvent_adminsInput!
 }
 
-input EventsUpsertWithoutExpensesInput {
-  update: EventsUpdateWithoutExpensesDataInput!
-  create: EventsCreateWithoutExpensesInput!
+input EventUpsertWithoutExpensesInput {
+  update: EventUpdateWithoutExpensesDataInput!
+  create: EventCreateWithoutExpensesInput!
 }
 
-input EventsUpsertWithoutReviewsInput {
-  update: EventsUpdateWithoutReviewsDataInput!
-  create: EventsCreateWithoutReviewsInput!
+input EventUpsertWithoutReviewsInput {
+  update: EventUpdateWithoutReviewsDataInput!
+  create: EventCreateWithoutReviewsInput!
 }
 
-input EventsWhereInput {
+input EventWhereInput {
   """Logical AND on all given filters."""
-  AND: [EventsWhereInput!]
+  AND: [EventWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [EventsWhereInput!]
+  OR: [EventWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [EventsWhereInput!]
+  NOT: [EventWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -2239,92 +2315,92 @@ input EventsWhereInput {
 
   """All values not ending with the given string."""
   zip_not_ends_with: String
-  boards_every: BoardsWhereInput
-  boards_some: BoardsWhereInput
-  boards_none: BoardsWhereInput
-  comments_every: CommentsWhereInput
-  comments_some: CommentsWhereInput
-  comments_none: CommentsWhereInput
-  event_admins_every: Event_adminsWhereInput
-  event_admins_some: Event_adminsWhereInput
-  event_admins_none: Event_adminsWhereInput
-  expenses_every: ExpensesWhereInput
-  expenses_some: ExpensesWhereInput
-  expenses_none: ExpensesWhereInput
-  reviews_every: ReviewsWhereInput
-  reviews_some: ReviewsWhereInput
-  reviews_none: ReviewsWhereInput
+  boards_every: BoardWhereInput
+  boards_some: BoardWhereInput
+  boards_none: BoardWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
+  event_admins_every: Event_adminWhereInput
+  event_admins_some: Event_adminWhereInput
+  event_admins_none: Event_adminWhereInput
+  expenses_every: ExpenseWhereInput
+  expenses_some: ExpenseWhereInput
+  expenses_none: ExpenseWhereInput
+  reviews_every: ReviewWhereInput
+  reviews_some: ReviewWhereInput
+  reviews_none: ReviewWhereInput
 }
 
-input EventsWhereUniqueInput {
+input EventWhereUniqueInput {
   id: Int
 }
 
-type Expenses {
+type Expense {
   id: Int!
   amount: Float!
   created_at: DateTime!
   description: String
-  id_event: Events
-  id_user: Users
+  id_event: Event
+  id_user: User
   title: String!
 }
 
 """A connection to a list of items."""
-type ExpensesConnection {
+type ExpenseConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [ExpensesEdge]!
-  aggregate: AggregateExpenses!
+  edges: [ExpenseEdge]!
+  aggregate: AggregateExpense!
 }
 
-input ExpensesCreateInput {
+input ExpenseCreateInput {
   amount: Float!
   created_at: DateTime!
   description: String
   title: String!
-  id_event: EventsCreateOneWithoutExpensesInput
-  id_user: UsersCreateOneWithoutExpensesInput
+  id_event: EventCreateOneWithoutExpensesInput
+  id_user: UserCreateOneWithoutExpensesInput
 }
 
-input ExpensesCreateManyWithoutId_eventInput {
-  create: [ExpensesCreateWithoutId_eventInput!]
-  connect: [ExpensesWhereUniqueInput!]
+input ExpenseCreateManyWithoutId_eventInput {
+  create: [ExpenseCreateWithoutId_eventInput!]
+  connect: [ExpenseWhereUniqueInput!]
 }
 
-input ExpensesCreateManyWithoutId_userInput {
-  create: [ExpensesCreateWithoutId_userInput!]
-  connect: [ExpensesWhereUniqueInput!]
+input ExpenseCreateManyWithoutId_userInput {
+  create: [ExpenseCreateWithoutId_userInput!]
+  connect: [ExpenseWhereUniqueInput!]
 }
 
-input ExpensesCreateWithoutId_eventInput {
+input ExpenseCreateWithoutId_eventInput {
   amount: Float!
   created_at: DateTime!
   description: String
   title: String!
-  id_user: UsersCreateOneWithoutExpensesInput
+  id_user: UserCreateOneWithoutExpensesInput
 }
 
-input ExpensesCreateWithoutId_userInput {
+input ExpenseCreateWithoutId_userInput {
   amount: Float!
   created_at: DateTime!
   description: String
   title: String!
-  id_event: EventsCreateOneWithoutExpensesInput
+  id_event: EventCreateOneWithoutExpensesInput
 }
 
 """An edge in a connection."""
-type ExpensesEdge {
+type ExpenseEdge {
   """The item at the end of the edge."""
-  node: Expenses!
+  node: Expense!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum ExpensesOrderByInput {
+enum ExpenseOrderByInput {
   id_ASC
   id_DESC
   amount_ASC
@@ -2337,7 +2413,7 @@ enum ExpensesOrderByInput {
   title_DESC
 }
 
-type ExpensesPreviousValues {
+type ExpensePreviousValues {
   id: Int!
   amount: Float!
   created_at: DateTime!
@@ -2345,22 +2421,22 @@ type ExpensesPreviousValues {
   title: String!
 }
 
-type ExpensesSubscriptionPayload {
+type ExpenseSubscriptionPayload {
   mutation: MutationType!
-  node: Expenses
+  node: Expense
   updatedFields: [String!]
-  previousValues: ExpensesPreviousValues
+  previousValues: ExpensePreviousValues
 }
 
-input ExpensesSubscriptionWhereInput {
+input ExpenseSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [ExpensesSubscriptionWhereInput!]
+  AND: [ExpenseSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [ExpensesSubscriptionWhereInput!]
+  OR: [ExpenseSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [ExpensesSubscriptionWhereInput!]
+  NOT: [ExpenseSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -2381,90 +2457,90 @@ input ExpensesSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: ExpensesWhereInput
+  node: ExpenseWhereInput
 }
 
-input ExpensesUpdateInput {
+input ExpenseUpdateInput {
   amount: Float
   created_at: DateTime
   description: String
   title: String
-  id_event: EventsUpdateOneWithoutExpensesInput
-  id_user: UsersUpdateOneWithoutExpensesInput
+  id_event: EventUpdateOneWithoutExpensesInput
+  id_user: UserUpdateOneWithoutExpensesInput
 }
 
-input ExpensesUpdateManyMutationInput {
+input ExpenseUpdateManyMutationInput {
   amount: Float
   created_at: DateTime
   description: String
   title: String
 }
 
-input ExpensesUpdateManyWithoutId_eventInput {
-  create: [ExpensesCreateWithoutId_eventInput!]
-  connect: [ExpensesWhereUniqueInput!]
-  disconnect: [ExpensesWhereUniqueInput!]
-  delete: [ExpensesWhereUniqueInput!]
-  update: [ExpensesUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [ExpensesUpsertWithWhereUniqueWithoutId_eventInput!]
+input ExpenseUpdateManyWithoutId_eventInput {
+  create: [ExpenseCreateWithoutId_eventInput!]
+  connect: [ExpenseWhereUniqueInput!]
+  disconnect: [ExpenseWhereUniqueInput!]
+  delete: [ExpenseWhereUniqueInput!]
+  update: [ExpenseUpdateWithWhereUniqueWithoutId_eventInput!]
+  upsert: [ExpenseUpsertWithWhereUniqueWithoutId_eventInput!]
 }
 
-input ExpensesUpdateManyWithoutId_userInput {
-  create: [ExpensesCreateWithoutId_userInput!]
-  connect: [ExpensesWhereUniqueInput!]
-  disconnect: [ExpensesWhereUniqueInput!]
-  delete: [ExpensesWhereUniqueInput!]
-  update: [ExpensesUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [ExpensesUpsertWithWhereUniqueWithoutId_userInput!]
+input ExpenseUpdateManyWithoutId_userInput {
+  create: [ExpenseCreateWithoutId_userInput!]
+  connect: [ExpenseWhereUniqueInput!]
+  disconnect: [ExpenseWhereUniqueInput!]
+  delete: [ExpenseWhereUniqueInput!]
+  update: [ExpenseUpdateWithWhereUniqueWithoutId_userInput!]
+  upsert: [ExpenseUpsertWithWhereUniqueWithoutId_userInput!]
 }
 
-input ExpensesUpdateWithoutId_eventDataInput {
+input ExpenseUpdateWithoutId_eventDataInput {
   amount: Float
   created_at: DateTime
   description: String
   title: String
-  id_user: UsersUpdateOneWithoutExpensesInput
+  id_user: UserUpdateOneWithoutExpensesInput
 }
 
-input ExpensesUpdateWithoutId_userDataInput {
+input ExpenseUpdateWithoutId_userDataInput {
   amount: Float
   created_at: DateTime
   description: String
   title: String
-  id_event: EventsUpdateOneWithoutExpensesInput
+  id_event: EventUpdateOneWithoutExpensesInput
 }
 
-input ExpensesUpdateWithWhereUniqueWithoutId_eventInput {
-  where: ExpensesWhereUniqueInput!
-  data: ExpensesUpdateWithoutId_eventDataInput!
+input ExpenseUpdateWithWhereUniqueWithoutId_eventInput {
+  where: ExpenseWhereUniqueInput!
+  data: ExpenseUpdateWithoutId_eventDataInput!
 }
 
-input ExpensesUpdateWithWhereUniqueWithoutId_userInput {
-  where: ExpensesWhereUniqueInput!
-  data: ExpensesUpdateWithoutId_userDataInput!
+input ExpenseUpdateWithWhereUniqueWithoutId_userInput {
+  where: ExpenseWhereUniqueInput!
+  data: ExpenseUpdateWithoutId_userDataInput!
 }
 
-input ExpensesUpsertWithWhereUniqueWithoutId_eventInput {
-  where: ExpensesWhereUniqueInput!
-  update: ExpensesUpdateWithoutId_eventDataInput!
-  create: ExpensesCreateWithoutId_eventInput!
+input ExpenseUpsertWithWhereUniqueWithoutId_eventInput {
+  where: ExpenseWhereUniqueInput!
+  update: ExpenseUpdateWithoutId_eventDataInput!
+  create: ExpenseCreateWithoutId_eventInput!
 }
 
-input ExpensesUpsertWithWhereUniqueWithoutId_userInput {
-  where: ExpensesWhereUniqueInput!
-  update: ExpensesUpdateWithoutId_userDataInput!
-  create: ExpensesCreateWithoutId_userInput!
+input ExpenseUpsertWithWhereUniqueWithoutId_userInput {
+  where: ExpenseWhereUniqueInput!
+  update: ExpenseUpdateWithoutId_userDataInput!
+  create: ExpenseCreateWithoutId_userInput!
 }
 
-input ExpensesWhereInput {
+input ExpenseWhereInput {
   """Logical AND on all given filters."""
-  AND: [ExpensesWhereInput!]
+  AND: [ExpenseWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [ExpensesWhereInput!]
+  OR: [ExpenseWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [ExpensesWhereInput!]
+  NOT: [ExpenseWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -2611,108 +2687,115 @@ input ExpensesWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  id_event: EventsWhereInput
-  id_user: UsersWhereInput
+  id_event: EventWhereInput
+  id_user: UserWhereInput
 }
 
-input ExpensesWhereUniqueInput {
+input ExpenseWhereUniqueInput {
   id: Int
 }
 
-type Lists {
+type List {
   id: Int!
-  cards(where: CardsWhereInput, orderBy: CardsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Cards!]
+  cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card!]
   created_at: DateTime!
   description: String
-  id_board: Boards
+  id_board: Board
+  order: Int!
   title: String!
 }
 
 """A connection to a list of items."""
-type ListsConnection {
+type ListConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [ListsEdge]!
-  aggregate: AggregateLists!
+  edges: [ListEdge]!
+  aggregate: AggregateList!
 }
 
-input ListsCreateInput {
+input ListCreateInput {
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
-  cards: CardsCreateManyWithoutId_listInput
-  id_board: BoardsCreateOneWithoutListsInput
+  cards: CardCreateManyWithoutId_listInput
+  id_board: BoardCreateOneWithoutListsInput
 }
 
-input ListsCreateManyWithoutId_boardInput {
-  create: [ListsCreateWithoutId_boardInput!]
-  connect: [ListsWhereUniqueInput!]
+input ListCreateManyWithoutId_boardInput {
+  create: [ListCreateWithoutId_boardInput!]
+  connect: [ListWhereUniqueInput!]
 }
 
-input ListsCreateOneWithoutCardsInput {
-  create: ListsCreateWithoutCardsInput
-  connect: ListsWhereUniqueInput
+input ListCreateOneWithoutCardsInput {
+  create: ListCreateWithoutCardsInput
+  connect: ListWhereUniqueInput
 }
 
-input ListsCreateWithoutCardsInput {
+input ListCreateWithoutCardsInput {
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
-  id_board: BoardsCreateOneWithoutListsInput
+  id_board: BoardCreateOneWithoutListsInput
 }
 
-input ListsCreateWithoutId_boardInput {
+input ListCreateWithoutId_boardInput {
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
-  cards: CardsCreateManyWithoutId_listInput
+  cards: CardCreateManyWithoutId_listInput
 }
 
 """An edge in a connection."""
-type ListsEdge {
+type ListEdge {
   """The item at the end of the edge."""
-  node: Lists!
+  node: List!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum ListsOrderByInput {
+enum ListOrderByInput {
   id_ASC
   id_DESC
   created_at_ASC
   created_at_DESC
   description_ASC
   description_DESC
+  order_ASC
+  order_DESC
   title_ASC
   title_DESC
 }
 
-type ListsPreviousValues {
+type ListPreviousValues {
   id: Int!
   created_at: DateTime!
   description: String
+  order: Int!
   title: String!
 }
 
-type ListsSubscriptionPayload {
+type ListSubscriptionPayload {
   mutation: MutationType!
-  node: Lists
+  node: List
   updatedFields: [String!]
-  previousValues: ListsPreviousValues
+  previousValues: ListPreviousValues
 }
 
-input ListsSubscriptionWhereInput {
+input ListSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [ListsSubscriptionWhereInput!]
+  AND: [ListSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [ListsSubscriptionWhereInput!]
+  OR: [ListSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [ListsSubscriptionWhereInput!]
+  NOT: [ListSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -2733,80 +2816,84 @@ input ListsSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: ListsWhereInput
+  node: ListWhereInput
 }
 
-input ListsUpdateInput {
+input ListUpdateInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
-  cards: CardsUpdateManyWithoutId_listInput
-  id_board: BoardsUpdateOneWithoutListsInput
+  cards: CardUpdateManyWithoutId_listInput
+  id_board: BoardUpdateOneWithoutListsInput
 }
 
-input ListsUpdateManyMutationInput {
+input ListUpdateManyMutationInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
 }
 
-input ListsUpdateManyWithoutId_boardInput {
-  create: [ListsCreateWithoutId_boardInput!]
-  connect: [ListsWhereUniqueInput!]
-  disconnect: [ListsWhereUniqueInput!]
-  delete: [ListsWhereUniqueInput!]
-  update: [ListsUpdateWithWhereUniqueWithoutId_boardInput!]
-  upsert: [ListsUpsertWithWhereUniqueWithoutId_boardInput!]
+input ListUpdateManyWithoutId_boardInput {
+  create: [ListCreateWithoutId_boardInput!]
+  connect: [ListWhereUniqueInput!]
+  disconnect: [ListWhereUniqueInput!]
+  delete: [ListWhereUniqueInput!]
+  update: [ListUpdateWithWhereUniqueWithoutId_boardInput!]
+  upsert: [ListUpsertWithWhereUniqueWithoutId_boardInput!]
 }
 
-input ListsUpdateOneWithoutCardsInput {
-  create: ListsCreateWithoutCardsInput
-  connect: ListsWhereUniqueInput
+input ListUpdateOneWithoutCardsInput {
+  create: ListCreateWithoutCardsInput
+  connect: ListWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: ListsUpdateWithoutCardsDataInput
-  upsert: ListsUpsertWithoutCardsInput
+  update: ListUpdateWithoutCardsDataInput
+  upsert: ListUpsertWithoutCardsInput
 }
 
-input ListsUpdateWithoutCardsDataInput {
+input ListUpdateWithoutCardsDataInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
-  id_board: BoardsUpdateOneWithoutListsInput
+  id_board: BoardUpdateOneWithoutListsInput
 }
 
-input ListsUpdateWithoutId_boardDataInput {
+input ListUpdateWithoutId_boardDataInput {
   created_at: DateTime
   description: String
+  order: Int
   title: String
-  cards: CardsUpdateManyWithoutId_listInput
+  cards: CardUpdateManyWithoutId_listInput
 }
 
-input ListsUpdateWithWhereUniqueWithoutId_boardInput {
-  where: ListsWhereUniqueInput!
-  data: ListsUpdateWithoutId_boardDataInput!
+input ListUpdateWithWhereUniqueWithoutId_boardInput {
+  where: ListWhereUniqueInput!
+  data: ListUpdateWithoutId_boardDataInput!
 }
 
-input ListsUpsertWithoutCardsInput {
-  update: ListsUpdateWithoutCardsDataInput!
-  create: ListsCreateWithoutCardsInput!
+input ListUpsertWithoutCardsInput {
+  update: ListUpdateWithoutCardsDataInput!
+  create: ListCreateWithoutCardsInput!
 }
 
-input ListsUpsertWithWhereUniqueWithoutId_boardInput {
-  where: ListsWhereUniqueInput!
-  update: ListsUpdateWithoutId_boardDataInput!
-  create: ListsCreateWithoutId_boardInput!
+input ListUpsertWithWhereUniqueWithoutId_boardInput {
+  where: ListWhereUniqueInput!
+  update: ListUpdateWithoutId_boardDataInput!
+  create: ListCreateWithoutId_boardInput!
 }
 
-input ListsWhereInput {
+input ListWhereInput {
   """Logical AND on all given filters."""
-  AND: [ListsWhereInput!]
+  AND: [ListWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [ListsWhereInput!]
+  OR: [ListWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [ListsWhereInput!]
+  NOT: [ListWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -2891,6 +2978,28 @@ input ListsWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  order: Int
+
+  """All values that are not equal to given value."""
+  order_not: Int
+
+  """All values that are contained in given list."""
+  order_in: [Int!]
+
+  """All values that are not contained in given list."""
+  order_not_in: [Int!]
+
+  """All values less than the given value."""
+  order_lt: Int
+
+  """All values less than or equal the given value."""
+  order_lte: Int
+
+  """All values greater than the given value."""
+  order_gt: Int
+
+  """All values greater than or equal the given value."""
+  order_gte: Int
   title: String
 
   """All values that are not equal to given value."""
@@ -2931,13 +3040,13 @@ input ListsWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  cards_every: CardsWhereInput
-  cards_some: CardsWhereInput
-  cards_none: CardsWhereInput
-  id_board: BoardsWhereInput
+  cards_every: CardWhereInput
+  cards_some: CardWhereInput
+  cards_none: CardWhereInput
+  id_board: BoardWhereInput
 }
 
-input ListsWhereUniqueInput {
+input ListWhereUniqueInput {
   id: Int
 }
 
@@ -2948,65 +3057,65 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createBoards(data: BoardsCreateInput!): Boards!
-  createCards(data: CardsCreateInput!): Cards!
-  createComments(data: CommentsCreateInput!): Comments!
-  createEvent_admins(data: Event_adminsCreateInput!): Event_admins!
-  createEvents(data: EventsCreateInput!): Events!
-  createExpenses(data: ExpensesCreateInput!): Expenses!
-  createLists(data: ListsCreateInput!): Lists!
-  createReviews(data: ReviewsCreateInput!): Reviews!
-  createRoles(data: RolesCreateInput!): Roles!
-  createUsers(data: UsersCreateInput!): Users!
-  updateBoards(data: BoardsUpdateInput!, where: BoardsWhereUniqueInput!): Boards
-  updateCards(data: CardsUpdateInput!, where: CardsWhereUniqueInput!): Cards
-  updateComments(data: CommentsUpdateInput!, where: CommentsWhereUniqueInput!): Comments
-  updateEvent_admins(data: Event_adminsUpdateInput!, where: Event_adminsWhereUniqueInput!): Event_admins
-  updateEvents(data: EventsUpdateInput!, where: EventsWhereUniqueInput!): Events
-  updateExpenses(data: ExpensesUpdateInput!, where: ExpensesWhereUniqueInput!): Expenses
-  updateLists(data: ListsUpdateInput!, where: ListsWhereUniqueInput!): Lists
-  updateReviews(data: ReviewsUpdateInput!, where: ReviewsWhereUniqueInput!): Reviews
-  updateRoles(data: RolesUpdateInput!, where: RolesWhereUniqueInput!): Roles
-  updateUsers(data: UsersUpdateInput!, where: UsersWhereUniqueInput!): Users
-  deleteBoards(where: BoardsWhereUniqueInput!): Boards
-  deleteCards(where: CardsWhereUniqueInput!): Cards
-  deleteComments(where: CommentsWhereUniqueInput!): Comments
-  deleteEvent_admins(where: Event_adminsWhereUniqueInput!): Event_admins
-  deleteEvents(where: EventsWhereUniqueInput!): Events
-  deleteExpenses(where: ExpensesWhereUniqueInput!): Expenses
-  deleteLists(where: ListsWhereUniqueInput!): Lists
-  deleteReviews(where: ReviewsWhereUniqueInput!): Reviews
-  deleteRoles(where: RolesWhereUniqueInput!): Roles
-  deleteUsers(where: UsersWhereUniqueInput!): Users
-  upsertBoards(where: BoardsWhereUniqueInput!, create: BoardsCreateInput!, update: BoardsUpdateInput!): Boards!
-  upsertCards(where: CardsWhereUniqueInput!, create: CardsCreateInput!, update: CardsUpdateInput!): Cards!
-  upsertComments(where: CommentsWhereUniqueInput!, create: CommentsCreateInput!, update: CommentsUpdateInput!): Comments!
-  upsertEvent_admins(where: Event_adminsWhereUniqueInput!, create: Event_adminsCreateInput!, update: Event_adminsUpdateInput!): Event_admins!
-  upsertEvents(where: EventsWhereUniqueInput!, create: EventsCreateInput!, update: EventsUpdateInput!): Events!
-  upsertExpenses(where: ExpensesWhereUniqueInput!, create: ExpensesCreateInput!, update: ExpensesUpdateInput!): Expenses!
-  upsertLists(where: ListsWhereUniqueInput!, create: ListsCreateInput!, update: ListsUpdateInput!): Lists!
-  upsertReviews(where: ReviewsWhereUniqueInput!, create: ReviewsCreateInput!, update: ReviewsUpdateInput!): Reviews!
-  upsertRoles(where: RolesWhereUniqueInput!, create: RolesCreateInput!, update: RolesUpdateInput!): Roles!
-  upsertUsers(where: UsersWhereUniqueInput!, create: UsersCreateInput!, update: UsersUpdateInput!): Users!
-  updateManyBoardses(data: BoardsUpdateManyMutationInput!, where: BoardsWhereInput): BatchPayload!
-  updateManyCardses(data: CardsUpdateManyMutationInput!, where: CardsWhereInput): BatchPayload!
-  updateManyCommentses(data: CommentsUpdateManyMutationInput!, where: CommentsWhereInput): BatchPayload!
-  updateManyEventses(data: EventsUpdateManyMutationInput!, where: EventsWhereInput): BatchPayload!
-  updateManyExpenseses(data: ExpensesUpdateManyMutationInput!, where: ExpensesWhereInput): BatchPayload!
-  updateManyListses(data: ListsUpdateManyMutationInput!, where: ListsWhereInput): BatchPayload!
-  updateManyReviewses(data: ReviewsUpdateManyMutationInput!, where: ReviewsWhereInput): BatchPayload!
-  updateManyRoleses(data: RolesUpdateManyMutationInput!, where: RolesWhereInput): BatchPayload!
-  updateManyUserses(data: UsersUpdateManyMutationInput!, where: UsersWhereInput): BatchPayload!
-  deleteManyBoardses(where: BoardsWhereInput): BatchPayload!
-  deleteManyCardses(where: CardsWhereInput): BatchPayload!
-  deleteManyCommentses(where: CommentsWhereInput): BatchPayload!
-  deleteManyEvent_adminses(where: Event_adminsWhereInput): BatchPayload!
-  deleteManyEventses(where: EventsWhereInput): BatchPayload!
-  deleteManyExpenseses(where: ExpensesWhereInput): BatchPayload!
-  deleteManyListses(where: ListsWhereInput): BatchPayload!
-  deleteManyReviewses(where: ReviewsWhereInput): BatchPayload!
-  deleteManyRoleses(where: RolesWhereInput): BatchPayload!
-  deleteManyUserses(where: UsersWhereInput): BatchPayload!
+  createBoard(data: BoardCreateInput!): Board!
+  createCard(data: CardCreateInput!): Card!
+  createComment(data: CommentCreateInput!): Comment!
+  createEvent(data: EventCreateInput!): Event!
+  createEvent_admin(data: Event_adminCreateInput!): Event_admin!
+  createExpense(data: ExpenseCreateInput!): Expense!
+  createList(data: ListCreateInput!): List!
+  createReview(data: ReviewCreateInput!): Review!
+  createRole(data: RoleCreateInput!): Role!
+  createUser(data: UserCreateInput!): User!
+  updateBoard(data: BoardUpdateInput!, where: BoardWhereUniqueInput!): Board
+  updateCard(data: CardUpdateInput!, where: CardWhereUniqueInput!): Card
+  updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
+  updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
+  updateEvent_admin(data: Event_adminUpdateInput!, where: Event_adminWhereUniqueInput!): Event_admin
+  updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
+  updateList(data: ListUpdateInput!, where: ListWhereUniqueInput!): List
+  updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
+  updateRole(data: RoleUpdateInput!, where: RoleWhereUniqueInput!): Role
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deleteBoard(where: BoardWhereUniqueInput!): Board
+  deleteCard(where: CardWhereUniqueInput!): Card
+  deleteComment(where: CommentWhereUniqueInput!): Comment
+  deleteEvent(where: EventWhereUniqueInput!): Event
+  deleteEvent_admin(where: Event_adminWhereUniqueInput!): Event_admin
+  deleteExpense(where: ExpenseWhereUniqueInput!): Expense
+  deleteList(where: ListWhereUniqueInput!): List
+  deleteReview(where: ReviewWhereUniqueInput!): Review
+  deleteRole(where: RoleWhereUniqueInput!): Role
+  deleteUser(where: UserWhereUniqueInput!): User
+  upsertBoard(where: BoardWhereUniqueInput!, create: BoardCreateInput!, update: BoardUpdateInput!): Board!
+  upsertCard(where: CardWhereUniqueInput!, create: CardCreateInput!, update: CardUpdateInput!): Card!
+  upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
+  upsertEvent(where: EventWhereUniqueInput!, create: EventCreateInput!, update: EventUpdateInput!): Event!
+  upsertEvent_admin(where: Event_adminWhereUniqueInput!, create: Event_adminCreateInput!, update: Event_adminUpdateInput!): Event_admin!
+  upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
+  upsertList(where: ListWhereUniqueInput!, create: ListCreateInput!, update: ListUpdateInput!): List!
+  upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
+  upsertRole(where: RoleWhereUniqueInput!, create: RoleCreateInput!, update: RoleUpdateInput!): Role!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  updateManyBoards(data: BoardUpdateManyMutationInput!, where: BoardWhereInput): BatchPayload!
+  updateManyCards(data: CardUpdateManyMutationInput!, where: CardWhereInput): BatchPayload!
+  updateManyComments(data: CommentUpdateManyMutationInput!, where: CommentWhereInput): BatchPayload!
+  updateManyEvents(data: EventUpdateManyMutationInput!, where: EventWhereInput): BatchPayload!
+  updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
+  updateManyLists(data: ListUpdateManyMutationInput!, where: ListWhereInput): BatchPayload!
+  updateManyReviews(data: ReviewUpdateManyMutationInput!, where: ReviewWhereInput): BatchPayload!
+  updateManyRoles(data: RoleUpdateManyMutationInput!, where: RoleWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  deleteManyBoards(where: BoardWhereInput): BatchPayload!
+  deleteManyCards(where: CardWhereInput): BatchPayload!
+  deleteManyComments(where: CommentWhereInput): BatchPayload!
+  deleteManyEvents(where: EventWhereInput): BatchPayload!
+  deleteManyEvent_admins(where: Event_adminWhereInput): BatchPayload!
+  deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
+  deleteManyLists(where: ListWhereInput): BatchPayload!
+  deleteManyReviews(where: ReviewWhereInput): BatchPayload!
+  deleteManyRoles(where: RoleWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -3031,99 +3140,99 @@ type PageInfo {
 }
 
 type Query {
-  boardses(where: BoardsWhereInput, orderBy: BoardsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Boards]!
-  cardses(where: CardsWhereInput, orderBy: CardsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Cards]!
-  commentses(where: CommentsWhereInput, orderBy: CommentsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comments]!
-  event_adminses(where: Event_adminsWhereInput, orderBy: Event_adminsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admins]!
-  eventses(where: EventsWhereInput, orderBy: EventsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Events]!
-  expenseses(where: ExpensesWhereInput, orderBy: ExpensesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expenses]!
-  listses(where: ListsWhereInput, orderBy: ListsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Lists]!
-  reviewses(where: ReviewsWhereInput, orderBy: ReviewsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reviews]!
-  roleses(where: RolesWhereInput, orderBy: RolesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Roles]!
-  userses(where: UsersWhereInput, orderBy: UsersOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Users]!
-  boards(where: BoardsWhereUniqueInput!): Boards
-  cards(where: CardsWhereUniqueInput!): Cards
-  comments(where: CommentsWhereUniqueInput!): Comments
-  event_admins(where: Event_adminsWhereUniqueInput!): Event_admins
-  events(where: EventsWhereUniqueInput!): Events
-  expenses(where: ExpensesWhereUniqueInput!): Expenses
-  lists(where: ListsWhereUniqueInput!): Lists
-  reviews(where: ReviewsWhereUniqueInput!): Reviews
-  roles(where: RolesWhereUniqueInput!): Roles
-  users(where: UsersWhereUniqueInput!): Users
-  boardsesConnection(where: BoardsWhereInput, orderBy: BoardsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BoardsConnection!
-  cardsesConnection(where: CardsWhereInput, orderBy: CardsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CardsConnection!
-  commentsesConnection(where: CommentsWhereInput, orderBy: CommentsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentsConnection!
-  event_adminsesConnection(where: Event_adminsWhereInput, orderBy: Event_adminsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): Event_adminsConnection!
-  eventsesConnection(where: EventsWhereInput, orderBy: EventsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventsConnection!
-  expensesesConnection(where: ExpensesWhereInput, orderBy: ExpensesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpensesConnection!
-  listsesConnection(where: ListsWhereInput, orderBy: ListsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ListsConnection!
-  reviewsesConnection(where: ReviewsWhereInput, orderBy: ReviewsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewsConnection!
-  rolesesConnection(where: RolesWhereInput, orderBy: RolesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RolesConnection!
-  usersesConnection(where: UsersWhereInput, orderBy: UsersOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UsersConnection!
+  boards(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Board]!
+  cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card]!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
+  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin]!
+  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
+  lists(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [List]!
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
+  roles(where: RoleWhereInput, orderBy: RoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Role]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  board(where: BoardWhereUniqueInput!): Board
+  card(where: CardWhereUniqueInput!): Card
+  comment(where: CommentWhereUniqueInput!): Comment
+  event(where: EventWhereUniqueInput!): Event
+  event_admin(where: Event_adminWhereUniqueInput!): Event_admin
+  expense(where: ExpenseWhereUniqueInput!): Expense
+  list(where: ListWhereUniqueInput!): List
+  review(where: ReviewWhereUniqueInput!): Review
+  role(where: RoleWhereUniqueInput!): Role
+  user(where: UserWhereUniqueInput!): User
+  boardsConnection(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BoardConnection!
+  cardsConnection(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CardConnection!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
+  event_adminsConnection(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): Event_adminConnection!
+  expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
+  listsConnection(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ListConnection!
+  reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
+  rolesConnection(where: RoleWhereInput, orderBy: RoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RoleConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 }
 
-type Reviews {
+type Review {
   id: Int!
   created_at: DateTime!
   description: String
-  id_events: Events
-  id_user: Users
+  id_events: Event
+  id_user: User
   rating: Int!
 }
 
 """A connection to a list of items."""
-type ReviewsConnection {
+type ReviewConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [ReviewsEdge]!
-  aggregate: AggregateReviews!
+  edges: [ReviewEdge]!
+  aggregate: AggregateReview!
 }
 
-input ReviewsCreateInput {
+input ReviewCreateInput {
   created_at: DateTime!
   description: String
   rating: Int!
-  id_events: EventsCreateOneWithoutReviewsInput
-  id_user: UsersCreateOneWithoutReviewsInput
+  id_events: EventCreateOneWithoutReviewsInput
+  id_user: UserCreateOneWithoutReviewsInput
 }
 
-input ReviewsCreateManyWithoutId_eventsInput {
-  create: [ReviewsCreateWithoutId_eventsInput!]
-  connect: [ReviewsWhereUniqueInput!]
+input ReviewCreateManyWithoutId_eventsInput {
+  create: [ReviewCreateWithoutId_eventsInput!]
+  connect: [ReviewWhereUniqueInput!]
 }
 
-input ReviewsCreateManyWithoutId_userInput {
-  create: [ReviewsCreateWithoutId_userInput!]
-  connect: [ReviewsWhereUniqueInput!]
+input ReviewCreateManyWithoutId_userInput {
+  create: [ReviewCreateWithoutId_userInput!]
+  connect: [ReviewWhereUniqueInput!]
 }
 
-input ReviewsCreateWithoutId_eventsInput {
+input ReviewCreateWithoutId_eventsInput {
   created_at: DateTime!
   description: String
   rating: Int!
-  id_user: UsersCreateOneWithoutReviewsInput
+  id_user: UserCreateOneWithoutReviewsInput
 }
 
-input ReviewsCreateWithoutId_userInput {
+input ReviewCreateWithoutId_userInput {
   created_at: DateTime!
   description: String
   rating: Int!
-  id_events: EventsCreateOneWithoutReviewsInput
+  id_events: EventCreateOneWithoutReviewsInput
 }
 
 """An edge in a connection."""
-type ReviewsEdge {
+type ReviewEdge {
   """The item at the end of the edge."""
-  node: Reviews!
+  node: Review!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum ReviewsOrderByInput {
+enum ReviewOrderByInput {
   id_ASC
   id_DESC
   created_at_ASC
@@ -3134,29 +3243,29 @@ enum ReviewsOrderByInput {
   rating_DESC
 }
 
-type ReviewsPreviousValues {
+type ReviewPreviousValues {
   id: Int!
   created_at: DateTime!
   description: String
   rating: Int!
 }
 
-type ReviewsSubscriptionPayload {
+type ReviewSubscriptionPayload {
   mutation: MutationType!
-  node: Reviews
+  node: Review
   updatedFields: [String!]
-  previousValues: ReviewsPreviousValues
+  previousValues: ReviewPreviousValues
 }
 
-input ReviewsSubscriptionWhereInput {
+input ReviewSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [ReviewsSubscriptionWhereInput!]
+  AND: [ReviewSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [ReviewsSubscriptionWhereInput!]
+  OR: [ReviewSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [ReviewsSubscriptionWhereInput!]
+  NOT: [ReviewSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -3177,86 +3286,86 @@ input ReviewsSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: ReviewsWhereInput
+  node: ReviewWhereInput
 }
 
-input ReviewsUpdateInput {
+input ReviewUpdateInput {
   created_at: DateTime
   description: String
   rating: Int
-  id_events: EventsUpdateOneWithoutReviewsInput
-  id_user: UsersUpdateOneWithoutReviewsInput
+  id_events: EventUpdateOneWithoutReviewsInput
+  id_user: UserUpdateOneWithoutReviewsInput
 }
 
-input ReviewsUpdateManyMutationInput {
+input ReviewUpdateManyMutationInput {
   created_at: DateTime
   description: String
   rating: Int
 }
 
-input ReviewsUpdateManyWithoutId_eventsInput {
-  create: [ReviewsCreateWithoutId_eventsInput!]
-  connect: [ReviewsWhereUniqueInput!]
-  disconnect: [ReviewsWhereUniqueInput!]
-  delete: [ReviewsWhereUniqueInput!]
-  update: [ReviewsUpdateWithWhereUniqueWithoutId_eventsInput!]
-  upsert: [ReviewsUpsertWithWhereUniqueWithoutId_eventsInput!]
+input ReviewUpdateManyWithoutId_eventsInput {
+  create: [ReviewCreateWithoutId_eventsInput!]
+  connect: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  delete: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutId_eventsInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutId_eventsInput!]
 }
 
-input ReviewsUpdateManyWithoutId_userInput {
-  create: [ReviewsCreateWithoutId_userInput!]
-  connect: [ReviewsWhereUniqueInput!]
-  disconnect: [ReviewsWhereUniqueInput!]
-  delete: [ReviewsWhereUniqueInput!]
-  update: [ReviewsUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [ReviewsUpsertWithWhereUniqueWithoutId_userInput!]
+input ReviewUpdateManyWithoutId_userInput {
+  create: [ReviewCreateWithoutId_userInput!]
+  connect: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  delete: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutId_userInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutId_userInput!]
 }
 
-input ReviewsUpdateWithoutId_eventsDataInput {
+input ReviewUpdateWithoutId_eventsDataInput {
   created_at: DateTime
   description: String
   rating: Int
-  id_user: UsersUpdateOneWithoutReviewsInput
+  id_user: UserUpdateOneWithoutReviewsInput
 }
 
-input ReviewsUpdateWithoutId_userDataInput {
+input ReviewUpdateWithoutId_userDataInput {
   created_at: DateTime
   description: String
   rating: Int
-  id_events: EventsUpdateOneWithoutReviewsInput
+  id_events: EventUpdateOneWithoutReviewsInput
 }
 
-input ReviewsUpdateWithWhereUniqueWithoutId_eventsInput {
-  where: ReviewsWhereUniqueInput!
-  data: ReviewsUpdateWithoutId_eventsDataInput!
+input ReviewUpdateWithWhereUniqueWithoutId_eventsInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutId_eventsDataInput!
 }
 
-input ReviewsUpdateWithWhereUniqueWithoutId_userInput {
-  where: ReviewsWhereUniqueInput!
-  data: ReviewsUpdateWithoutId_userDataInput!
+input ReviewUpdateWithWhereUniqueWithoutId_userInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutId_userDataInput!
 }
 
-input ReviewsUpsertWithWhereUniqueWithoutId_eventsInput {
-  where: ReviewsWhereUniqueInput!
-  update: ReviewsUpdateWithoutId_eventsDataInput!
-  create: ReviewsCreateWithoutId_eventsInput!
+input ReviewUpsertWithWhereUniqueWithoutId_eventsInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutId_eventsDataInput!
+  create: ReviewCreateWithoutId_eventsInput!
 }
 
-input ReviewsUpsertWithWhereUniqueWithoutId_userInput {
-  where: ReviewsWhereUniqueInput!
-  update: ReviewsUpdateWithoutId_userDataInput!
-  create: ReviewsCreateWithoutId_userInput!
+input ReviewUpsertWithWhereUniqueWithoutId_userInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutId_userDataInput!
+  create: ReviewCreateWithoutId_userInput!
 }
 
-input ReviewsWhereInput {
+input ReviewWhereInput {
   """Logical AND on all given filters."""
-  AND: [ReviewsWhereInput!]
+  AND: [ReviewWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [ReviewsWhereInput!]
+  OR: [ReviewWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [ReviewsWhereInput!]
+  NOT: [ReviewWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -3363,81 +3472,81 @@ input ReviewsWhereInput {
 
   """All values greater than or equal the given value."""
   rating_gte: Int
-  id_events: EventsWhereInput
-  id_user: UsersWhereInput
+  id_events: EventWhereInput
+  id_user: UserWhereInput
 }
 
-input ReviewsWhereUniqueInput {
+input ReviewWhereUniqueInput {
   id: Int
 }
 
-type Roles {
+type Role {
   id: Int!
-  event_admins(where: Event_adminsWhereInput, orderBy: Event_adminsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admins!]
+  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin!]
   name: String!
 }
 
 """A connection to a list of items."""
-type RolesConnection {
+type RoleConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [RolesEdge]!
-  aggregate: AggregateRoles!
+  edges: [RoleEdge]!
+  aggregate: AggregateRole!
 }
 
-input RolesCreateInput {
+input RoleCreateInput {
   name: String!
-  event_admins: Event_adminsCreateManyWithoutId_roleInput
+  event_admins: Event_adminCreateManyWithoutId_roleInput
 }
 
-input RolesCreateOneWithoutEvent_adminsInput {
-  create: RolesCreateWithoutEvent_adminsInput
-  connect: RolesWhereUniqueInput
+input RoleCreateOneWithoutEvent_adminsInput {
+  create: RoleCreateWithoutEvent_adminsInput
+  connect: RoleWhereUniqueInput
 }
 
-input RolesCreateWithoutEvent_adminsInput {
+input RoleCreateWithoutEvent_adminsInput {
   name: String!
 }
 
 """An edge in a connection."""
-type RolesEdge {
+type RoleEdge {
   """The item at the end of the edge."""
-  node: Roles!
+  node: Role!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum RolesOrderByInput {
+enum RoleOrderByInput {
   id_ASC
   id_DESC
   name_ASC
   name_DESC
 }
 
-type RolesPreviousValues {
+type RolePreviousValues {
   id: Int!
   name: String!
 }
 
-type RolesSubscriptionPayload {
+type RoleSubscriptionPayload {
   mutation: MutationType!
-  node: Roles
+  node: Role
   updatedFields: [String!]
-  previousValues: RolesPreviousValues
+  previousValues: RolePreviousValues
 }
 
-input RolesSubscriptionWhereInput {
+input RoleSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [RolesSubscriptionWhereInput!]
+  AND: [RoleSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [RolesSubscriptionWhereInput!]
+  OR: [RoleSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [RolesSubscriptionWhereInput!]
+  NOT: [RoleSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -3458,45 +3567,45 @@ input RolesSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: RolesWhereInput
+  node: RoleWhereInput
 }
 
-input RolesUpdateInput {
+input RoleUpdateInput {
   name: String
-  event_admins: Event_adminsUpdateManyWithoutId_roleInput
+  event_admins: Event_adminUpdateManyWithoutId_roleInput
 }
 
-input RolesUpdateManyMutationInput {
+input RoleUpdateManyMutationInput {
   name: String
 }
 
-input RolesUpdateOneWithoutEvent_adminsInput {
-  create: RolesCreateWithoutEvent_adminsInput
-  connect: RolesWhereUniqueInput
+input RoleUpdateOneWithoutEvent_adminsInput {
+  create: RoleCreateWithoutEvent_adminsInput
+  connect: RoleWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: RolesUpdateWithoutEvent_adminsDataInput
-  upsert: RolesUpsertWithoutEvent_adminsInput
+  update: RoleUpdateWithoutEvent_adminsDataInput
+  upsert: RoleUpsertWithoutEvent_adminsInput
 }
 
-input RolesUpdateWithoutEvent_adminsDataInput {
+input RoleUpdateWithoutEvent_adminsDataInput {
   name: String
 }
 
-input RolesUpsertWithoutEvent_adminsInput {
-  update: RolesUpdateWithoutEvent_adminsDataInput!
-  create: RolesCreateWithoutEvent_adminsInput!
+input RoleUpsertWithoutEvent_adminsInput {
+  update: RoleUpdateWithoutEvent_adminsDataInput!
+  create: RoleCreateWithoutEvent_adminsInput!
 }
 
-input RolesWhereInput {
+input RoleWhereInput {
   """Logical AND on all given filters."""
-  AND: [RolesWhereInput!]
+  AND: [RoleWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [RolesWhereInput!]
+  OR: [RoleWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [RolesWhereInput!]
+  NOT: [RoleWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -3559,143 +3668,167 @@ input RolesWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
-  event_admins_every: Event_adminsWhereInput
-  event_admins_some: Event_adminsWhereInput
-  event_admins_none: Event_adminsWhereInput
+  event_admins_every: Event_adminWhereInput
+  event_admins_some: Event_adminWhereInput
+  event_admins_none: Event_adminWhereInput
 }
 
-input RolesWhereUniqueInput {
+input RoleWhereUniqueInput {
   id: Int
 }
 
 type Subscription {
-  boards(where: BoardsSubscriptionWhereInput): BoardsSubscriptionPayload
-  cards(where: CardsSubscriptionWhereInput): CardsSubscriptionPayload
-  comments(where: CommentsSubscriptionWhereInput): CommentsSubscriptionPayload
-  event_admins(where: Event_adminsSubscriptionWhereInput): Event_adminsSubscriptionPayload
-  events(where: EventsSubscriptionWhereInput): EventsSubscriptionPayload
-  expenses(where: ExpensesSubscriptionWhereInput): ExpensesSubscriptionPayload
-  lists(where: ListsSubscriptionWhereInput): ListsSubscriptionPayload
-  reviews(where: ReviewsSubscriptionWhereInput): ReviewsSubscriptionPayload
-  roles(where: RolesSubscriptionWhereInput): RolesSubscriptionPayload
-  users(where: UsersSubscriptionWhereInput): UsersSubscriptionPayload
+  board(where: BoardSubscriptionWhereInput): BoardSubscriptionPayload
+  card(where: CardSubscriptionWhereInput): CardSubscriptionPayload
+  comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
+  event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
+  event_admin(where: Event_adminSubscriptionWhereInput): Event_adminSubscriptionPayload
+  expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
+  list(where: ListSubscriptionWhereInput): ListSubscriptionPayload
+  review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
+  role(where: RoleSubscriptionWhereInput): RoleSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
-type Users {
+type User {
   id: Int!
-  cards(where: CardsWhereInput, orderBy: CardsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Cards!]
-  comments(where: CommentsWhereInput, orderBy: CommentsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comments!]
+  cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   email: String!
-  expenses(where: ExpensesWhereInput, orderBy: ExpensesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expenses!]
+  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin!]
+  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense!]
   first_name: String!
   last_name: String!
   password: String!
   phone: Int
-  reviews(where: ReviewsWhereInput, orderBy: ReviewsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reviews!]
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   username: String!
 }
 
 """A connection to a list of items."""
-type UsersConnection {
+type UserConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [UsersEdge]!
-  aggregate: AggregateUsers!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
 }
 
-input UsersCreateInput {
+input UserCreateInput {
   email: String!
   first_name: String!
   last_name: String!
   password: String!
   phone: Int
   username: String!
-  cards: CardsCreateManyWithoutId_userInput
-  comments: CommentsCreateManyWithoutId_userInput
-  expenses: ExpensesCreateManyWithoutId_userInput
-  reviews: ReviewsCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutId_userInput
+  comments: CommentCreateManyWithoutId_userInput
+  event_admins: Event_adminCreateManyWithoutId_userInput
+  expenses: ExpenseCreateManyWithoutId_userInput
+  reviews: ReviewCreateManyWithoutId_userInput
 }
 
-input UsersCreateOneWithoutCardsInput {
-  create: UsersCreateWithoutCardsInput
-  connect: UsersWhereUniqueInput
+input UserCreateOneWithoutCardsInput {
+  create: UserCreateWithoutCardsInput
+  connect: UserWhereUniqueInput
 }
 
-input UsersCreateOneWithoutCommentsInput {
-  create: UsersCreateWithoutCommentsInput
-  connect: UsersWhereUniqueInput
+input UserCreateOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connect: UserWhereUniqueInput
 }
 
-input UsersCreateOneWithoutExpensesInput {
-  create: UsersCreateWithoutExpensesInput
-  connect: UsersWhereUniqueInput
+input UserCreateOneWithoutEvent_adminsInput {
+  create: UserCreateWithoutEvent_adminsInput
+  connect: UserWhereUniqueInput
 }
 
-input UsersCreateOneWithoutReviewsInput {
-  create: UsersCreateWithoutReviewsInput
-  connect: UsersWhereUniqueInput
+input UserCreateOneWithoutExpensesInput {
+  create: UserCreateWithoutExpensesInput
+  connect: UserWhereUniqueInput
 }
 
-input UsersCreateWithoutCardsInput {
+input UserCreateOneWithoutReviewsInput {
+  create: UserCreateWithoutReviewsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCardsInput {
   email: String!
   first_name: String!
   last_name: String!
   password: String!
   phone: Int
   username: String!
-  comments: CommentsCreateManyWithoutId_userInput
-  expenses: ExpensesCreateManyWithoutId_userInput
-  reviews: ReviewsCreateManyWithoutId_userInput
+  comments: CommentCreateManyWithoutId_userInput
+  event_admins: Event_adminCreateManyWithoutId_userInput
+  expenses: ExpenseCreateManyWithoutId_userInput
+  reviews: ReviewCreateManyWithoutId_userInput
 }
 
-input UsersCreateWithoutCommentsInput {
+input UserCreateWithoutCommentsInput {
   email: String!
   first_name: String!
   last_name: String!
   password: String!
   phone: Int
   username: String!
-  cards: CardsCreateManyWithoutId_userInput
-  expenses: ExpensesCreateManyWithoutId_userInput
-  reviews: ReviewsCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutId_userInput
+  event_admins: Event_adminCreateManyWithoutId_userInput
+  expenses: ExpenseCreateManyWithoutId_userInput
+  reviews: ReviewCreateManyWithoutId_userInput
 }
 
-input UsersCreateWithoutExpensesInput {
+input UserCreateWithoutEvent_adminsInput {
   email: String!
   first_name: String!
   last_name: String!
   password: String!
   phone: Int
   username: String!
-  cards: CardsCreateManyWithoutId_userInput
-  comments: CommentsCreateManyWithoutId_userInput
-  reviews: ReviewsCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutId_userInput
+  comments: CommentCreateManyWithoutId_userInput
+  expenses: ExpenseCreateManyWithoutId_userInput
+  reviews: ReviewCreateManyWithoutId_userInput
 }
 
-input UsersCreateWithoutReviewsInput {
+input UserCreateWithoutExpensesInput {
   email: String!
   first_name: String!
   last_name: String!
   password: String!
   phone: Int
   username: String!
-  cards: CardsCreateManyWithoutId_userInput
-  comments: CommentsCreateManyWithoutId_userInput
-  expenses: ExpensesCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutId_userInput
+  comments: CommentCreateManyWithoutId_userInput
+  event_admins: Event_adminCreateManyWithoutId_userInput
+  reviews: ReviewCreateManyWithoutId_userInput
+}
+
+input UserCreateWithoutReviewsInput {
+  email: String!
+  first_name: String!
+  last_name: String!
+  password: String!
+  phone: Int
+  username: String!
+  cards: CardCreateManyWithoutId_userInput
+  comments: CommentCreateManyWithoutId_userInput
+  event_admins: Event_adminCreateManyWithoutId_userInput
+  expenses: ExpenseCreateManyWithoutId_userInput
 }
 
 """An edge in a connection."""
-type UsersEdge {
+type UserEdge {
   """The item at the end of the edge."""
-  node: Users!
+  node: User!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum UsersOrderByInput {
+enum UserOrderByInput {
   id_ASC
   id_DESC
   email_ASC
@@ -3712,7 +3845,7 @@ enum UsersOrderByInput {
   username_DESC
 }
 
-type UsersPreviousValues {
+type UserPreviousValues {
   id: Int!
   email: String!
   first_name: String!
@@ -3722,22 +3855,22 @@ type UsersPreviousValues {
   username: String!
 }
 
-type UsersSubscriptionPayload {
+type UserSubscriptionPayload {
   mutation: MutationType!
-  node: Users
+  node: User
   updatedFields: [String!]
-  previousValues: UsersPreviousValues
+  previousValues: UserPreviousValues
 }
 
-input UsersSubscriptionWhereInput {
+input UserSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [UsersSubscriptionWhereInput!]
+  AND: [UserSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [UsersSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [UsersSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -3758,23 +3891,24 @@ input UsersSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: UsersWhereInput
+  node: UserWhereInput
 }
 
-input UsersUpdateInput {
+input UserUpdateInput {
   email: String
   first_name: String
   last_name: String
   password: String
   phone: Int
   username: String
-  cards: CardsUpdateManyWithoutId_userInput
-  comments: CommentsUpdateManyWithoutId_userInput
-  expenses: ExpensesUpdateManyWithoutId_userInput
-  reviews: ReviewsUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutId_userInput
+  comments: CommentUpdateManyWithoutId_userInput
+  event_admins: Event_adminUpdateManyWithoutId_userInput
+  expenses: ExpenseUpdateManyWithoutId_userInput
+  reviews: ReviewUpdateManyWithoutId_userInput
 }
 
-input UsersUpdateManyMutationInput {
+input UserUpdateManyMutationInput {
   email: String
   first_name: String
   last_name: String
@@ -3783,119 +3917,150 @@ input UsersUpdateManyMutationInput {
   username: String
 }
 
-input UsersUpdateOneWithoutCardsInput {
-  create: UsersCreateWithoutCardsInput
-  connect: UsersWhereUniqueInput
+input UserUpdateOneWithoutCardsInput {
+  create: UserCreateWithoutCardsInput
+  connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UsersUpdateWithoutCardsDataInput
-  upsert: UsersUpsertWithoutCardsInput
+  update: UserUpdateWithoutCardsDataInput
+  upsert: UserUpsertWithoutCardsInput
 }
 
-input UsersUpdateOneWithoutCommentsInput {
-  create: UsersCreateWithoutCommentsInput
-  connect: UsersWhereUniqueInput
+input UserUpdateOneWithoutCommentsInput {
+  create: UserCreateWithoutCommentsInput
+  connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UsersUpdateWithoutCommentsDataInput
-  upsert: UsersUpsertWithoutCommentsInput
+  update: UserUpdateWithoutCommentsDataInput
+  upsert: UserUpsertWithoutCommentsInput
 }
 
-input UsersUpdateOneWithoutExpensesInput {
-  create: UsersCreateWithoutExpensesInput
-  connect: UsersWhereUniqueInput
+input UserUpdateOneWithoutEvent_adminsInput {
+  create: UserCreateWithoutEvent_adminsInput
+  connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UsersUpdateWithoutExpensesDataInput
-  upsert: UsersUpsertWithoutExpensesInput
+  update: UserUpdateWithoutEvent_adminsDataInput
+  upsert: UserUpsertWithoutEvent_adminsInput
 }
 
-input UsersUpdateOneWithoutReviewsInput {
-  create: UsersCreateWithoutReviewsInput
-  connect: UsersWhereUniqueInput
+input UserUpdateOneWithoutExpensesInput {
+  create: UserCreateWithoutExpensesInput
+  connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UsersUpdateWithoutReviewsDataInput
-  upsert: UsersUpsertWithoutReviewsInput
+  update: UserUpdateWithoutExpensesDataInput
+  upsert: UserUpsertWithoutExpensesInput
 }
 
-input UsersUpdateWithoutCardsDataInput {
+input UserUpdateOneWithoutReviewsInput {
+  create: UserCreateWithoutReviewsInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutReviewsDataInput
+  upsert: UserUpsertWithoutReviewsInput
+}
+
+input UserUpdateWithoutCardsDataInput {
   email: String
   first_name: String
   last_name: String
   password: String
   phone: Int
   username: String
-  comments: CommentsUpdateManyWithoutId_userInput
-  expenses: ExpensesUpdateManyWithoutId_userInput
-  reviews: ReviewsUpdateManyWithoutId_userInput
+  comments: CommentUpdateManyWithoutId_userInput
+  event_admins: Event_adminUpdateManyWithoutId_userInput
+  expenses: ExpenseUpdateManyWithoutId_userInput
+  reviews: ReviewUpdateManyWithoutId_userInput
 }
 
-input UsersUpdateWithoutCommentsDataInput {
+input UserUpdateWithoutCommentsDataInput {
   email: String
   first_name: String
   last_name: String
   password: String
   phone: Int
   username: String
-  cards: CardsUpdateManyWithoutId_userInput
-  expenses: ExpensesUpdateManyWithoutId_userInput
-  reviews: ReviewsUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutId_userInput
+  event_admins: Event_adminUpdateManyWithoutId_userInput
+  expenses: ExpenseUpdateManyWithoutId_userInput
+  reviews: ReviewUpdateManyWithoutId_userInput
 }
 
-input UsersUpdateWithoutExpensesDataInput {
+input UserUpdateWithoutEvent_adminsDataInput {
   email: String
   first_name: String
   last_name: String
   password: String
   phone: Int
   username: String
-  cards: CardsUpdateManyWithoutId_userInput
-  comments: CommentsUpdateManyWithoutId_userInput
-  reviews: ReviewsUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutId_userInput
+  comments: CommentUpdateManyWithoutId_userInput
+  expenses: ExpenseUpdateManyWithoutId_userInput
+  reviews: ReviewUpdateManyWithoutId_userInput
 }
 
-input UsersUpdateWithoutReviewsDataInput {
+input UserUpdateWithoutExpensesDataInput {
   email: String
   first_name: String
   last_name: String
   password: String
   phone: Int
   username: String
-  cards: CardsUpdateManyWithoutId_userInput
-  comments: CommentsUpdateManyWithoutId_userInput
-  expenses: ExpensesUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutId_userInput
+  comments: CommentUpdateManyWithoutId_userInput
+  event_admins: Event_adminUpdateManyWithoutId_userInput
+  reviews: ReviewUpdateManyWithoutId_userInput
 }
 
-input UsersUpsertWithoutCardsInput {
-  update: UsersUpdateWithoutCardsDataInput!
-  create: UsersCreateWithoutCardsInput!
+input UserUpdateWithoutReviewsDataInput {
+  email: String
+  first_name: String
+  last_name: String
+  password: String
+  phone: Int
+  username: String
+  cards: CardUpdateManyWithoutId_userInput
+  comments: CommentUpdateManyWithoutId_userInput
+  event_admins: Event_adminUpdateManyWithoutId_userInput
+  expenses: ExpenseUpdateManyWithoutId_userInput
 }
 
-input UsersUpsertWithoutCommentsInput {
-  update: UsersUpdateWithoutCommentsDataInput!
-  create: UsersCreateWithoutCommentsInput!
+input UserUpsertWithoutCardsInput {
+  update: UserUpdateWithoutCardsDataInput!
+  create: UserCreateWithoutCardsInput!
 }
 
-input UsersUpsertWithoutExpensesInput {
-  update: UsersUpdateWithoutExpensesDataInput!
-  create: UsersCreateWithoutExpensesInput!
+input UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput!
+  create: UserCreateWithoutCommentsInput!
 }
 
-input UsersUpsertWithoutReviewsInput {
-  update: UsersUpdateWithoutReviewsDataInput!
-  create: UsersCreateWithoutReviewsInput!
+input UserUpsertWithoutEvent_adminsInput {
+  update: UserUpdateWithoutEvent_adminsDataInput!
+  create: UserCreateWithoutEvent_adminsInput!
 }
 
-input UsersWhereInput {
+input UserUpsertWithoutExpensesInput {
+  update: UserUpdateWithoutExpensesDataInput!
+  create: UserCreateWithoutExpensesInput!
+}
+
+input UserUpsertWithoutReviewsInput {
+  update: UserUpdateWithoutReviewsDataInput!
+  create: UserCreateWithoutReviewsInput!
+}
+
+input UserWhereInput {
   """Logical AND on all given filters."""
-  AND: [UsersWhereInput!]
+  AND: [UserWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [UsersWhereInput!]
+  OR: [UserWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [UsersWhereInput!]
+  NOT: [UserWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -4140,21 +4305,24 @@ input UsersWhereInput {
 
   """All values not ending with the given string."""
   username_not_ends_with: String
-  cards_every: CardsWhereInput
-  cards_some: CardsWhereInput
-  cards_none: CardsWhereInput
-  comments_every: CommentsWhereInput
-  comments_some: CommentsWhereInput
-  comments_none: CommentsWhereInput
-  expenses_every: ExpensesWhereInput
-  expenses_some: ExpensesWhereInput
-  expenses_none: ExpensesWhereInput
-  reviews_every: ReviewsWhereInput
-  reviews_some: ReviewsWhereInput
-  reviews_none: ReviewsWhereInput
+  cards_every: CardWhereInput
+  cards_some: CardWhereInput
+  cards_none: CardWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
+  event_admins_every: Event_adminWhereInput
+  event_admins_some: Event_adminWhereInput
+  event_admins_none: Event_adminWhereInput
+  expenses_every: ExpenseWhereInput
+  expenses_some: ExpenseWhereInput
+  expenses_none: ExpenseWhereInput
+  reviews_every: ReviewWhereInput
+  reviews_some: ReviewWhereInput
+  reviews_none: ReviewWhereInput
 }
 
-input UsersWhereUniqueInput {
+input UserWhereUniqueInput {
   id: Int
   email: String
   username: String
