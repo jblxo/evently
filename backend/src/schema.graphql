@@ -8,15 +8,14 @@ type Mutation {
     city: String!
     country: String!
     description: String
-    entrance_tax: Int
-    event_creation: DateTime!
-    event_date: DateTime!
-    image_large: String
-    image_small: String
+    entranceTax: Int
+    eventDate: DateTime!
+    imageLarge: String
+    imageSmall: String
     state: String!
     title: String!
     zip: String!
-    boards: BoardCreateManyWithoutId_eventInput
+    boards: BoardCreateManyWithoutEventInput
   ): Event!
 }
 

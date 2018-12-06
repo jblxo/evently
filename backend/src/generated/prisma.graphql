@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Wed Nov 28 2018 10:56:49 GMT+0100 (GMT+01:00)
+# timestamp: Thu Dec 06 2018 18:41:45 GMT+0100 (GMT+01:00)
 
 type AggregateBoard {
   count: Int!
@@ -17,7 +17,7 @@ type AggregateEvent {
   count: Int!
 }
 
-type AggregateEvent_admin {
+type AggregateEventAdmin {
   count: Int!
 }
 
@@ -29,11 +29,11 @@ type AggregateList {
   count: Int!
 }
 
-type AggregateReview {
+type AggregatePermission {
   count: Int!
 }
 
-type AggregateRole {
+type AggregateReview {
   count: Int!
 }
 
@@ -49,7 +49,7 @@ type BatchPayload {
 type Board {
   id: Int!
   description: String
-  id_event: Event
+  event: Event
   lists(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [List!]
   title: String!
 }
@@ -67,12 +67,12 @@ type BoardConnection {
 input BoardCreateInput {
   description: String
   title: String!
-  id_event: EventCreateOneWithoutBoardsInput
-  lists: ListCreateManyWithoutId_boardInput
+  event: EventCreateOneWithoutBoardsInput
+  lists: ListCreateManyWithoutBoardInput
 }
 
-input BoardCreateManyWithoutId_eventInput {
-  create: [BoardCreateWithoutId_eventInput!]
+input BoardCreateManyWithoutEventInput {
+  create: [BoardCreateWithoutEventInput!]
   connect: [BoardWhereUniqueInput!]
 }
 
@@ -81,16 +81,16 @@ input BoardCreateOneWithoutListsInput {
   connect: BoardWhereUniqueInput
 }
 
-input BoardCreateWithoutId_eventInput {
+input BoardCreateWithoutEventInput {
   description: String
   title: String!
-  lists: ListCreateManyWithoutId_boardInput
+  lists: ListCreateManyWithoutBoardInput
 }
 
 input BoardCreateWithoutListsInput {
   description: String
   title: String!
-  id_event: EventCreateOneWithoutBoardsInput
+  event: EventCreateOneWithoutBoardsInput
 }
 
 """An edge in a connection."""
@@ -159,8 +159,8 @@ input BoardSubscriptionWhereInput {
 input BoardUpdateInput {
   description: String
   title: String
-  id_event: EventUpdateOneWithoutBoardsInput
-  lists: ListUpdateManyWithoutId_boardInput
+  event: EventUpdateOneWithoutBoardsInput
+  lists: ListUpdateManyWithoutBoardInput
 }
 
 input BoardUpdateManyMutationInput {
@@ -168,13 +168,13 @@ input BoardUpdateManyMutationInput {
   title: String
 }
 
-input BoardUpdateManyWithoutId_eventInput {
-  create: [BoardCreateWithoutId_eventInput!]
+input BoardUpdateManyWithoutEventInput {
+  create: [BoardCreateWithoutEventInput!]
   connect: [BoardWhereUniqueInput!]
   disconnect: [BoardWhereUniqueInput!]
   delete: [BoardWhereUniqueInput!]
-  update: [BoardUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [BoardUpsertWithWhereUniqueWithoutId_eventInput!]
+  update: [BoardUpdateWithWhereUniqueWithoutEventInput!]
+  upsert: [BoardUpsertWithWhereUniqueWithoutEventInput!]
 }
 
 input BoardUpdateOneWithoutListsInput {
@@ -186,21 +186,21 @@ input BoardUpdateOneWithoutListsInput {
   upsert: BoardUpsertWithoutListsInput
 }
 
-input BoardUpdateWithoutId_eventDataInput {
+input BoardUpdateWithoutEventDataInput {
   description: String
   title: String
-  lists: ListUpdateManyWithoutId_boardInput
+  lists: ListUpdateManyWithoutBoardInput
 }
 
 input BoardUpdateWithoutListsDataInput {
   description: String
   title: String
-  id_event: EventUpdateOneWithoutBoardsInput
+  event: EventUpdateOneWithoutBoardsInput
 }
 
-input BoardUpdateWithWhereUniqueWithoutId_eventInput {
+input BoardUpdateWithWhereUniqueWithoutEventInput {
   where: BoardWhereUniqueInput!
-  data: BoardUpdateWithoutId_eventDataInput!
+  data: BoardUpdateWithoutEventDataInput!
 }
 
 input BoardUpsertWithoutListsInput {
@@ -208,10 +208,10 @@ input BoardUpsertWithoutListsInput {
   create: BoardCreateWithoutListsInput!
 }
 
-input BoardUpsertWithWhereUniqueWithoutId_eventInput {
+input BoardUpsertWithWhereUniqueWithoutEventInput {
   where: BoardWhereUniqueInput!
-  update: BoardUpdateWithoutId_eventDataInput!
-  create: BoardCreateWithoutId_eventInput!
+  update: BoardUpdateWithoutEventDataInput!
+  create: BoardCreateWithoutEventInput!
 }
 
 input BoardWhereInput {
@@ -325,7 +325,7 @@ input BoardWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  id_event: EventWhereInput
+  event: EventWhereInput
   lists_every: ListWhereInput
   lists_some: ListWhereInput
   lists_none: ListWhereInput
@@ -337,12 +337,12 @@ input BoardWhereUniqueInput {
 
 type Card {
   id: Int!
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
-  id_list: List
-  id_user: User
+  list: List
   order: Int!
   title: String!
+  user: User
 }
 
 """A connection to a list of items."""
@@ -356,38 +356,35 @@ type CardConnection {
 }
 
 input CardCreateInput {
-  created_at: DateTime!
   description: String
   order: Int!
   title: String!
-  id_list: ListCreateOneWithoutCardsInput
-  id_user: UserCreateOneWithoutCardsInput
+  list: ListCreateOneWithoutCardsInput
+  user: UserCreateOneWithoutCardsInput
 }
 
-input CardCreateManyWithoutId_listInput {
-  create: [CardCreateWithoutId_listInput!]
+input CardCreateManyWithoutListInput {
+  create: [CardCreateWithoutListInput!]
   connect: [CardWhereUniqueInput!]
 }
 
-input CardCreateManyWithoutId_userInput {
-  create: [CardCreateWithoutId_userInput!]
+input CardCreateManyWithoutUserInput {
+  create: [CardCreateWithoutUserInput!]
   connect: [CardWhereUniqueInput!]
 }
 
-input CardCreateWithoutId_listInput {
-  created_at: DateTime!
+input CardCreateWithoutListInput {
   description: String
   order: Int!
   title: String!
-  id_user: UserCreateOneWithoutCardsInput
+  user: UserCreateOneWithoutCardsInput
 }
 
-input CardCreateWithoutId_userInput {
-  created_at: DateTime!
+input CardCreateWithoutUserInput {
   description: String
   order: Int!
   title: String!
-  id_list: ListCreateOneWithoutCardsInput
+  list: ListCreateOneWithoutCardsInput
 }
 
 """An edge in a connection."""
@@ -402,8 +399,8 @@ type CardEdge {
 enum CardOrderByInput {
   id_ASC
   id_DESC
-  created_at_ASC
-  created_at_DESC
+  createdAt_ASC
+  createdAt_DESC
   description_ASC
   description_DESC
   order_ASC
@@ -414,7 +411,7 @@ enum CardOrderByInput {
 
 type CardPreviousValues {
   id: Int!
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
   order: Int!
   title: String!
@@ -460,75 +457,71 @@ input CardSubscriptionWhereInput {
 }
 
 input CardUpdateInput {
-  created_at: DateTime
   description: String
   order: Int
   title: String
-  id_list: ListUpdateOneWithoutCardsInput
-  id_user: UserUpdateOneWithoutCardsInput
+  list: ListUpdateOneWithoutCardsInput
+  user: UserUpdateOneWithoutCardsInput
 }
 
 input CardUpdateManyMutationInput {
-  created_at: DateTime
   description: String
   order: Int
   title: String
 }
 
-input CardUpdateManyWithoutId_listInput {
-  create: [CardCreateWithoutId_listInput!]
+input CardUpdateManyWithoutListInput {
+  create: [CardCreateWithoutListInput!]
   connect: [CardWhereUniqueInput!]
   disconnect: [CardWhereUniqueInput!]
   delete: [CardWhereUniqueInput!]
-  update: [CardUpdateWithWhereUniqueWithoutId_listInput!]
-  upsert: [CardUpsertWithWhereUniqueWithoutId_listInput!]
+  update: [CardUpdateWithWhereUniqueWithoutListInput!]
+  upsert: [CardUpsertWithWhereUniqueWithoutListInput!]
 }
 
-input CardUpdateManyWithoutId_userInput {
-  create: [CardCreateWithoutId_userInput!]
+input CardUpdateManyWithoutUserInput {
+  create: [CardCreateWithoutUserInput!]
   connect: [CardWhereUniqueInput!]
   disconnect: [CardWhereUniqueInput!]
   delete: [CardWhereUniqueInput!]
-  update: [CardUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [CardUpsertWithWhereUniqueWithoutId_userInput!]
+  update: [CardUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [CardUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input CardUpdateWithoutId_listDataInput {
-  created_at: DateTime
+input CardUpdateWithoutListDataInput {
   description: String
   order: Int
   title: String
-  id_user: UserUpdateOneWithoutCardsInput
+  user: UserUpdateOneWithoutCardsInput
 }
 
-input CardUpdateWithoutId_userDataInput {
-  created_at: DateTime
+input CardUpdateWithoutUserDataInput {
   description: String
   order: Int
   title: String
-  id_list: ListUpdateOneWithoutCardsInput
+  list: ListUpdateOneWithoutCardsInput
 }
 
-input CardUpdateWithWhereUniqueWithoutId_listInput {
+input CardUpdateWithWhereUniqueWithoutListInput {
   where: CardWhereUniqueInput!
-  data: CardUpdateWithoutId_listDataInput!
+  data: CardUpdateWithoutListDataInput!
 }
 
-input CardUpdateWithWhereUniqueWithoutId_userInput {
+input CardUpdateWithWhereUniqueWithoutUserInput {
   where: CardWhereUniqueInput!
-  data: CardUpdateWithoutId_userDataInput!
+  data: CardUpdateWithoutUserDataInput!
 }
 
-input CardUpsertWithWhereUniqueWithoutId_listInput {
+input CardUpsertWithWhereUniqueWithoutListInput {
   where: CardWhereUniqueInput!
-  update: CardUpdateWithoutId_listDataInput!
-  create: CardCreateWithoutId_listInput!
+  update: CardUpdateWithoutListDataInput!
+  create: CardCreateWithoutListInput!
 }
 
-input CardUpsertWithWhereUniqueWithoutId_userInput {
+input CardUpsertWithWhereUniqueWithoutUserInput {
   where: CardWhereUniqueInput!
-  update: CardUpdateWithoutId_userDataInput!
-  create: CardCreateWithoutId_userInput!
+  update: CardUpdateWithoutUserDataInput!
+  create: CardCreateWithoutUserInput!
 }
 
 input CardWhereInput {
@@ -562,28 +555,28 @@ input CardWhereInput {
 
   """All values greater than or equal the given value."""
   id_gte: Int
-  created_at: DateTime
+  createdAt: DateTime
 
   """All values that are not equal to given value."""
-  created_at_not: DateTime
+  createdAt_not: DateTime
 
   """All values that are contained in given list."""
-  created_at_in: [DateTime!]
+  createdAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  created_at_not_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  created_at_lt: DateTime
+  createdAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  created_at_lte: DateTime
+  createdAt_lte: DateTime
 
   """All values greater than the given value."""
-  created_at_gt: DateTime
+  createdAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  created_at_gte: DateTime
+  createdAt_gte: DateTime
   description: String
 
   """All values that are not equal to given value."""
@@ -686,8 +679,8 @@ input CardWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  id_list: ListWhereInput
-  id_user: UserWhereInput
+  list: ListWhereInput
+  user: UserWhereInput
 }
 
 input CardWhereUniqueInput {
@@ -697,9 +690,9 @@ input CardWhereUniqueInput {
 type Comment {
   id: Int!
   content: String!
-  created_at: DateTime!
-  id_event: Event
-  id_user: User
+  createdAt: DateTime!
+  event: Event
+  user: User
 }
 
 """A connection to a list of items."""
@@ -714,31 +707,28 @@ type CommentConnection {
 
 input CommentCreateInput {
   content: String!
-  created_at: DateTime!
-  id_event: EventCreateOneWithoutCommentsInput
-  id_user: UserCreateOneWithoutCommentsInput
+  event: EventCreateOneWithoutCommentsInput
+  user: UserCreateOneWithoutCommentsInput
 }
 
-input CommentCreateManyWithoutId_eventInput {
-  create: [CommentCreateWithoutId_eventInput!]
+input CommentCreateManyWithoutEventInput {
+  create: [CommentCreateWithoutEventInput!]
   connect: [CommentWhereUniqueInput!]
 }
 
-input CommentCreateManyWithoutId_userInput {
-  create: [CommentCreateWithoutId_userInput!]
+input CommentCreateManyWithoutUserInput {
+  create: [CommentCreateWithoutUserInput!]
   connect: [CommentWhereUniqueInput!]
 }
 
-input CommentCreateWithoutId_eventInput {
+input CommentCreateWithoutEventInput {
   content: String!
-  created_at: DateTime!
-  id_user: UserCreateOneWithoutCommentsInput
+  user: UserCreateOneWithoutCommentsInput
 }
 
-input CommentCreateWithoutId_userInput {
+input CommentCreateWithoutUserInput {
   content: String!
-  created_at: DateTime!
-  id_event: EventCreateOneWithoutCommentsInput
+  event: EventCreateOneWithoutCommentsInput
 }
 
 """An edge in a connection."""
@@ -755,14 +745,14 @@ enum CommentOrderByInput {
   id_DESC
   content_ASC
   content_DESC
-  created_at_ASC
-  created_at_DESC
+  createdAt_ASC
+  createdAt_DESC
 }
 
 type CommentPreviousValues {
   id: Int!
   content: String!
-  created_at: DateTime!
+  createdAt: DateTime!
 }
 
 type CommentSubscriptionPayload {
@@ -806,66 +796,62 @@ input CommentSubscriptionWhereInput {
 
 input CommentUpdateInput {
   content: String
-  created_at: DateTime
-  id_event: EventUpdateOneWithoutCommentsInput
-  id_user: UserUpdateOneWithoutCommentsInput
+  event: EventUpdateOneWithoutCommentsInput
+  user: UserUpdateOneWithoutCommentsInput
 }
 
 input CommentUpdateManyMutationInput {
   content: String
-  created_at: DateTime
 }
 
-input CommentUpdateManyWithoutId_eventInput {
-  create: [CommentCreateWithoutId_eventInput!]
+input CommentUpdateManyWithoutEventInput {
+  create: [CommentCreateWithoutEventInput!]
   connect: [CommentWhereUniqueInput!]
   disconnect: [CommentWhereUniqueInput!]
   delete: [CommentWhereUniqueInput!]
-  update: [CommentUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [CommentUpsertWithWhereUniqueWithoutId_eventInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutEventInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutEventInput!]
 }
 
-input CommentUpdateManyWithoutId_userInput {
-  create: [CommentCreateWithoutId_userInput!]
+input CommentUpdateManyWithoutUserInput {
+  create: [CommentCreateWithoutUserInput!]
   connect: [CommentWhereUniqueInput!]
   disconnect: [CommentWhereUniqueInput!]
   delete: [CommentWhereUniqueInput!]
-  update: [CommentUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [CommentUpsertWithWhereUniqueWithoutId_userInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input CommentUpdateWithoutId_eventDataInput {
+input CommentUpdateWithoutEventDataInput {
   content: String
-  created_at: DateTime
-  id_user: UserUpdateOneWithoutCommentsInput
+  user: UserUpdateOneWithoutCommentsInput
 }
 
-input CommentUpdateWithoutId_userDataInput {
+input CommentUpdateWithoutUserDataInput {
   content: String
-  created_at: DateTime
-  id_event: EventUpdateOneWithoutCommentsInput
+  event: EventUpdateOneWithoutCommentsInput
 }
 
-input CommentUpdateWithWhereUniqueWithoutId_eventInput {
+input CommentUpdateWithWhereUniqueWithoutEventInput {
   where: CommentWhereUniqueInput!
-  data: CommentUpdateWithoutId_eventDataInput!
+  data: CommentUpdateWithoutEventDataInput!
 }
 
-input CommentUpdateWithWhereUniqueWithoutId_userInput {
+input CommentUpdateWithWhereUniqueWithoutUserInput {
   where: CommentWhereUniqueInput!
-  data: CommentUpdateWithoutId_userDataInput!
+  data: CommentUpdateWithoutUserDataInput!
 }
 
-input CommentUpsertWithWhereUniqueWithoutId_eventInput {
+input CommentUpsertWithWhereUniqueWithoutEventInput {
   where: CommentWhereUniqueInput!
-  update: CommentUpdateWithoutId_eventDataInput!
-  create: CommentCreateWithoutId_eventInput!
+  update: CommentUpdateWithoutEventDataInput!
+  create: CommentCreateWithoutEventInput!
 }
 
-input CommentUpsertWithWhereUniqueWithoutId_userInput {
+input CommentUpsertWithWhereUniqueWithoutUserInput {
   where: CommentWhereUniqueInput!
-  update: CommentUpdateWithoutId_userDataInput!
-  create: CommentCreateWithoutId_userInput!
+  update: CommentUpdateWithoutUserDataInput!
+  create: CommentCreateWithoutUserInput!
 }
 
 input CommentWhereInput {
@@ -939,30 +925,30 @@ input CommentWhereInput {
 
   """All values not ending with the given string."""
   content_not_ends_with: String
-  created_at: DateTime
+  createdAt: DateTime
 
   """All values that are not equal to given value."""
-  created_at_not: DateTime
+  createdAt_not: DateTime
 
   """All values that are contained in given list."""
-  created_at_in: [DateTime!]
+  createdAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  created_at_not_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  created_at_lt: DateTime
+  createdAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  created_at_lte: DateTime
+  createdAt_lte: DateTime
 
   """All values greater than the given value."""
-  created_at_gt: DateTime
+  createdAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  created_at_gte: DateTime
-  id_event: EventWhereInput
-  id_user: UserWhereInput
+  createdAt_gte: DateTime
+  event: EventWhereInput
+  user: UserWhereInput
 }
 
 input CommentWhereUniqueInput {
@@ -980,107 +966,107 @@ type Event {
   city: String!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   country: String!
+  createdAt: DateTime!
   description: String
-  entrance_tax: Int
-  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin!]
-  event_creation: DateTime!
-  event_date: DateTime!
+  entranceTax: Int
+  eventAdmins(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EventAdmin!]
+  eventDate: DateTime!
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense!]
-  image_large: String
-  image_small: String
+  imageLarge: String
+  imageSmall: String
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   state: String!
   title: String!
   zip: String!
 }
 
-type Event_admin {
+type EventAdmin {
   id: Int!
-  id_event: Event
-  id_role: Role
-  id_user: User
+  event: Event
+  permission: Permission
+  user: User
 }
 
 """A connection to a list of items."""
-type Event_adminConnection {
+type EventAdminConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [Event_adminEdge]!
-  aggregate: AggregateEvent_admin!
+  edges: [EventAdminEdge]!
+  aggregate: AggregateEventAdmin!
 }
 
-input Event_adminCreateInput {
-  id_event: EventCreateOneWithoutEvent_adminsInput
-  id_role: RoleCreateOneWithoutEvent_adminsInput
-  id_user: UserCreateOneWithoutEvent_adminsInput
+input EventAdminCreateInput {
+  event: EventCreateOneWithoutEventAdminsInput
+  permission: PermissionCreateOneWithoutEventAdminsInput
+  user: UserCreateOneWithoutEventAdminsInput
 }
 
-input Event_adminCreateManyWithoutId_eventInput {
-  create: [Event_adminCreateWithoutId_eventInput!]
-  connect: [Event_adminWhereUniqueInput!]
+input EventAdminCreateManyWithoutEventInput {
+  create: [EventAdminCreateWithoutEventInput!]
+  connect: [EventAdminWhereUniqueInput!]
 }
 
-input Event_adminCreateManyWithoutId_roleInput {
-  create: [Event_adminCreateWithoutId_roleInput!]
-  connect: [Event_adminWhereUniqueInput!]
+input EventAdminCreateManyWithoutPermissionInput {
+  create: [EventAdminCreateWithoutPermissionInput!]
+  connect: [EventAdminWhereUniqueInput!]
 }
 
-input Event_adminCreateManyWithoutId_userInput {
-  create: [Event_adminCreateWithoutId_userInput!]
-  connect: [Event_adminWhereUniqueInput!]
+input EventAdminCreateManyWithoutUserInput {
+  create: [EventAdminCreateWithoutUserInput!]
+  connect: [EventAdminWhereUniqueInput!]
 }
 
-input Event_adminCreateWithoutId_eventInput {
-  id_role: RoleCreateOneWithoutEvent_adminsInput
-  id_user: UserCreateOneWithoutEvent_adminsInput
+input EventAdminCreateWithoutEventInput {
+  permission: PermissionCreateOneWithoutEventAdminsInput
+  user: UserCreateOneWithoutEventAdminsInput
 }
 
-input Event_adminCreateWithoutId_roleInput {
-  id_event: EventCreateOneWithoutEvent_adminsInput
-  id_user: UserCreateOneWithoutEvent_adminsInput
+input EventAdminCreateWithoutPermissionInput {
+  event: EventCreateOneWithoutEventAdminsInput
+  user: UserCreateOneWithoutEventAdminsInput
 }
 
-input Event_adminCreateWithoutId_userInput {
-  id_event: EventCreateOneWithoutEvent_adminsInput
-  id_role: RoleCreateOneWithoutEvent_adminsInput
+input EventAdminCreateWithoutUserInput {
+  event: EventCreateOneWithoutEventAdminsInput
+  permission: PermissionCreateOneWithoutEventAdminsInput
 }
 
 """An edge in a connection."""
-type Event_adminEdge {
+type EventAdminEdge {
   """The item at the end of the edge."""
-  node: Event_admin!
+  node: EventAdmin!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum Event_adminOrderByInput {
+enum EventAdminOrderByInput {
   id_ASC
   id_DESC
 }
 
-type Event_adminPreviousValues {
+type EventAdminPreviousValues {
   id: Int!
 }
 
-type Event_adminSubscriptionPayload {
+type EventAdminSubscriptionPayload {
   mutation: MutationType!
-  node: Event_admin
+  node: EventAdmin
   updatedFields: [String!]
-  previousValues: Event_adminPreviousValues
+  previousValues: EventAdminPreviousValues
 }
 
-input Event_adminSubscriptionWhereInput {
+input EventAdminSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [Event_adminSubscriptionWhereInput!]
+  AND: [EventAdminSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [Event_adminSubscriptionWhereInput!]
+  OR: [EventAdminSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [Event_adminSubscriptionWhereInput!]
+  NOT: [EventAdminSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -1101,99 +1087,99 @@ input Event_adminSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: Event_adminWhereInput
+  node: EventAdminWhereInput
 }
 
-input Event_adminUpdateInput {
-  id_event: EventUpdateOneWithoutEvent_adminsInput
-  id_role: RoleUpdateOneWithoutEvent_adminsInput
-  id_user: UserUpdateOneWithoutEvent_adminsInput
+input EventAdminUpdateInput {
+  event: EventUpdateOneWithoutEventAdminsInput
+  permission: PermissionUpdateOneWithoutEventAdminsInput
+  user: UserUpdateOneWithoutEventAdminsInput
 }
 
-input Event_adminUpdateManyWithoutId_eventInput {
-  create: [Event_adminCreateWithoutId_eventInput!]
-  connect: [Event_adminWhereUniqueInput!]
-  disconnect: [Event_adminWhereUniqueInput!]
-  delete: [Event_adminWhereUniqueInput!]
-  update: [Event_adminUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [Event_adminUpsertWithWhereUniqueWithoutId_eventInput!]
+input EventAdminUpdateManyWithoutEventInput {
+  create: [EventAdminCreateWithoutEventInput!]
+  connect: [EventAdminWhereUniqueInput!]
+  disconnect: [EventAdminWhereUniqueInput!]
+  delete: [EventAdminWhereUniqueInput!]
+  update: [EventAdminUpdateWithWhereUniqueWithoutEventInput!]
+  upsert: [EventAdminUpsertWithWhereUniqueWithoutEventInput!]
 }
 
-input Event_adminUpdateManyWithoutId_roleInput {
-  create: [Event_adminCreateWithoutId_roleInput!]
-  connect: [Event_adminWhereUniqueInput!]
-  disconnect: [Event_adminWhereUniqueInput!]
-  delete: [Event_adminWhereUniqueInput!]
-  update: [Event_adminUpdateWithWhereUniqueWithoutId_roleInput!]
-  upsert: [Event_adminUpsertWithWhereUniqueWithoutId_roleInput!]
+input EventAdminUpdateManyWithoutPermissionInput {
+  create: [EventAdminCreateWithoutPermissionInput!]
+  connect: [EventAdminWhereUniqueInput!]
+  disconnect: [EventAdminWhereUniqueInput!]
+  delete: [EventAdminWhereUniqueInput!]
+  update: [EventAdminUpdateWithWhereUniqueWithoutPermissionInput!]
+  upsert: [EventAdminUpsertWithWhereUniqueWithoutPermissionInput!]
 }
 
-input Event_adminUpdateManyWithoutId_userInput {
-  create: [Event_adminCreateWithoutId_userInput!]
-  connect: [Event_adminWhereUniqueInput!]
-  disconnect: [Event_adminWhereUniqueInput!]
-  delete: [Event_adminWhereUniqueInput!]
-  update: [Event_adminUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [Event_adminUpsertWithWhereUniqueWithoutId_userInput!]
+input EventAdminUpdateManyWithoutUserInput {
+  create: [EventAdminCreateWithoutUserInput!]
+  connect: [EventAdminWhereUniqueInput!]
+  disconnect: [EventAdminWhereUniqueInput!]
+  delete: [EventAdminWhereUniqueInput!]
+  update: [EventAdminUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [EventAdminUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input Event_adminUpdateWithoutId_eventDataInput {
-  id_role: RoleUpdateOneWithoutEvent_adminsInput
-  id_user: UserUpdateOneWithoutEvent_adminsInput
+input EventAdminUpdateWithoutEventDataInput {
+  permission: PermissionUpdateOneWithoutEventAdminsInput
+  user: UserUpdateOneWithoutEventAdminsInput
 }
 
-input Event_adminUpdateWithoutId_roleDataInput {
-  id_event: EventUpdateOneWithoutEvent_adminsInput
-  id_user: UserUpdateOneWithoutEvent_adminsInput
+input EventAdminUpdateWithoutPermissionDataInput {
+  event: EventUpdateOneWithoutEventAdminsInput
+  user: UserUpdateOneWithoutEventAdminsInput
 }
 
-input Event_adminUpdateWithoutId_userDataInput {
-  id_event: EventUpdateOneWithoutEvent_adminsInput
-  id_role: RoleUpdateOneWithoutEvent_adminsInput
+input EventAdminUpdateWithoutUserDataInput {
+  event: EventUpdateOneWithoutEventAdminsInput
+  permission: PermissionUpdateOneWithoutEventAdminsInput
 }
 
-input Event_adminUpdateWithWhereUniqueWithoutId_eventInput {
-  where: Event_adminWhereUniqueInput!
-  data: Event_adminUpdateWithoutId_eventDataInput!
+input EventAdminUpdateWithWhereUniqueWithoutEventInput {
+  where: EventAdminWhereUniqueInput!
+  data: EventAdminUpdateWithoutEventDataInput!
 }
 
-input Event_adminUpdateWithWhereUniqueWithoutId_roleInput {
-  where: Event_adminWhereUniqueInput!
-  data: Event_adminUpdateWithoutId_roleDataInput!
+input EventAdminUpdateWithWhereUniqueWithoutPermissionInput {
+  where: EventAdminWhereUniqueInput!
+  data: EventAdminUpdateWithoutPermissionDataInput!
 }
 
-input Event_adminUpdateWithWhereUniqueWithoutId_userInput {
-  where: Event_adminWhereUniqueInput!
-  data: Event_adminUpdateWithoutId_userDataInput!
+input EventAdminUpdateWithWhereUniqueWithoutUserInput {
+  where: EventAdminWhereUniqueInput!
+  data: EventAdminUpdateWithoutUserDataInput!
 }
 
-input Event_adminUpsertWithWhereUniqueWithoutId_eventInput {
-  where: Event_adminWhereUniqueInput!
-  update: Event_adminUpdateWithoutId_eventDataInput!
-  create: Event_adminCreateWithoutId_eventInput!
+input EventAdminUpsertWithWhereUniqueWithoutEventInput {
+  where: EventAdminWhereUniqueInput!
+  update: EventAdminUpdateWithoutEventDataInput!
+  create: EventAdminCreateWithoutEventInput!
 }
 
-input Event_adminUpsertWithWhereUniqueWithoutId_roleInput {
-  where: Event_adminWhereUniqueInput!
-  update: Event_adminUpdateWithoutId_roleDataInput!
-  create: Event_adminCreateWithoutId_roleInput!
+input EventAdminUpsertWithWhereUniqueWithoutPermissionInput {
+  where: EventAdminWhereUniqueInput!
+  update: EventAdminUpdateWithoutPermissionDataInput!
+  create: EventAdminCreateWithoutPermissionInput!
 }
 
-input Event_adminUpsertWithWhereUniqueWithoutId_userInput {
-  where: Event_adminWhereUniqueInput!
-  update: Event_adminUpdateWithoutId_userDataInput!
-  create: Event_adminCreateWithoutId_userInput!
+input EventAdminUpsertWithWhereUniqueWithoutUserInput {
+  where: EventAdminWhereUniqueInput!
+  update: EventAdminUpdateWithoutUserDataInput!
+  create: EventAdminCreateWithoutUserInput!
 }
 
-input Event_adminWhereInput {
+input EventAdminWhereInput {
   """Logical AND on all given filters."""
-  AND: [Event_adminWhereInput!]
+  AND: [EventAdminWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [Event_adminWhereInput!]
+  OR: [EventAdminWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [Event_adminWhereInput!]
+  NOT: [EventAdminWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -1216,12 +1202,12 @@ input Event_adminWhereInput {
 
   """All values greater than or equal the given value."""
   id_gte: Int
-  id_event: EventWhereInput
-  id_role: RoleWhereInput
-  id_user: UserWhereInput
+  event: EventWhereInput
+  permission: PermissionWhereInput
+  user: UserWhereInput
 }
 
-input Event_adminWhereUniqueInput {
+input EventAdminWhereUniqueInput {
   id: Int
 }
 
@@ -1242,19 +1228,18 @@ input EventCreateInput {
   city: String!
   country: String!
   description: String
-  entrance_tax: Int
-  event_creation: DateTime!
-  event_date: DateTime!
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime!
+  imageLarge: String
+  imageSmall: String
   state: String!
   title: String!
   zip: String!
-  boards: BoardCreateManyWithoutId_eventInput
-  comments: CommentCreateManyWithoutId_eventInput
-  event_admins: Event_adminCreateManyWithoutId_eventInput
-  expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventInput
+  boards: BoardCreateManyWithoutEventInput
+  comments: CommentCreateManyWithoutEventInput
+  eventAdmins: EventAdminCreateManyWithoutEventInput
+  expenses: ExpenseCreateManyWithoutEventInput
+  reviews: ReviewCreateManyWithoutEventInput
 }
 
 input EventCreateOneWithoutBoardsInput {
@@ -1267,8 +1252,8 @@ input EventCreateOneWithoutCommentsInput {
   connect: EventWhereUniqueInput
 }
 
-input EventCreateOneWithoutEvent_adminsInput {
-  create: EventCreateWithoutEvent_adminsInput
+input EventCreateOneWithoutEventAdminsInput {
+  create: EventCreateWithoutEventAdminsInput
   connect: EventWhereUniqueInput
 }
 
@@ -1289,18 +1274,17 @@ input EventCreateWithoutBoardsInput {
   city: String!
   country: String!
   description: String
-  entrance_tax: Int
-  event_creation: DateTime!
-  event_date: DateTime!
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime!
+  imageLarge: String
+  imageSmall: String
   state: String!
   title: String!
   zip: String!
-  comments: CommentCreateManyWithoutId_eventInput
-  event_admins: Event_adminCreateManyWithoutId_eventInput
-  expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventInput
+  comments: CommentCreateManyWithoutEventInput
+  eventAdmins: EventAdminCreateManyWithoutEventInput
+  expenses: ExpenseCreateManyWithoutEventInput
+  reviews: ReviewCreateManyWithoutEventInput
 }
 
 input EventCreateWithoutCommentsInput {
@@ -1310,39 +1294,37 @@ input EventCreateWithoutCommentsInput {
   city: String!
   country: String!
   description: String
-  entrance_tax: Int
-  event_creation: DateTime!
-  event_date: DateTime!
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime!
+  imageLarge: String
+  imageSmall: String
   state: String!
   title: String!
   zip: String!
-  boards: BoardCreateManyWithoutId_eventInput
-  event_admins: Event_adminCreateManyWithoutId_eventInput
-  expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventInput
+  boards: BoardCreateManyWithoutEventInput
+  eventAdmins: EventAdminCreateManyWithoutEventInput
+  expenses: ExpenseCreateManyWithoutEventInput
+  reviews: ReviewCreateManyWithoutEventInput
 }
 
-input EventCreateWithoutEvent_adminsInput {
+input EventCreateWithoutEventAdminsInput {
   address1: String!
   address2: String
   address3: String
   city: String!
   country: String!
   description: String
-  entrance_tax: Int
-  event_creation: DateTime!
-  event_date: DateTime!
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime!
+  imageLarge: String
+  imageSmall: String
   state: String!
   title: String!
   zip: String!
-  boards: BoardCreateManyWithoutId_eventInput
-  comments: CommentCreateManyWithoutId_eventInput
-  expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventInput
+  boards: BoardCreateManyWithoutEventInput
+  comments: CommentCreateManyWithoutEventInput
+  expenses: ExpenseCreateManyWithoutEventInput
+  reviews: ReviewCreateManyWithoutEventInput
 }
 
 input EventCreateWithoutExpensesInput {
@@ -1352,18 +1334,17 @@ input EventCreateWithoutExpensesInput {
   city: String!
   country: String!
   description: String
-  entrance_tax: Int
-  event_creation: DateTime!
-  event_date: DateTime!
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime!
+  imageLarge: String
+  imageSmall: String
   state: String!
   title: String!
   zip: String!
-  boards: BoardCreateManyWithoutId_eventInput
-  comments: CommentCreateManyWithoutId_eventInput
-  event_admins: Event_adminCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventInput
+  boards: BoardCreateManyWithoutEventInput
+  comments: CommentCreateManyWithoutEventInput
+  eventAdmins: EventAdminCreateManyWithoutEventInput
+  reviews: ReviewCreateManyWithoutEventInput
 }
 
 input EventCreateWithoutReviewsInput {
@@ -1373,18 +1354,17 @@ input EventCreateWithoutReviewsInput {
   city: String!
   country: String!
   description: String
-  entrance_tax: Int
-  event_creation: DateTime!
-  event_date: DateTime!
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime!
+  imageLarge: String
+  imageSmall: String
   state: String!
   title: String!
   zip: String!
-  boards: BoardCreateManyWithoutId_eventInput
-  comments: CommentCreateManyWithoutId_eventInput
-  event_admins: Event_adminCreateManyWithoutId_eventInput
-  expenses: ExpenseCreateManyWithoutId_eventInput
+  boards: BoardCreateManyWithoutEventInput
+  comments: CommentCreateManyWithoutEventInput
+  eventAdmins: EventAdminCreateManyWithoutEventInput
+  expenses: ExpenseCreateManyWithoutEventInput
 }
 
 """An edge in a connection."""
@@ -1409,18 +1389,18 @@ enum EventOrderByInput {
   city_DESC
   country_ASC
   country_DESC
+  createdAt_ASC
+  createdAt_DESC
   description_ASC
   description_DESC
-  entrance_tax_ASC
-  entrance_tax_DESC
-  event_creation_ASC
-  event_creation_DESC
-  event_date_ASC
-  event_date_DESC
-  image_large_ASC
-  image_large_DESC
-  image_small_ASC
-  image_small_DESC
+  entranceTax_ASC
+  entranceTax_DESC
+  eventDate_ASC
+  eventDate_DESC
+  imageLarge_ASC
+  imageLarge_DESC
+  imageSmall_ASC
+  imageSmall_DESC
   state_ASC
   state_DESC
   title_ASC
@@ -1436,12 +1416,12 @@ type EventPreviousValues {
   address3: String
   city: String!
   country: String!
+  createdAt: DateTime!
   description: String
-  entrance_tax: Int
-  event_creation: DateTime!
-  event_date: DateTime!
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime!
+  imageLarge: String
+  imageSmall: String
   state: String!
   title: String!
   zip: String!
@@ -1493,19 +1473,18 @@ input EventUpdateInput {
   city: String
   country: String
   description: String
-  entrance_tax: Int
-  event_creation: DateTime
-  event_date: DateTime
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime
+  imageLarge: String
+  imageSmall: String
   state: String
   title: String
   zip: String
-  boards: BoardUpdateManyWithoutId_eventInput
-  comments: CommentUpdateManyWithoutId_eventInput
-  event_admins: Event_adminUpdateManyWithoutId_eventInput
-  expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventInput
+  boards: BoardUpdateManyWithoutEventInput
+  comments: CommentUpdateManyWithoutEventInput
+  eventAdmins: EventAdminUpdateManyWithoutEventInput
+  expenses: ExpenseUpdateManyWithoutEventInput
+  reviews: ReviewUpdateManyWithoutEventInput
 }
 
 input EventUpdateManyMutationInput {
@@ -1515,11 +1494,10 @@ input EventUpdateManyMutationInput {
   city: String
   country: String
   description: String
-  entrance_tax: Int
-  event_creation: DateTime
-  event_date: DateTime
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime
+  imageLarge: String
+  imageSmall: String
   state: String
   title: String
   zip: String
@@ -1543,13 +1521,13 @@ input EventUpdateOneWithoutCommentsInput {
   upsert: EventUpsertWithoutCommentsInput
 }
 
-input EventUpdateOneWithoutEvent_adminsInput {
-  create: EventCreateWithoutEvent_adminsInput
+input EventUpdateOneWithoutEventAdminsInput {
+  create: EventCreateWithoutEventAdminsInput
   connect: EventWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: EventUpdateWithoutEvent_adminsDataInput
-  upsert: EventUpsertWithoutEvent_adminsInput
+  update: EventUpdateWithoutEventAdminsDataInput
+  upsert: EventUpsertWithoutEventAdminsInput
 }
 
 input EventUpdateOneWithoutExpensesInput {
@@ -1577,18 +1555,17 @@ input EventUpdateWithoutBoardsDataInput {
   city: String
   country: String
   description: String
-  entrance_tax: Int
-  event_creation: DateTime
-  event_date: DateTime
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime
+  imageLarge: String
+  imageSmall: String
   state: String
   title: String
   zip: String
-  comments: CommentUpdateManyWithoutId_eventInput
-  event_admins: Event_adminUpdateManyWithoutId_eventInput
-  expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventInput
+  comments: CommentUpdateManyWithoutEventInput
+  eventAdmins: EventAdminUpdateManyWithoutEventInput
+  expenses: ExpenseUpdateManyWithoutEventInput
+  reviews: ReviewUpdateManyWithoutEventInput
 }
 
 input EventUpdateWithoutCommentsDataInput {
@@ -1598,39 +1575,37 @@ input EventUpdateWithoutCommentsDataInput {
   city: String
   country: String
   description: String
-  entrance_tax: Int
-  event_creation: DateTime
-  event_date: DateTime
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime
+  imageLarge: String
+  imageSmall: String
   state: String
   title: String
   zip: String
-  boards: BoardUpdateManyWithoutId_eventInput
-  event_admins: Event_adminUpdateManyWithoutId_eventInput
-  expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventInput
+  boards: BoardUpdateManyWithoutEventInput
+  eventAdmins: EventAdminUpdateManyWithoutEventInput
+  expenses: ExpenseUpdateManyWithoutEventInput
+  reviews: ReviewUpdateManyWithoutEventInput
 }
 
-input EventUpdateWithoutEvent_adminsDataInput {
+input EventUpdateWithoutEventAdminsDataInput {
   address1: String
   address2: String
   address3: String
   city: String
   country: String
   description: String
-  entrance_tax: Int
-  event_creation: DateTime
-  event_date: DateTime
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime
+  imageLarge: String
+  imageSmall: String
   state: String
   title: String
   zip: String
-  boards: BoardUpdateManyWithoutId_eventInput
-  comments: CommentUpdateManyWithoutId_eventInput
-  expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventInput
+  boards: BoardUpdateManyWithoutEventInput
+  comments: CommentUpdateManyWithoutEventInput
+  expenses: ExpenseUpdateManyWithoutEventInput
+  reviews: ReviewUpdateManyWithoutEventInput
 }
 
 input EventUpdateWithoutExpensesDataInput {
@@ -1640,18 +1615,17 @@ input EventUpdateWithoutExpensesDataInput {
   city: String
   country: String
   description: String
-  entrance_tax: Int
-  event_creation: DateTime
-  event_date: DateTime
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime
+  imageLarge: String
+  imageSmall: String
   state: String
   title: String
   zip: String
-  boards: BoardUpdateManyWithoutId_eventInput
-  comments: CommentUpdateManyWithoutId_eventInput
-  event_admins: Event_adminUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventInput
+  boards: BoardUpdateManyWithoutEventInput
+  comments: CommentUpdateManyWithoutEventInput
+  eventAdmins: EventAdminUpdateManyWithoutEventInput
+  reviews: ReviewUpdateManyWithoutEventInput
 }
 
 input EventUpdateWithoutReviewsDataInput {
@@ -1661,18 +1635,17 @@ input EventUpdateWithoutReviewsDataInput {
   city: String
   country: String
   description: String
-  entrance_tax: Int
-  event_creation: DateTime
-  event_date: DateTime
-  image_large: String
-  image_small: String
+  entranceTax: Int
+  eventDate: DateTime
+  imageLarge: String
+  imageSmall: String
   state: String
   title: String
   zip: String
-  boards: BoardUpdateManyWithoutId_eventInput
-  comments: CommentUpdateManyWithoutId_eventInput
-  event_admins: Event_adminUpdateManyWithoutId_eventInput
-  expenses: ExpenseUpdateManyWithoutId_eventInput
+  boards: BoardUpdateManyWithoutEventInput
+  comments: CommentUpdateManyWithoutEventInput
+  eventAdmins: EventAdminUpdateManyWithoutEventInput
+  expenses: ExpenseUpdateManyWithoutEventInput
 }
 
 input EventUpsertWithoutBoardsInput {
@@ -1685,9 +1658,9 @@ input EventUpsertWithoutCommentsInput {
   create: EventCreateWithoutCommentsInput!
 }
 
-input EventUpsertWithoutEvent_adminsInput {
-  update: EventUpdateWithoutEvent_adminsDataInput!
-  create: EventCreateWithoutEvent_adminsInput!
+input EventUpsertWithoutEventAdminsInput {
+  update: EventUpdateWithoutEventAdminsDataInput!
+  create: EventCreateWithoutEventAdminsInput!
 }
 
 input EventUpsertWithoutExpensesInput {
@@ -1931,6 +1904,28 @@ input EventWhereInput {
 
   """All values not ending with the given string."""
   country_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
   description: String
 
   """All values that are not equal to given value."""
@@ -1971,152 +1966,130 @@ input EventWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  entrance_tax: Int
+  entranceTax: Int
 
   """All values that are not equal to given value."""
-  entrance_tax_not: Int
+  entranceTax_not: Int
 
   """All values that are contained in given list."""
-  entrance_tax_in: [Int!]
+  entranceTax_in: [Int!]
 
   """All values that are not contained in given list."""
-  entrance_tax_not_in: [Int!]
+  entranceTax_not_in: [Int!]
 
   """All values less than the given value."""
-  entrance_tax_lt: Int
+  entranceTax_lt: Int
 
   """All values less than or equal the given value."""
-  entrance_tax_lte: Int
+  entranceTax_lte: Int
 
   """All values greater than the given value."""
-  entrance_tax_gt: Int
+  entranceTax_gt: Int
 
   """All values greater than or equal the given value."""
-  entrance_tax_gte: Int
-  event_creation: DateTime
+  entranceTax_gte: Int
+  eventDate: DateTime
 
   """All values that are not equal to given value."""
-  event_creation_not: DateTime
+  eventDate_not: DateTime
 
   """All values that are contained in given list."""
-  event_creation_in: [DateTime!]
+  eventDate_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  event_creation_not_in: [DateTime!]
+  eventDate_not_in: [DateTime!]
 
   """All values less than the given value."""
-  event_creation_lt: DateTime
+  eventDate_lt: DateTime
 
   """All values less than or equal the given value."""
-  event_creation_lte: DateTime
+  eventDate_lte: DateTime
 
   """All values greater than the given value."""
-  event_creation_gt: DateTime
+  eventDate_gt: DateTime
 
   """All values greater than or equal the given value."""
-  event_creation_gte: DateTime
-  event_date: DateTime
+  eventDate_gte: DateTime
+  imageLarge: String
 
   """All values that are not equal to given value."""
-  event_date_not: DateTime
+  imageLarge_not: String
 
   """All values that are contained in given list."""
-  event_date_in: [DateTime!]
+  imageLarge_in: [String!]
 
   """All values that are not contained in given list."""
-  event_date_not_in: [DateTime!]
+  imageLarge_not_in: [String!]
 
   """All values less than the given value."""
-  event_date_lt: DateTime
+  imageLarge_lt: String
 
   """All values less than or equal the given value."""
-  event_date_lte: DateTime
+  imageLarge_lte: String
 
   """All values greater than the given value."""
-  event_date_gt: DateTime
+  imageLarge_gt: String
 
   """All values greater than or equal the given value."""
-  event_date_gte: DateTime
-  image_large: String
-
-  """All values that are not equal to given value."""
-  image_large_not: String
-
-  """All values that are contained in given list."""
-  image_large_in: [String!]
-
-  """All values that are not contained in given list."""
-  image_large_not_in: [String!]
-
-  """All values less than the given value."""
-  image_large_lt: String
-
-  """All values less than or equal the given value."""
-  image_large_lte: String
-
-  """All values greater than the given value."""
-  image_large_gt: String
-
-  """All values greater than or equal the given value."""
-  image_large_gte: String
+  imageLarge_gte: String
 
   """All values containing the given string."""
-  image_large_contains: String
+  imageLarge_contains: String
 
   """All values not containing the given string."""
-  image_large_not_contains: String
+  imageLarge_not_contains: String
 
   """All values starting with the given string."""
-  image_large_starts_with: String
+  imageLarge_starts_with: String
 
   """All values not starting with the given string."""
-  image_large_not_starts_with: String
+  imageLarge_not_starts_with: String
 
   """All values ending with the given string."""
-  image_large_ends_with: String
+  imageLarge_ends_with: String
 
   """All values not ending with the given string."""
-  image_large_not_ends_with: String
-  image_small: String
+  imageLarge_not_ends_with: String
+  imageSmall: String
 
   """All values that are not equal to given value."""
-  image_small_not: String
+  imageSmall_not: String
 
   """All values that are contained in given list."""
-  image_small_in: [String!]
+  imageSmall_in: [String!]
 
   """All values that are not contained in given list."""
-  image_small_not_in: [String!]
+  imageSmall_not_in: [String!]
 
   """All values less than the given value."""
-  image_small_lt: String
+  imageSmall_lt: String
 
   """All values less than or equal the given value."""
-  image_small_lte: String
+  imageSmall_lte: String
 
   """All values greater than the given value."""
-  image_small_gt: String
+  imageSmall_gt: String
 
   """All values greater than or equal the given value."""
-  image_small_gte: String
+  imageSmall_gte: String
 
   """All values containing the given string."""
-  image_small_contains: String
+  imageSmall_contains: String
 
   """All values not containing the given string."""
-  image_small_not_contains: String
+  imageSmall_not_contains: String
 
   """All values starting with the given string."""
-  image_small_starts_with: String
+  imageSmall_starts_with: String
 
   """All values not starting with the given string."""
-  image_small_not_starts_with: String
+  imageSmall_not_starts_with: String
 
   """All values ending with the given string."""
-  image_small_ends_with: String
+  imageSmall_ends_with: String
 
   """All values not ending with the given string."""
-  image_small_not_ends_with: String
+  imageSmall_not_ends_with: String
   state: String
 
   """All values that are not equal to given value."""
@@ -2243,9 +2216,9 @@ input EventWhereInput {
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
   comments_none: CommentWhereInput
-  event_admins_every: Event_adminWhereInput
-  event_admins_some: Event_adminWhereInput
-  event_admins_none: Event_adminWhereInput
+  eventAdmins_every: EventAdminWhereInput
+  eventAdmins_some: EventAdminWhereInput
+  eventAdmins_none: EventAdminWhereInput
   expenses_every: ExpenseWhereInput
   expenses_some: ExpenseWhereInput
   expenses_none: ExpenseWhereInput
@@ -2261,11 +2234,11 @@ input EventWhereUniqueInput {
 type Expense {
   id: Int!
   amount: Float!
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
-  id_event: Event
-  id_user: User
+  event: Event
   title: String!
+  user: User
 }
 
 """A connection to a list of items."""
@@ -2280,37 +2253,34 @@ type ExpenseConnection {
 
 input ExpenseCreateInput {
   amount: Float!
-  created_at: DateTime!
   description: String
   title: String!
-  id_event: EventCreateOneWithoutExpensesInput
-  id_user: UserCreateOneWithoutExpensesInput
+  event: EventCreateOneWithoutExpensesInput
+  user: UserCreateOneWithoutExpensesInput
 }
 
-input ExpenseCreateManyWithoutId_eventInput {
-  create: [ExpenseCreateWithoutId_eventInput!]
+input ExpenseCreateManyWithoutEventInput {
+  create: [ExpenseCreateWithoutEventInput!]
   connect: [ExpenseWhereUniqueInput!]
 }
 
-input ExpenseCreateManyWithoutId_userInput {
-  create: [ExpenseCreateWithoutId_userInput!]
+input ExpenseCreateManyWithoutUserInput {
+  create: [ExpenseCreateWithoutUserInput!]
   connect: [ExpenseWhereUniqueInput!]
 }
 
-input ExpenseCreateWithoutId_eventInput {
+input ExpenseCreateWithoutEventInput {
   amount: Float!
-  created_at: DateTime!
   description: String
   title: String!
-  id_user: UserCreateOneWithoutExpensesInput
+  user: UserCreateOneWithoutExpensesInput
 }
 
-input ExpenseCreateWithoutId_userInput {
+input ExpenseCreateWithoutUserInput {
   amount: Float!
-  created_at: DateTime!
   description: String
   title: String!
-  id_event: EventCreateOneWithoutExpensesInput
+  event: EventCreateOneWithoutExpensesInput
 }
 
 """An edge in a connection."""
@@ -2327,8 +2297,8 @@ enum ExpenseOrderByInput {
   id_DESC
   amount_ASC
   amount_DESC
-  created_at_ASC
-  created_at_DESC
+  createdAt_ASC
+  createdAt_DESC
   description_ASC
   description_DESC
   title_ASC
@@ -2338,7 +2308,7 @@ enum ExpenseOrderByInput {
 type ExpensePreviousValues {
   id: Int!
   amount: Float!
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
   title: String!
 }
@@ -2384,74 +2354,70 @@ input ExpenseSubscriptionWhereInput {
 
 input ExpenseUpdateInput {
   amount: Float
-  created_at: DateTime
   description: String
   title: String
-  id_event: EventUpdateOneWithoutExpensesInput
-  id_user: UserUpdateOneWithoutExpensesInput
+  event: EventUpdateOneWithoutExpensesInput
+  user: UserUpdateOneWithoutExpensesInput
 }
 
 input ExpenseUpdateManyMutationInput {
   amount: Float
-  created_at: DateTime
   description: String
   title: String
 }
 
-input ExpenseUpdateManyWithoutId_eventInput {
-  create: [ExpenseCreateWithoutId_eventInput!]
+input ExpenseUpdateManyWithoutEventInput {
+  create: [ExpenseCreateWithoutEventInput!]
   connect: [ExpenseWhereUniqueInput!]
   disconnect: [ExpenseWhereUniqueInput!]
   delete: [ExpenseWhereUniqueInput!]
-  update: [ExpenseUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [ExpenseUpsertWithWhereUniqueWithoutId_eventInput!]
+  update: [ExpenseUpdateWithWhereUniqueWithoutEventInput!]
+  upsert: [ExpenseUpsertWithWhereUniqueWithoutEventInput!]
 }
 
-input ExpenseUpdateManyWithoutId_userInput {
-  create: [ExpenseCreateWithoutId_userInput!]
+input ExpenseUpdateManyWithoutUserInput {
+  create: [ExpenseCreateWithoutUserInput!]
   connect: [ExpenseWhereUniqueInput!]
   disconnect: [ExpenseWhereUniqueInput!]
   delete: [ExpenseWhereUniqueInput!]
-  update: [ExpenseUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [ExpenseUpsertWithWhereUniqueWithoutId_userInput!]
+  update: [ExpenseUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [ExpenseUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input ExpenseUpdateWithoutId_eventDataInput {
+input ExpenseUpdateWithoutEventDataInput {
   amount: Float
-  created_at: DateTime
   description: String
   title: String
-  id_user: UserUpdateOneWithoutExpensesInput
+  user: UserUpdateOneWithoutExpensesInput
 }
 
-input ExpenseUpdateWithoutId_userDataInput {
+input ExpenseUpdateWithoutUserDataInput {
   amount: Float
-  created_at: DateTime
   description: String
   title: String
-  id_event: EventUpdateOneWithoutExpensesInput
+  event: EventUpdateOneWithoutExpensesInput
 }
 
-input ExpenseUpdateWithWhereUniqueWithoutId_eventInput {
+input ExpenseUpdateWithWhereUniqueWithoutEventInput {
   where: ExpenseWhereUniqueInput!
-  data: ExpenseUpdateWithoutId_eventDataInput!
+  data: ExpenseUpdateWithoutEventDataInput!
 }
 
-input ExpenseUpdateWithWhereUniqueWithoutId_userInput {
+input ExpenseUpdateWithWhereUniqueWithoutUserInput {
   where: ExpenseWhereUniqueInput!
-  data: ExpenseUpdateWithoutId_userDataInput!
+  data: ExpenseUpdateWithoutUserDataInput!
 }
 
-input ExpenseUpsertWithWhereUniqueWithoutId_eventInput {
+input ExpenseUpsertWithWhereUniqueWithoutEventInput {
   where: ExpenseWhereUniqueInput!
-  update: ExpenseUpdateWithoutId_eventDataInput!
-  create: ExpenseCreateWithoutId_eventInput!
+  update: ExpenseUpdateWithoutEventDataInput!
+  create: ExpenseCreateWithoutEventInput!
 }
 
-input ExpenseUpsertWithWhereUniqueWithoutId_userInput {
+input ExpenseUpsertWithWhereUniqueWithoutUserInput {
   where: ExpenseWhereUniqueInput!
-  update: ExpenseUpdateWithoutId_userDataInput!
-  create: ExpenseCreateWithoutId_userInput!
+  update: ExpenseUpdateWithoutUserDataInput!
+  create: ExpenseCreateWithoutUserInput!
 }
 
 input ExpenseWhereInput {
@@ -2507,28 +2473,28 @@ input ExpenseWhereInput {
 
   """All values greater than or equal the given value."""
   amount_gte: Float
-  created_at: DateTime
+  createdAt: DateTime
 
   """All values that are not equal to given value."""
-  created_at_not: DateTime
+  createdAt_not: DateTime
 
   """All values that are contained in given list."""
-  created_at_in: [DateTime!]
+  createdAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  created_at_not_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  created_at_lt: DateTime
+  createdAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  created_at_lte: DateTime
+  createdAt_lte: DateTime
 
   """All values greater than the given value."""
-  created_at_gt: DateTime
+  createdAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  created_at_gte: DateTime
+  createdAt_gte: DateTime
   description: String
 
   """All values that are not equal to given value."""
@@ -2609,8 +2575,8 @@ input ExpenseWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  id_event: EventWhereInput
-  id_user: UserWhereInput
+  event: EventWhereInput
+  user: UserWhereInput
 }
 
 input ExpenseWhereUniqueInput {
@@ -2619,10 +2585,10 @@ input ExpenseWhereUniqueInput {
 
 type List {
   id: Int!
+  board: Board
   cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card!]
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
-  id_board: Board
   order: Int!
   title: String!
 }
@@ -2638,16 +2604,15 @@ type ListConnection {
 }
 
 input ListCreateInput {
-  created_at: DateTime!
   description: String
   order: Int!
   title: String!
-  cards: CardCreateManyWithoutId_listInput
-  id_board: BoardCreateOneWithoutListsInput
+  board: BoardCreateOneWithoutListsInput
+  cards: CardCreateManyWithoutListInput
 }
 
-input ListCreateManyWithoutId_boardInput {
-  create: [ListCreateWithoutId_boardInput!]
+input ListCreateManyWithoutBoardInput {
+  create: [ListCreateWithoutBoardInput!]
   connect: [ListWhereUniqueInput!]
 }
 
@@ -2656,20 +2621,18 @@ input ListCreateOneWithoutCardsInput {
   connect: ListWhereUniqueInput
 }
 
-input ListCreateWithoutCardsInput {
-  created_at: DateTime!
+input ListCreateWithoutBoardInput {
   description: String
   order: Int!
   title: String!
-  id_board: BoardCreateOneWithoutListsInput
+  cards: CardCreateManyWithoutListInput
 }
 
-input ListCreateWithoutId_boardInput {
-  created_at: DateTime!
+input ListCreateWithoutCardsInput {
   description: String
   order: Int!
   title: String!
-  cards: CardCreateManyWithoutId_listInput
+  board: BoardCreateOneWithoutListsInput
 }
 
 """An edge in a connection."""
@@ -2684,8 +2647,8 @@ type ListEdge {
 enum ListOrderByInput {
   id_ASC
   id_DESC
-  created_at_ASC
-  created_at_DESC
+  createdAt_ASC
+  createdAt_DESC
   description_ASC
   description_DESC
   order_ASC
@@ -2696,7 +2659,7 @@ enum ListOrderByInput {
 
 type ListPreviousValues {
   id: Int!
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
   order: Int!
   title: String!
@@ -2742,28 +2705,26 @@ input ListSubscriptionWhereInput {
 }
 
 input ListUpdateInput {
-  created_at: DateTime
   description: String
   order: Int
   title: String
-  cards: CardUpdateManyWithoutId_listInput
-  id_board: BoardUpdateOneWithoutListsInput
+  board: BoardUpdateOneWithoutListsInput
+  cards: CardUpdateManyWithoutListInput
 }
 
 input ListUpdateManyMutationInput {
-  created_at: DateTime
   description: String
   order: Int
   title: String
 }
 
-input ListUpdateManyWithoutId_boardInput {
-  create: [ListCreateWithoutId_boardInput!]
+input ListUpdateManyWithoutBoardInput {
+  create: [ListCreateWithoutBoardInput!]
   connect: [ListWhereUniqueInput!]
   disconnect: [ListWhereUniqueInput!]
   delete: [ListWhereUniqueInput!]
-  update: [ListUpdateWithWhereUniqueWithoutId_boardInput!]
-  upsert: [ListUpsertWithWhereUniqueWithoutId_boardInput!]
+  update: [ListUpdateWithWhereUniqueWithoutBoardInput!]
+  upsert: [ListUpsertWithWhereUniqueWithoutBoardInput!]
 }
 
 input ListUpdateOneWithoutCardsInput {
@@ -2775,25 +2736,23 @@ input ListUpdateOneWithoutCardsInput {
   upsert: ListUpsertWithoutCardsInput
 }
 
+input ListUpdateWithoutBoardDataInput {
+  description: String
+  order: Int
+  title: String
+  cards: CardUpdateManyWithoutListInput
+}
+
 input ListUpdateWithoutCardsDataInput {
-  created_at: DateTime
   description: String
   order: Int
   title: String
-  id_board: BoardUpdateOneWithoutListsInput
+  board: BoardUpdateOneWithoutListsInput
 }
 
-input ListUpdateWithoutId_boardDataInput {
-  created_at: DateTime
-  description: String
-  order: Int
-  title: String
-  cards: CardUpdateManyWithoutId_listInput
-}
-
-input ListUpdateWithWhereUniqueWithoutId_boardInput {
+input ListUpdateWithWhereUniqueWithoutBoardInput {
   where: ListWhereUniqueInput!
-  data: ListUpdateWithoutId_boardDataInput!
+  data: ListUpdateWithoutBoardDataInput!
 }
 
 input ListUpsertWithoutCardsInput {
@@ -2801,10 +2760,10 @@ input ListUpsertWithoutCardsInput {
   create: ListCreateWithoutCardsInput!
 }
 
-input ListUpsertWithWhereUniqueWithoutId_boardInput {
+input ListUpsertWithWhereUniqueWithoutBoardInput {
   where: ListWhereUniqueInput!
-  update: ListUpdateWithoutId_boardDataInput!
-  create: ListCreateWithoutId_boardInput!
+  update: ListUpdateWithoutBoardDataInput!
+  create: ListCreateWithoutBoardInput!
 }
 
 input ListWhereInput {
@@ -2838,28 +2797,28 @@ input ListWhereInput {
 
   """All values greater than or equal the given value."""
   id_gte: Int
-  created_at: DateTime
+  createdAt: DateTime
 
   """All values that are not equal to given value."""
-  created_at_not: DateTime
+  createdAt_not: DateTime
 
   """All values that are contained in given list."""
-  created_at_in: [DateTime!]
+  createdAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  created_at_not_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  created_at_lt: DateTime
+  createdAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  created_at_lte: DateTime
+  createdAt_lte: DateTime
 
   """All values greater than the given value."""
-  created_at_gt: DateTime
+  createdAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  created_at_gte: DateTime
+  createdAt_gte: DateTime
   description: String
 
   """All values that are not equal to given value."""
@@ -2962,10 +2921,10 @@ input ListWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  board: BoardWhereInput
   cards_every: CardWhereInput
   cards_some: CardWhereInput
   cards_none: CardWhereInput
-  id_board: BoardWhereInput
 }
 
 input ListWhereUniqueInput {
@@ -2983,41 +2942,41 @@ type Mutation {
   createCard(data: CardCreateInput!): Card!
   createComment(data: CommentCreateInput!): Comment!
   createEvent(data: EventCreateInput!): Event!
-  createEvent_admin(data: Event_adminCreateInput!): Event_admin!
+  createEventAdmin(data: EventAdminCreateInput!): EventAdmin!
   createExpense(data: ExpenseCreateInput!): Expense!
   createList(data: ListCreateInput!): List!
+  createPermission(data: PermissionCreateInput!): Permission!
   createReview(data: ReviewCreateInput!): Review!
-  createRole(data: RoleCreateInput!): Role!
   createUser(data: UserCreateInput!): User!
   updateBoard(data: BoardUpdateInput!, where: BoardWhereUniqueInput!): Board
   updateCard(data: CardUpdateInput!, where: CardWhereUniqueInput!): Card
   updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
   updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
-  updateEvent_admin(data: Event_adminUpdateInput!, where: Event_adminWhereUniqueInput!): Event_admin
+  updateEventAdmin(data: EventAdminUpdateInput!, where: EventAdminWhereUniqueInput!): EventAdmin
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
   updateList(data: ListUpdateInput!, where: ListWhereUniqueInput!): List
+  updatePermission(data: PermissionUpdateInput!, where: PermissionWhereUniqueInput!): Permission
   updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
-  updateRole(data: RoleUpdateInput!, where: RoleWhereUniqueInput!): Role
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteBoard(where: BoardWhereUniqueInput!): Board
   deleteCard(where: CardWhereUniqueInput!): Card
   deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteEvent(where: EventWhereUniqueInput!): Event
-  deleteEvent_admin(where: Event_adminWhereUniqueInput!): Event_admin
+  deleteEventAdmin(where: EventAdminWhereUniqueInput!): EventAdmin
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
   deleteList(where: ListWhereUniqueInput!): List
+  deletePermission(where: PermissionWhereUniqueInput!): Permission
   deleteReview(where: ReviewWhereUniqueInput!): Review
-  deleteRole(where: RoleWhereUniqueInput!): Role
   deleteUser(where: UserWhereUniqueInput!): User
   upsertBoard(where: BoardWhereUniqueInput!, create: BoardCreateInput!, update: BoardUpdateInput!): Board!
   upsertCard(where: CardWhereUniqueInput!, create: CardCreateInput!, update: CardUpdateInput!): Card!
   upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   upsertEvent(where: EventWhereUniqueInput!, create: EventCreateInput!, update: EventUpdateInput!): Event!
-  upsertEvent_admin(where: Event_adminWhereUniqueInput!, create: Event_adminCreateInput!, update: Event_adminUpdateInput!): Event_admin!
+  upsertEventAdmin(where: EventAdminWhereUniqueInput!, create: EventAdminCreateInput!, update: EventAdminUpdateInput!): EventAdmin!
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
   upsertList(where: ListWhereUniqueInput!, create: ListCreateInput!, update: ListUpdateInput!): List!
+  upsertPermission(where: PermissionWhereUniqueInput!, create: PermissionCreateInput!, update: PermissionUpdateInput!): Permission!
   upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
-  upsertRole(where: RoleWhereUniqueInput!, create: RoleCreateInput!, update: RoleUpdateInput!): Role!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyBoards(data: BoardUpdateManyMutationInput!, where: BoardWhereInput): BatchPayload!
   updateManyCards(data: CardUpdateManyMutationInput!, where: CardWhereInput): BatchPayload!
@@ -3025,18 +2984,18 @@ type Mutation {
   updateManyEvents(data: EventUpdateManyMutationInput!, where: EventWhereInput): BatchPayload!
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
   updateManyLists(data: ListUpdateManyMutationInput!, where: ListWhereInput): BatchPayload!
+  updateManyPermissions(data: PermissionUpdateManyMutationInput!, where: PermissionWhereInput): BatchPayload!
   updateManyReviews(data: ReviewUpdateManyMutationInput!, where: ReviewWhereInput): BatchPayload!
-  updateManyRoles(data: RoleUpdateManyMutationInput!, where: RoleWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyBoards(where: BoardWhereInput): BatchPayload!
   deleteManyCards(where: CardWhereInput): BatchPayload!
   deleteManyComments(where: CommentWhereInput): BatchPayload!
   deleteManyEvents(where: EventWhereInput): BatchPayload!
-  deleteManyEvent_admins(where: Event_adminWhereInput): BatchPayload!
+  deleteManyEventAdmins(where: EventAdminWhereInput): BatchPayload!
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
   deleteManyLists(where: ListWhereInput): BatchPayload!
+  deleteManyPermissions(where: PermissionWhereInput): BatchPayload!
   deleteManyReviews(where: ReviewWhereInput): BatchPayload!
-  deleteManyRoles(where: RoleWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
@@ -3061,414 +3020,73 @@ type PageInfo {
   endCursor: String
 }
 
-type Query {
-  boards(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Board]!
-  cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card]!
-  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
-  events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
-  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin]!
-  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
-  lists(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [List]!
-  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
-  roles(where: RoleWhereInput, orderBy: RoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Role]!
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  board(where: BoardWhereUniqueInput!): Board
-  card(where: CardWhereUniqueInput!): Card
-  comment(where: CommentWhereUniqueInput!): Comment
-  event(where: EventWhereUniqueInput!): Event
-  event_admin(where: Event_adminWhereUniqueInput!): Event_admin
-  expense(where: ExpenseWhereUniqueInput!): Expense
-  list(where: ListWhereUniqueInput!): List
-  review(where: ReviewWhereUniqueInput!): Review
-  role(where: RoleWhereUniqueInput!): Role
-  user(where: UserWhereUniqueInput!): User
-  boardsConnection(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BoardConnection!
-  cardsConnection(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CardConnection!
-  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
-  eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
-  event_adminsConnection(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): Event_adminConnection!
-  expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
-  listsConnection(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ListConnection!
-  reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
-  rolesConnection(where: RoleWhereInput, orderBy: RoleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RoleConnection!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-}
-
-type Review {
+type Permission {
   id: Int!
-  created_at: DateTime!
-  description: String
-  id_event: Event
-  id_user: User
-  rating: Int!
+  eventAdmins(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EventAdmin!]
+  name: String!
 }
 
 """A connection to a list of items."""
-type ReviewConnection {
+type PermissionConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [ReviewEdge]!
-  aggregate: AggregateReview!
+  edges: [PermissionEdge]!
+  aggregate: AggregatePermission!
 }
 
-input ReviewCreateInput {
-  created_at: DateTime!
-  description: String
-  rating: Int!
-  id_event: EventCreateOneWithoutReviewsInput
-  id_user: UserCreateOneWithoutReviewsInput
+input PermissionCreateInput {
+  name: String!
+  eventAdmins: EventAdminCreateManyWithoutPermissionInput
 }
 
-input ReviewCreateManyWithoutId_eventInput {
-  create: [ReviewCreateWithoutId_eventInput!]
-  connect: [ReviewWhereUniqueInput!]
+input PermissionCreateOneWithoutEventAdminsInput {
+  create: PermissionCreateWithoutEventAdminsInput
+  connect: PermissionWhereUniqueInput
 }
 
-input ReviewCreateManyWithoutId_userInput {
-  create: [ReviewCreateWithoutId_userInput!]
-  connect: [ReviewWhereUniqueInput!]
-}
-
-input ReviewCreateWithoutId_eventInput {
-  created_at: DateTime!
-  description: String
-  rating: Int!
-  id_user: UserCreateOneWithoutReviewsInput
-}
-
-input ReviewCreateWithoutId_userInput {
-  created_at: DateTime!
-  description: String
-  rating: Int!
-  id_event: EventCreateOneWithoutReviewsInput
+input PermissionCreateWithoutEventAdminsInput {
+  name: String!
 }
 
 """An edge in a connection."""
-type ReviewEdge {
+type PermissionEdge {
   """The item at the end of the edge."""
-  node: Review!
+  node: Permission!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum ReviewOrderByInput {
-  id_ASC
-  id_DESC
-  created_at_ASC
-  created_at_DESC
-  description_ASC
-  description_DESC
-  rating_ASC
-  rating_DESC
-}
-
-type ReviewPreviousValues {
-  id: Int!
-  created_at: DateTime!
-  description: String
-  rating: Int!
-}
-
-type ReviewSubscriptionPayload {
-  mutation: MutationType!
-  node: Review
-  updatedFields: [String!]
-  previousValues: ReviewPreviousValues
-}
-
-input ReviewSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ReviewSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ReviewSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ReviewSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: ReviewWhereInput
-}
-
-input ReviewUpdateInput {
-  created_at: DateTime
-  description: String
-  rating: Int
-  id_event: EventUpdateOneWithoutReviewsInput
-  id_user: UserUpdateOneWithoutReviewsInput
-}
-
-input ReviewUpdateManyMutationInput {
-  created_at: DateTime
-  description: String
-  rating: Int
-}
-
-input ReviewUpdateManyWithoutId_eventInput {
-  create: [ReviewCreateWithoutId_eventInput!]
-  connect: [ReviewWhereUniqueInput!]
-  disconnect: [ReviewWhereUniqueInput!]
-  delete: [ReviewWhereUniqueInput!]
-  update: [ReviewUpdateWithWhereUniqueWithoutId_eventInput!]
-  upsert: [ReviewUpsertWithWhereUniqueWithoutId_eventInput!]
-}
-
-input ReviewUpdateManyWithoutId_userInput {
-  create: [ReviewCreateWithoutId_userInput!]
-  connect: [ReviewWhereUniqueInput!]
-  disconnect: [ReviewWhereUniqueInput!]
-  delete: [ReviewWhereUniqueInput!]
-  update: [ReviewUpdateWithWhereUniqueWithoutId_userInput!]
-  upsert: [ReviewUpsertWithWhereUniqueWithoutId_userInput!]
-}
-
-input ReviewUpdateWithoutId_eventDataInput {
-  created_at: DateTime
-  description: String
-  rating: Int
-  id_user: UserUpdateOneWithoutReviewsInput
-}
-
-input ReviewUpdateWithoutId_userDataInput {
-  created_at: DateTime
-  description: String
-  rating: Int
-  id_event: EventUpdateOneWithoutReviewsInput
-}
-
-input ReviewUpdateWithWhereUniqueWithoutId_eventInput {
-  where: ReviewWhereUniqueInput!
-  data: ReviewUpdateWithoutId_eventDataInput!
-}
-
-input ReviewUpdateWithWhereUniqueWithoutId_userInput {
-  where: ReviewWhereUniqueInput!
-  data: ReviewUpdateWithoutId_userDataInput!
-}
-
-input ReviewUpsertWithWhereUniqueWithoutId_eventInput {
-  where: ReviewWhereUniqueInput!
-  update: ReviewUpdateWithoutId_eventDataInput!
-  create: ReviewCreateWithoutId_eventInput!
-}
-
-input ReviewUpsertWithWhereUniqueWithoutId_userInput {
-  where: ReviewWhereUniqueInput!
-  update: ReviewUpdateWithoutId_userDataInput!
-  create: ReviewCreateWithoutId_userInput!
-}
-
-input ReviewWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ReviewWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ReviewWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ReviewWhereInput!]
-  id: Int
-
-  """All values that are not equal to given value."""
-  id_not: Int
-
-  """All values that are contained in given list."""
-  id_in: [Int!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [Int!]
-
-  """All values less than the given value."""
-  id_lt: Int
-
-  """All values less than or equal the given value."""
-  id_lte: Int
-
-  """All values greater than the given value."""
-  id_gt: Int
-
-  """All values greater than or equal the given value."""
-  id_gte: Int
-  created_at: DateTime
-
-  """All values that are not equal to given value."""
-  created_at_not: DateTime
-
-  """All values that are contained in given list."""
-  created_at_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  created_at_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  created_at_lt: DateTime
-
-  """All values less than or equal the given value."""
-  created_at_lte: DateTime
-
-  """All values greater than the given value."""
-  created_at_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  created_at_gte: DateTime
-  description: String
-
-  """All values that are not equal to given value."""
-  description_not: String
-
-  """All values that are contained in given list."""
-  description_in: [String!]
-
-  """All values that are not contained in given list."""
-  description_not_in: [String!]
-
-  """All values less than the given value."""
-  description_lt: String
-
-  """All values less than or equal the given value."""
-  description_lte: String
-
-  """All values greater than the given value."""
-  description_gt: String
-
-  """All values greater than or equal the given value."""
-  description_gte: String
-
-  """All values containing the given string."""
-  description_contains: String
-
-  """All values not containing the given string."""
-  description_not_contains: String
-
-  """All values starting with the given string."""
-  description_starts_with: String
-
-  """All values not starting with the given string."""
-  description_not_starts_with: String
-
-  """All values ending with the given string."""
-  description_ends_with: String
-
-  """All values not ending with the given string."""
-  description_not_ends_with: String
-  rating: Int
-
-  """All values that are not equal to given value."""
-  rating_not: Int
-
-  """All values that are contained in given list."""
-  rating_in: [Int!]
-
-  """All values that are not contained in given list."""
-  rating_not_in: [Int!]
-
-  """All values less than the given value."""
-  rating_lt: Int
-
-  """All values less than or equal the given value."""
-  rating_lte: Int
-
-  """All values greater than the given value."""
-  rating_gt: Int
-
-  """All values greater than or equal the given value."""
-  rating_gte: Int
-  id_event: EventWhereInput
-  id_user: UserWhereInput
-}
-
-input ReviewWhereUniqueInput {
-  id: Int
-}
-
-type Role {
-  id: Int!
-  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin!]
-  name: String!
-}
-
-"""A connection to a list of items."""
-type RoleConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [RoleEdge]!
-  aggregate: AggregateRole!
-}
-
-input RoleCreateInput {
-  name: String!
-  event_admins: Event_adminCreateManyWithoutId_roleInput
-}
-
-input RoleCreateOneWithoutEvent_adminsInput {
-  create: RoleCreateWithoutEvent_adminsInput
-  connect: RoleWhereUniqueInput
-}
-
-input RoleCreateWithoutEvent_adminsInput {
-  name: String!
-}
-
-"""An edge in a connection."""
-type RoleEdge {
-  """The item at the end of the edge."""
-  node: Role!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum RoleOrderByInput {
+enum PermissionOrderByInput {
   id_ASC
   id_DESC
   name_ASC
   name_DESC
 }
 
-type RolePreviousValues {
+type PermissionPreviousValues {
   id: Int!
   name: String!
 }
 
-type RoleSubscriptionPayload {
+type PermissionSubscriptionPayload {
   mutation: MutationType!
-  node: Role
+  node: Permission
   updatedFields: [String!]
-  previousValues: RolePreviousValues
+  previousValues: PermissionPreviousValues
 }
 
-input RoleSubscriptionWhereInput {
+input PermissionSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [RoleSubscriptionWhereInput!]
+  AND: [PermissionSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [RoleSubscriptionWhereInput!]
+  OR: [PermissionSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [RoleSubscriptionWhereInput!]
+  NOT: [PermissionSubscriptionWhereInput!]
 
   """
   The subscription event gets dispatched when it's listed in mutation_in
@@ -3489,45 +3107,45 @@ input RoleSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: RoleWhereInput
+  node: PermissionWhereInput
 }
 
-input RoleUpdateInput {
+input PermissionUpdateInput {
   name: String
-  event_admins: Event_adminUpdateManyWithoutId_roleInput
+  eventAdmins: EventAdminUpdateManyWithoutPermissionInput
 }
 
-input RoleUpdateManyMutationInput {
+input PermissionUpdateManyMutationInput {
   name: String
 }
 
-input RoleUpdateOneWithoutEvent_adminsInput {
-  create: RoleCreateWithoutEvent_adminsInput
-  connect: RoleWhereUniqueInput
+input PermissionUpdateOneWithoutEventAdminsInput {
+  create: PermissionCreateWithoutEventAdminsInput
+  connect: PermissionWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: RoleUpdateWithoutEvent_adminsDataInput
-  upsert: RoleUpsertWithoutEvent_adminsInput
+  update: PermissionUpdateWithoutEventAdminsDataInput
+  upsert: PermissionUpsertWithoutEventAdminsInput
 }
 
-input RoleUpdateWithoutEvent_adminsDataInput {
+input PermissionUpdateWithoutEventAdminsDataInput {
   name: String
 }
 
-input RoleUpsertWithoutEvent_adminsInput {
-  update: RoleUpdateWithoutEvent_adminsDataInput!
-  create: RoleCreateWithoutEvent_adminsInput!
+input PermissionUpsertWithoutEventAdminsInput {
+  update: PermissionUpdateWithoutEventAdminsDataInput!
+  create: PermissionCreateWithoutEventAdminsInput!
 }
 
-input RoleWhereInput {
+input PermissionWhereInput {
   """Logical AND on all given filters."""
-  AND: [RoleWhereInput!]
+  AND: [PermissionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [RoleWhereInput!]
+  OR: [PermissionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [RoleWhereInput!]
+  NOT: [PermissionWhereInput!]
   id: Int
 
   """All values that are not equal to given value."""
@@ -3590,12 +3208,346 @@ input RoleWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
-  event_admins_every: Event_adminWhereInput
-  event_admins_some: Event_adminWhereInput
-  event_admins_none: Event_adminWhereInput
+  eventAdmins_every: EventAdminWhereInput
+  eventAdmins_some: EventAdminWhereInput
+  eventAdmins_none: EventAdminWhereInput
 }
 
-input RoleWhereUniqueInput {
+input PermissionWhereUniqueInput {
+  id: Int
+}
+
+type Query {
+  boards(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Board]!
+  cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card]!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
+  events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
+  eventAdmins(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EventAdmin]!
+  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
+  lists(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [List]!
+  permissions(where: PermissionWhereInput, orderBy: PermissionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Permission]!
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  board(where: BoardWhereUniqueInput!): Board
+  card(where: CardWhereUniqueInput!): Card
+  comment(where: CommentWhereUniqueInput!): Comment
+  event(where: EventWhereUniqueInput!): Event
+  eventAdmin(where: EventAdminWhereUniqueInput!): EventAdmin
+  expense(where: ExpenseWhereUniqueInput!): Expense
+  list(where: ListWhereUniqueInput!): List
+  permission(where: PermissionWhereUniqueInput!): Permission
+  review(where: ReviewWhereUniqueInput!): Review
+  user(where: UserWhereUniqueInput!): User
+  boardsConnection(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BoardConnection!
+  cardsConnection(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CardConnection!
+  commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
+  eventAdminsConnection(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventAdminConnection!
+  expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
+  listsConnection(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ListConnection!
+  permissionsConnection(where: PermissionWhereInput, orderBy: PermissionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PermissionConnection!
+  reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+}
+
+type Review {
+  id: Int!
+  createdAt: DateTime!
+  description: String
+  event: Event
+  rating: Int!
+  user: User
+}
+
+"""A connection to a list of items."""
+type ReviewConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ReviewEdge]!
+  aggregate: AggregateReview!
+}
+
+input ReviewCreateInput {
+  description: String
+  rating: Int!
+  event: EventCreateOneWithoutReviewsInput
+  user: UserCreateOneWithoutReviewsInput
+}
+
+input ReviewCreateManyWithoutEventInput {
+  create: [ReviewCreateWithoutEventInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
+input ReviewCreateManyWithoutUserInput {
+  create: [ReviewCreateWithoutUserInput!]
+  connect: [ReviewWhereUniqueInput!]
+}
+
+input ReviewCreateWithoutEventInput {
+  description: String
+  rating: Int!
+  user: UserCreateOneWithoutReviewsInput
+}
+
+input ReviewCreateWithoutUserInput {
+  description: String
+  rating: Int!
+  event: EventCreateOneWithoutReviewsInput
+}
+
+"""An edge in a connection."""
+type ReviewEdge {
+  """The item at the end of the edge."""
+  node: Review!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ReviewOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  description_ASC
+  description_DESC
+  rating_ASC
+  rating_DESC
+}
+
+type ReviewPreviousValues {
+  id: Int!
+  createdAt: DateTime!
+  description: String
+  rating: Int!
+}
+
+type ReviewSubscriptionPayload {
+  mutation: MutationType!
+  node: Review
+  updatedFields: [String!]
+  previousValues: ReviewPreviousValues
+}
+
+input ReviewSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ReviewSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ReviewSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ReviewSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ReviewWhereInput
+}
+
+input ReviewUpdateInput {
+  description: String
+  rating: Int
+  event: EventUpdateOneWithoutReviewsInput
+  user: UserUpdateOneWithoutReviewsInput
+}
+
+input ReviewUpdateManyMutationInput {
+  description: String
+  rating: Int
+}
+
+input ReviewUpdateManyWithoutEventInput {
+  create: [ReviewCreateWithoutEventInput!]
+  connect: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  delete: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutEventInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutEventInput!]
+}
+
+input ReviewUpdateManyWithoutUserInput {
+  create: [ReviewCreateWithoutUserInput!]
+  connect: [ReviewWhereUniqueInput!]
+  disconnect: [ReviewWhereUniqueInput!]
+  delete: [ReviewWhereUniqueInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ReviewUpdateWithoutEventDataInput {
+  description: String
+  rating: Int
+  user: UserUpdateOneWithoutReviewsInput
+}
+
+input ReviewUpdateWithoutUserDataInput {
+  description: String
+  rating: Int
+  event: EventUpdateOneWithoutReviewsInput
+}
+
+input ReviewUpdateWithWhereUniqueWithoutEventInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutEventDataInput!
+}
+
+input ReviewUpdateWithWhereUniqueWithoutUserInput {
+  where: ReviewWhereUniqueInput!
+  data: ReviewUpdateWithoutUserDataInput!
+}
+
+input ReviewUpsertWithWhereUniqueWithoutEventInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutEventDataInput!
+  create: ReviewCreateWithoutEventInput!
+}
+
+input ReviewUpsertWithWhereUniqueWithoutUserInput {
+  where: ReviewWhereUniqueInput!
+  update: ReviewUpdateWithoutUserDataInput!
+  create: ReviewCreateWithoutUserInput!
+}
+
+input ReviewWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ReviewWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ReviewWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ReviewWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  rating: Int
+
+  """All values that are not equal to given value."""
+  rating_not: Int
+
+  """All values that are contained in given list."""
+  rating_in: [Int!]
+
+  """All values that are not contained in given list."""
+  rating_not_in: [Int!]
+
+  """All values less than the given value."""
+  rating_lt: Int
+
+  """All values less than or equal the given value."""
+  rating_lte: Int
+
+  """All values greater than the given value."""
+  rating_gt: Int
+
+  """All values greater than or equal the given value."""
+  rating_gte: Int
+  event: EventWhereInput
+  user: UserWhereInput
+}
+
+input ReviewWhereUniqueInput {
   id: Int
 }
 
@@ -3604,11 +3556,11 @@ type Subscription {
   card(where: CardSubscriptionWhereInput): CardSubscriptionPayload
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
-  event_admin(where: Event_adminSubscriptionWhereInput): Event_adminSubscriptionPayload
+  eventAdmin(where: EventAdminSubscriptionWhereInput): EventAdminSubscriptionPayload
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
   list(where: ListSubscriptionWhereInput): ListSubscriptionPayload
+  permission(where: PermissionSubscriptionWhereInput): PermissionSubscriptionPayload
   review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
-  role(where: RoleSubscriptionWhereInput): RoleSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -3617,12 +3569,14 @@ type User {
   cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   email: String!
-  event_admins(where: Event_adminWhereInput, orderBy: Event_adminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event_admin!]
+  eventAdmins(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EventAdmin!]
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense!]
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   username: String!
 }
@@ -3639,16 +3593,18 @@ type UserConnection {
 
 input UserCreateInput {
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String!
-  cards: CardCreateManyWithoutId_userInput
-  comments: CommentCreateManyWithoutId_userInput
-  event_admins: Event_adminCreateManyWithoutId_userInput
-  expenses: ExpenseCreateManyWithoutId_userInput
-  reviews: ReviewCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutUserInput
+  comments: CommentCreateManyWithoutUserInput
+  eventAdmins: EventAdminCreateManyWithoutUserInput
+  expenses: ExpenseCreateManyWithoutUserInput
+  reviews: ReviewCreateManyWithoutUserInput
 }
 
 input UserCreateOneWithoutCardsInput {
@@ -3661,8 +3617,8 @@ input UserCreateOneWithoutCommentsInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutEvent_adminsInput {
-  create: UserCreateWithoutEvent_adminsInput
+input UserCreateOneWithoutEventAdminsInput {
+  create: UserCreateWithoutEventAdminsInput
   connect: UserWhereUniqueInput
 }
 
@@ -3678,67 +3634,77 @@ input UserCreateOneWithoutReviewsInput {
 
 input UserCreateWithoutCardsInput {
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String!
-  comments: CommentCreateManyWithoutId_userInput
-  event_admins: Event_adminCreateManyWithoutId_userInput
-  expenses: ExpenseCreateManyWithoutId_userInput
-  reviews: ReviewCreateManyWithoutId_userInput
+  comments: CommentCreateManyWithoutUserInput
+  eventAdmins: EventAdminCreateManyWithoutUserInput
+  expenses: ExpenseCreateManyWithoutUserInput
+  reviews: ReviewCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutCommentsInput {
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String!
-  cards: CardCreateManyWithoutId_userInput
-  event_admins: Event_adminCreateManyWithoutId_userInput
-  expenses: ExpenseCreateManyWithoutId_userInput
-  reviews: ReviewCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutUserInput
+  eventAdmins: EventAdminCreateManyWithoutUserInput
+  expenses: ExpenseCreateManyWithoutUserInput
+  reviews: ReviewCreateManyWithoutUserInput
 }
 
-input UserCreateWithoutEvent_adminsInput {
+input UserCreateWithoutEventAdminsInput {
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String!
-  cards: CardCreateManyWithoutId_userInput
-  comments: CommentCreateManyWithoutId_userInput
-  expenses: ExpenseCreateManyWithoutId_userInput
-  reviews: ReviewCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutUserInput
+  comments: CommentCreateManyWithoutUserInput
+  expenses: ExpenseCreateManyWithoutUserInput
+  reviews: ReviewCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutExpensesInput {
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String!
-  cards: CardCreateManyWithoutId_userInput
-  comments: CommentCreateManyWithoutId_userInput
-  event_admins: Event_adminCreateManyWithoutId_userInput
-  reviews: ReviewCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutUserInput
+  comments: CommentCreateManyWithoutUserInput
+  eventAdmins: EventAdminCreateManyWithoutUserInput
+  reviews: ReviewCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutReviewsInput {
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String!
-  cards: CardCreateManyWithoutId_userInput
-  comments: CommentCreateManyWithoutId_userInput
-  event_admins: Event_adminCreateManyWithoutId_userInput
-  expenses: ExpenseCreateManyWithoutId_userInput
+  cards: CardCreateManyWithoutUserInput
+  comments: CommentCreateManyWithoutUserInput
+  eventAdmins: EventAdminCreateManyWithoutUserInput
+  expenses: ExpenseCreateManyWithoutUserInput
 }
 
 """An edge in a connection."""
@@ -3755,14 +3721,18 @@ enum UserOrderByInput {
   id_DESC
   email_ASC
   email_DESC
-  first_name_ASC
-  first_name_DESC
-  last_name_ASC
-  last_name_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
   password_ASC
   password_DESC
   phone_ASC
   phone_DESC
+  resetToken_ASC
+  resetToken_DESC
+  resetTokenExpiry_ASC
+  resetTokenExpiry_DESC
   username_ASC
   username_DESC
 }
@@ -3770,10 +3740,12 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: Int!
   email: String!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String!
 }
 
@@ -3818,24 +3790,28 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   email: String
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   password: String
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String
-  cards: CardUpdateManyWithoutId_userInput
-  comments: CommentUpdateManyWithoutId_userInput
-  event_admins: Event_adminUpdateManyWithoutId_userInput
-  expenses: ExpenseUpdateManyWithoutId_userInput
-  reviews: ReviewUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutUserInput
+  comments: CommentUpdateManyWithoutUserInput
+  eventAdmins: EventAdminUpdateManyWithoutUserInput
+  expenses: ExpenseUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   email: String
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   password: String
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String
 }
 
@@ -3857,13 +3833,13 @@ input UserUpdateOneWithoutCommentsInput {
   upsert: UserUpsertWithoutCommentsInput
 }
 
-input UserUpdateOneWithoutEvent_adminsInput {
-  create: UserCreateWithoutEvent_adminsInput
+input UserUpdateOneWithoutEventAdminsInput {
+  create: UserCreateWithoutEventAdminsInput
   connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UserUpdateWithoutEvent_adminsDataInput
-  upsert: UserUpsertWithoutEvent_adminsInput
+  update: UserUpdateWithoutEventAdminsDataInput
+  upsert: UserUpsertWithoutEventAdminsInput
 }
 
 input UserUpdateOneWithoutExpensesInput {
@@ -3886,67 +3862,77 @@ input UserUpdateOneWithoutReviewsInput {
 
 input UserUpdateWithoutCardsDataInput {
   email: String
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   password: String
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String
-  comments: CommentUpdateManyWithoutId_userInput
-  event_admins: Event_adminUpdateManyWithoutId_userInput
-  expenses: ExpenseUpdateManyWithoutId_userInput
-  reviews: ReviewUpdateManyWithoutId_userInput
+  comments: CommentUpdateManyWithoutUserInput
+  eventAdmins: EventAdminUpdateManyWithoutUserInput
+  expenses: ExpenseUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutCommentsDataInput {
   email: String
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   password: String
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String
-  cards: CardUpdateManyWithoutId_userInput
-  event_admins: Event_adminUpdateManyWithoutId_userInput
-  expenses: ExpenseUpdateManyWithoutId_userInput
-  reviews: ReviewUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutUserInput
+  eventAdmins: EventAdminUpdateManyWithoutUserInput
+  expenses: ExpenseUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutUserInput
 }
 
-input UserUpdateWithoutEvent_adminsDataInput {
+input UserUpdateWithoutEventAdminsDataInput {
   email: String
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   password: String
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String
-  cards: CardUpdateManyWithoutId_userInput
-  comments: CommentUpdateManyWithoutId_userInput
-  expenses: ExpenseUpdateManyWithoutId_userInput
-  reviews: ReviewUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutUserInput
+  comments: CommentUpdateManyWithoutUserInput
+  expenses: ExpenseUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutExpensesDataInput {
   email: String
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   password: String
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String
-  cards: CardUpdateManyWithoutId_userInput
-  comments: CommentUpdateManyWithoutId_userInput
-  event_admins: Event_adminUpdateManyWithoutId_userInput
-  reviews: ReviewUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutUserInput
+  comments: CommentUpdateManyWithoutUserInput
+  eventAdmins: EventAdminUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutReviewsDataInput {
   email: String
-  first_name: String
-  last_name: String
+  firstName: String
+  lastName: String
   password: String
   phone: Int
+  resetToken: String
+  resetTokenExpiry: Float
   username: String
-  cards: CardUpdateManyWithoutId_userInput
-  comments: CommentUpdateManyWithoutId_userInput
-  event_admins: Event_adminUpdateManyWithoutId_userInput
-  expenses: ExpenseUpdateManyWithoutId_userInput
+  cards: CardUpdateManyWithoutUserInput
+  comments: CommentUpdateManyWithoutUserInput
+  eventAdmins: EventAdminUpdateManyWithoutUserInput
+  expenses: ExpenseUpdateManyWithoutUserInput
 }
 
 input UserUpsertWithoutCardsInput {
@@ -3959,9 +3945,9 @@ input UserUpsertWithoutCommentsInput {
   create: UserCreateWithoutCommentsInput!
 }
 
-input UserUpsertWithoutEvent_adminsInput {
-  update: UserUpdateWithoutEvent_adminsDataInput!
-  create: UserCreateWithoutEvent_adminsInput!
+input UserUpsertWithoutEventAdminsInput {
+  update: UserUpdateWithoutEventAdminsDataInput!
+  create: UserCreateWithoutEventAdminsInput!
 }
 
 input UserUpsertWithoutExpensesInput {
@@ -4045,86 +4031,86 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
-  first_name: String
+  firstName: String
 
   """All values that are not equal to given value."""
-  first_name_not: String
+  firstName_not: String
 
   """All values that are contained in given list."""
-  first_name_in: [String!]
+  firstName_in: [String!]
 
   """All values that are not contained in given list."""
-  first_name_not_in: [String!]
+  firstName_not_in: [String!]
 
   """All values less than the given value."""
-  first_name_lt: String
+  firstName_lt: String
 
   """All values less than or equal the given value."""
-  first_name_lte: String
+  firstName_lte: String
 
   """All values greater than the given value."""
-  first_name_gt: String
+  firstName_gt: String
 
   """All values greater than or equal the given value."""
-  first_name_gte: String
+  firstName_gte: String
 
   """All values containing the given string."""
-  first_name_contains: String
+  firstName_contains: String
 
   """All values not containing the given string."""
-  first_name_not_contains: String
+  firstName_not_contains: String
 
   """All values starting with the given string."""
-  first_name_starts_with: String
+  firstName_starts_with: String
 
   """All values not starting with the given string."""
-  first_name_not_starts_with: String
+  firstName_not_starts_with: String
 
   """All values ending with the given string."""
-  first_name_ends_with: String
+  firstName_ends_with: String
 
   """All values not ending with the given string."""
-  first_name_not_ends_with: String
-  last_name: String
+  firstName_not_ends_with: String
+  lastName: String
 
   """All values that are not equal to given value."""
-  last_name_not: String
+  lastName_not: String
 
   """All values that are contained in given list."""
-  last_name_in: [String!]
+  lastName_in: [String!]
 
   """All values that are not contained in given list."""
-  last_name_not_in: [String!]
+  lastName_not_in: [String!]
 
   """All values less than the given value."""
-  last_name_lt: String
+  lastName_lt: String
 
   """All values less than or equal the given value."""
-  last_name_lte: String
+  lastName_lte: String
 
   """All values greater than the given value."""
-  last_name_gt: String
+  lastName_gt: String
 
   """All values greater than or equal the given value."""
-  last_name_gte: String
+  lastName_gte: String
 
   """All values containing the given string."""
-  last_name_contains: String
+  lastName_contains: String
 
   """All values not containing the given string."""
-  last_name_not_contains: String
+  lastName_not_contains: String
 
   """All values starting with the given string."""
-  last_name_starts_with: String
+  lastName_starts_with: String
 
   """All values not starting with the given string."""
-  last_name_not_starts_with: String
+  lastName_not_starts_with: String
 
   """All values ending with the given string."""
-  last_name_ends_with: String
+  lastName_ends_with: String
 
   """All values not ending with the given string."""
-  last_name_not_ends_with: String
+  lastName_not_ends_with: String
   password: String
 
   """All values that are not equal to given value."""
@@ -4187,6 +4173,68 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   phone_gte: Int
+  resetToken: String
+
+  """All values that are not equal to given value."""
+  resetToken_not: String
+
+  """All values that are contained in given list."""
+  resetToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetToken_lte: String
+
+  """All values greater than the given value."""
+  resetToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetToken_gte: String
+
+  """All values containing the given string."""
+  resetToken_contains: String
+
+  """All values not containing the given string."""
+  resetToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetToken_not_ends_with: String
+  resetTokenExpiry: Float
+
+  """All values that are not equal to given value."""
+  resetTokenExpiry_not: Float
+
+  """All values that are contained in given list."""
+  resetTokenExpiry_in: [Float!]
+
+  """All values that are not contained in given list."""
+  resetTokenExpiry_not_in: [Float!]
+
+  """All values less than the given value."""
+  resetTokenExpiry_lt: Float
+
+  """All values less than or equal the given value."""
+  resetTokenExpiry_lte: Float
+
+  """All values greater than the given value."""
+  resetTokenExpiry_gt: Float
+
+  """All values greater than or equal the given value."""
+  resetTokenExpiry_gte: Float
   username: String
 
   """All values that are not equal to given value."""
@@ -4233,9 +4281,9 @@ input UserWhereInput {
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
   comments_none: CommentWhereInput
-  event_admins_every: Event_adminWhereInput
-  event_admins_some: Event_adminWhereInput
-  event_admins_none: Event_adminWhereInput
+  eventAdmins_every: EventAdminWhereInput
+  eventAdmins_some: EventAdminWhereInput
+  eventAdmins_none: EventAdminWhereInput
   expenses_every: ExpenseWhereInput
   expenses_some: ExpenseWhereInput
   expenses_none: ExpenseWhereInput

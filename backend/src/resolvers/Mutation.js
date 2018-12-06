@@ -4,6 +4,28 @@ const Mutations = {
     const event = await ctx.db.mutation.createEvent(
       {
         data: {
+          boards: {
+            create: {
+              title: 'A',
+              lists: {
+                create: {
+                  order: 1,
+                  title: 'A',
+                  cards: {
+                    create: {
+                      order: 1,
+                      title: 'A',
+                      user: {
+                        connect: {
+                          id: 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           ...args
         }
       },

@@ -13,14 +13,13 @@ const CREATE_EVENT_MUTATION = gql`
     $city: String!
     $country: String!
     $description: String
-    $entrance_tax: Int
-    $event_date: DateTime!
-    $image_large: String
-    $image_small: String
+    $entranceTax: Int
+    $eventDate: DateTime!
+    $imageLarge: String
+    $imageSmall: String
     $state: String!
     $title: String!
     $zip: String!
-    $now: DateTime!
   ) {
     createEvent(
       address1: $address1
@@ -29,36 +28,16 @@ const CREATE_EVENT_MUTATION = gql`
       city: $city
       country: $country
       description: $description
-      entrance_tax: $entrance_tax
-      event_creation: $now
-      event_date: $event_date
-      image_large: $image_large
-      image_small: $image_small
+      entranceTax: $entranceTax
+      eventDate: $eventDate
+      imageLarge: $imageLarge
+      imageSmall: $imageSmall
       state: $state
       title: $title
       zip: $zip
-      boards: {
-        create: {
-          title: "Example"
-          description: "Change me"
-          lists: {
-            create: {
-              created_at: $now
-              description: "Hi, this is a list!"
-              order: 1
-              title: "First list"
-            }
-          }
-        }
-      }
     ) {
       id
       title
-      boards {
-        id
-        title
-        description
-      }
     }
   }
 `;
@@ -71,12 +50,12 @@ class CreateEvent extends Component {
     city: '',
     country: '',
     description: '',
-    entrance_tax: 0,
-    event_date: moment()
+    entranceTax: 0,
+    eventDate: moment()
       .add(5, 'days')
       .toISOString(),
-    image_large: '',
-    image_small: '',
+    imageLarge: '',
+    imageSmall: '',
     state: '',
     title: '',
     zip: ''
@@ -106,8 +85,8 @@ class CreateEvent extends Component {
 
     const file = await res.json();
     this.setState({
-      image_small: file.secure_url,
-      image_large: file.eager[0].secure_url
+      imageSmall: file.secure_url,
+      imageLarge: file.eager[0].secure_url
     });
   };
 
@@ -116,8 +95,7 @@ class CreateEvent extends Component {
       <Mutation
         mutation={CREATE_EVENT_MUTATION}
         variables={{
-          ...this.state,
-          now: moment().toISOString()
+          ...this.state
         }}
       >
         {(createEvent, { loading, error }) => (
@@ -125,7 +103,6 @@ class CreateEvent extends Component {
             onSubmit={async e => {
               e.preventDefault();
               const res = await createEvent();
-              console.log(res.data.createEvent.event_date);
               Router.push({
                 pathname: '/event',
                 query: { id: res.data.createEvent.id }
@@ -198,14 +175,14 @@ class CreateEvent extends Component {
                   onChange={this.handleChange}
                 />
               </label>
-              <label htmlFor="entrance_tax">
+              <label htmlFor="entranceTax">
                 Entrance
                 <input
                   type="number"
-                  id="entrance_tax"
-                  name="entrance_tax"
+                  id="entranceTax"
+                  name="entranceTax"
                   placeholder="2500"
-                  value={this.state.entrance_tax}
+                  value={this.state.entranceTax}
                   onChange={this.handleChange}
                 />
               </label>
@@ -218,9 +195,9 @@ class CreateEvent extends Component {
                   placeholder="Upload an image"
                   onChange={this.uploadFile}
                 />
-                {this.state.image_small && (
+                {this.state.imageSmall && (
                   <img
-                    src={this.state.image_small}
+                    src={this.state.imageSmall}
                     alt="Upload an image"
                     height="200"
                   />

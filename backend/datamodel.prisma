@@ -1,27 +1,27 @@
 type Board @pgTable(name: "board") {
   id: Int! @unique
   description: String
-  id_event: Event @pgRelation(column: "id_event")
+  event: Event @pgRelation(column: "event")
   lists: [List!]!
   title: String!
 }
 
 type Card @pgTable(name: "card") {
   id: Int! @unique
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
-  id_list: List @pgRelation(column: "id_list")
-  id_user: User @pgRelation(column: "id_user")
+  list: List @pgRelation(column: "list")
   order: Int!
   title: String!
+  user: User @pgRelation(column: "user")
 }
 
 type Comment @pgTable(name: "comment") {
   id: Int! @unique
   content: String!
-  created_at: DateTime!
-  id_event: Event @pgRelation(column: "id_event")
-  id_user: User @pgRelation(column: "id_user")
+  createdAt: DateTime!
+  event: Event @pgRelation(column: "event")
+  user: User @pgRelation(column: "user")
 }
 
 type Event @pgTable(name: "event") {
@@ -33,60 +33,60 @@ type Event @pgTable(name: "event") {
   city: String!
   comments: [Comment!]!
   country: String!
+  createdAt: DateTime!
   description: String
-  entrance_tax: Int
-  event_admins: [Event_admin!]!
-  event_creation: DateTime!
-  event_date: DateTime!
+  entranceTax: Int
+  eventAdmins: [EventAdmin!]!
+  eventDate: DateTime!
   expenses: [Expense!]!
-  image_large: String
-  image_small: String
+  imageLarge: String
+  imageSmall: String
   reviews: [Review!]!
   state: String!
   title: String!
   zip: String!
 }
 
-type Event_admin @pgTable(name: "event_admin") {
+type EventAdmin @pgTable(name: "eventAdmin") {
   id: Int! @unique
-  id_event: Event @pgRelation(column: "id_event")
-  id_role: Role @pgRelation(column: "id_role")
-  id_user: User @pgRelation(column: "id_user")
+  event: Event @pgRelation(column: "event")
+  permission: Permission @pgRelation(column: "permission")
+  user: User @pgRelation(column: "user")
 }
 
 type Expense @pgTable(name: "expense") {
   id: Int! @unique
   amount: Float!
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
-  id_event: Event @pgRelation(column: "id_event")
-  id_user: User @pgRelation(column: "id_user")
+  event: Event @pgRelation(column: "event")
   title: String!
+  user: User @pgRelation(column: "user")
 }
 
 type List @pgTable(name: "list") {
   id: Int! @unique
+  board: Board @pgRelation(column: "board")
   cards: [Card!]!
-  created_at: DateTime!
+  createdAt: DateTime!
   description: String
-  id_board: Board @pgRelation(column: "id_board")
   order: Int!
   title: String!
 }
 
-type Review @pgTable(name: "review") {
+type Permission @pgTable(name: "permission") {
   id: Int! @unique
-  created_at: DateTime!
-  description: String
-  id_event: Event @pgRelation(column: "id_event")
-  id_user: User @pgRelation(column: "id_user")
-  rating: Int!
+  eventAdmins: [EventAdmin!]!
+  name: String!
 }
 
-type Role @pgTable(name: "role") {
+type Review @pgTable(name: "review") {
   id: Int! @unique
-  event_admins: [Event_admin!]!
-  name: String!
+  createdAt: DateTime!
+  description: String
+  event: Event @pgRelation(column: "event")
+  rating: Int!
+  user: User @pgRelation(column: "user")
 }
 
 type User @pgTable(name: "user") {
@@ -94,12 +94,14 @@ type User @pgTable(name: "user") {
   cards: [Card!]!
   comments: [Comment!]!
   email: String! @unique
-  event_admins: [Event_admin!]!
+  eventAdmins: [EventAdmin!]!
   expenses: [Expense!]!
-  first_name: String!
-  last_name: String!
+  firstName: String!
+  lastName: String!
   password: String!
   phone: Int @default(value: 0)
+  resetToken: String
+  resetTokenExpiry: Float
   reviews: [Review!]!
   username: String! @unique
 }
