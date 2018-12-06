@@ -5,14 +5,14 @@ const NavStyles = styled.ul`
   padding: 0;
   display: flex;
   justify-self: end;
-  background-color: ${props => props.theme.softGreen};
+  background-color: none;
   a,
   button {
     position: relative;
     display: block;
     padding: 1rem 2rem;
     text-decoration: none;
-    color: ${props => props.theme.offWhite};
+    color: ${props => props.theme.black};
     cursor: pointer;
     transition: all 0.3s;
 
@@ -21,9 +21,9 @@ const NavStyles = styled.ul`
     }
 
     &:hover {
-      background-color: ${props => props.theme.offWhite};
+      background-color: ${props => props.theme.softGreen};
       transform: skewY(-3deg);
-      color: ${props => props.theme.black};
+      color: ${props => props.theme.offWhite};
     }
 
     &:after {

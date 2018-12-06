@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Mon Nov 26 2018 10:42:03 GMT+0100 (GMT+01:00)
+# timestamp: Wed Nov 28 2018 10:56:49 GMT+0100 (GMT+01:00)
 
 type AggregateBoard {
   count: Int!
@@ -974,10 +974,9 @@ scalar DateTime
 type Event {
   id: Int!
   address1: String!
-  address2: String!
-  address3: String!
+  address2: String
+  address3: String
   boards(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Board!]
-  budget: Int!
   city: String!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   country: String!
@@ -989,7 +988,6 @@ type Event {
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense!]
   image_large: String
   image_small: String
-  rating: Int!
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   state: String!
   title: String!
@@ -1239,9 +1237,8 @@ type EventConnection {
 
 input EventCreateInput {
   address1: String!
-  address2: String!
-  address3: String!
-  budget: Int!
+  address2: String
+  address3: String
   city: String!
   country: String!
   description: String
@@ -1250,7 +1247,6 @@ input EventCreateInput {
   event_date: DateTime!
   image_large: String
   image_small: String
-  rating: Int!
   state: String!
   title: String!
   zip: String!
@@ -1258,7 +1254,7 @@ input EventCreateInput {
   comments: CommentCreateManyWithoutId_eventInput
   event_admins: Event_adminCreateManyWithoutId_eventInput
   expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventsInput
+  reviews: ReviewCreateManyWithoutId_eventInput
 }
 
 input EventCreateOneWithoutBoardsInput {
@@ -1288,9 +1284,8 @@ input EventCreateOneWithoutReviewsInput {
 
 input EventCreateWithoutBoardsInput {
   address1: String!
-  address2: String!
-  address3: String!
-  budget: Int!
+  address2: String
+  address3: String
   city: String!
   country: String!
   description: String
@@ -1299,21 +1294,19 @@ input EventCreateWithoutBoardsInput {
   event_date: DateTime!
   image_large: String
   image_small: String
-  rating: Int!
   state: String!
   title: String!
   zip: String!
   comments: CommentCreateManyWithoutId_eventInput
   event_admins: Event_adminCreateManyWithoutId_eventInput
   expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventsInput
+  reviews: ReviewCreateManyWithoutId_eventInput
 }
 
 input EventCreateWithoutCommentsInput {
   address1: String!
-  address2: String!
-  address3: String!
-  budget: Int!
+  address2: String
+  address3: String
   city: String!
   country: String!
   description: String
@@ -1322,21 +1315,19 @@ input EventCreateWithoutCommentsInput {
   event_date: DateTime!
   image_large: String
   image_small: String
-  rating: Int!
   state: String!
   title: String!
   zip: String!
   boards: BoardCreateManyWithoutId_eventInput
   event_admins: Event_adminCreateManyWithoutId_eventInput
   expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventsInput
+  reviews: ReviewCreateManyWithoutId_eventInput
 }
 
 input EventCreateWithoutEvent_adminsInput {
   address1: String!
-  address2: String!
-  address3: String!
-  budget: Int!
+  address2: String
+  address3: String
   city: String!
   country: String!
   description: String
@@ -1345,21 +1336,19 @@ input EventCreateWithoutEvent_adminsInput {
   event_date: DateTime!
   image_large: String
   image_small: String
-  rating: Int!
   state: String!
   title: String!
   zip: String!
   boards: BoardCreateManyWithoutId_eventInput
   comments: CommentCreateManyWithoutId_eventInput
   expenses: ExpenseCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventsInput
+  reviews: ReviewCreateManyWithoutId_eventInput
 }
 
 input EventCreateWithoutExpensesInput {
   address1: String!
-  address2: String!
-  address3: String!
-  budget: Int!
+  address2: String
+  address3: String
   city: String!
   country: String!
   description: String
@@ -1368,21 +1357,19 @@ input EventCreateWithoutExpensesInput {
   event_date: DateTime!
   image_large: String
   image_small: String
-  rating: Int!
   state: String!
   title: String!
   zip: String!
   boards: BoardCreateManyWithoutId_eventInput
   comments: CommentCreateManyWithoutId_eventInput
   event_admins: Event_adminCreateManyWithoutId_eventInput
-  reviews: ReviewCreateManyWithoutId_eventsInput
+  reviews: ReviewCreateManyWithoutId_eventInput
 }
 
 input EventCreateWithoutReviewsInput {
   address1: String!
-  address2: String!
-  address3: String!
-  budget: Int!
+  address2: String
+  address3: String
   city: String!
   country: String!
   description: String
@@ -1391,7 +1378,6 @@ input EventCreateWithoutReviewsInput {
   event_date: DateTime!
   image_large: String
   image_small: String
-  rating: Int!
   state: String!
   title: String!
   zip: String!
@@ -1419,8 +1405,6 @@ enum EventOrderByInput {
   address2_DESC
   address3_ASC
   address3_DESC
-  budget_ASC
-  budget_DESC
   city_ASC
   city_DESC
   country_ASC
@@ -1437,8 +1421,6 @@ enum EventOrderByInput {
   image_large_DESC
   image_small_ASC
   image_small_DESC
-  rating_ASC
-  rating_DESC
   state_ASC
   state_DESC
   title_ASC
@@ -1450,9 +1432,8 @@ enum EventOrderByInput {
 type EventPreviousValues {
   id: Int!
   address1: String!
-  address2: String!
-  address3: String!
-  budget: Int!
+  address2: String
+  address3: String
   city: String!
   country: String!
   description: String
@@ -1461,7 +1442,6 @@ type EventPreviousValues {
   event_date: DateTime!
   image_large: String
   image_small: String
-  rating: Int!
   state: String!
   title: String!
   zip: String!
@@ -1510,7 +1490,6 @@ input EventUpdateInput {
   address1: String
   address2: String
   address3: String
-  budget: Int
   city: String
   country: String
   description: String
@@ -1519,7 +1498,6 @@ input EventUpdateInput {
   event_date: DateTime
   image_large: String
   image_small: String
-  rating: Int
   state: String
   title: String
   zip: String
@@ -1527,14 +1505,13 @@ input EventUpdateInput {
   comments: CommentUpdateManyWithoutId_eventInput
   event_admins: Event_adminUpdateManyWithoutId_eventInput
   expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventsInput
+  reviews: ReviewUpdateManyWithoutId_eventInput
 }
 
 input EventUpdateManyMutationInput {
   address1: String
   address2: String
   address3: String
-  budget: Int
   city: String
   country: String
   description: String
@@ -1543,7 +1520,6 @@ input EventUpdateManyMutationInput {
   event_date: DateTime
   image_large: String
   image_small: String
-  rating: Int
   state: String
   title: String
   zip: String
@@ -1598,7 +1574,6 @@ input EventUpdateWithoutBoardsDataInput {
   address1: String
   address2: String
   address3: String
-  budget: Int
   city: String
   country: String
   description: String
@@ -1607,21 +1582,19 @@ input EventUpdateWithoutBoardsDataInput {
   event_date: DateTime
   image_large: String
   image_small: String
-  rating: Int
   state: String
   title: String
   zip: String
   comments: CommentUpdateManyWithoutId_eventInput
   event_admins: Event_adminUpdateManyWithoutId_eventInput
   expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventsInput
+  reviews: ReviewUpdateManyWithoutId_eventInput
 }
 
 input EventUpdateWithoutCommentsDataInput {
   address1: String
   address2: String
   address3: String
-  budget: Int
   city: String
   country: String
   description: String
@@ -1630,21 +1603,19 @@ input EventUpdateWithoutCommentsDataInput {
   event_date: DateTime
   image_large: String
   image_small: String
-  rating: Int
   state: String
   title: String
   zip: String
   boards: BoardUpdateManyWithoutId_eventInput
   event_admins: Event_adminUpdateManyWithoutId_eventInput
   expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventsInput
+  reviews: ReviewUpdateManyWithoutId_eventInput
 }
 
 input EventUpdateWithoutEvent_adminsDataInput {
   address1: String
   address2: String
   address3: String
-  budget: Int
   city: String
   country: String
   description: String
@@ -1653,21 +1624,19 @@ input EventUpdateWithoutEvent_adminsDataInput {
   event_date: DateTime
   image_large: String
   image_small: String
-  rating: Int
   state: String
   title: String
   zip: String
   boards: BoardUpdateManyWithoutId_eventInput
   comments: CommentUpdateManyWithoutId_eventInput
   expenses: ExpenseUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventsInput
+  reviews: ReviewUpdateManyWithoutId_eventInput
 }
 
 input EventUpdateWithoutExpensesDataInput {
   address1: String
   address2: String
   address3: String
-  budget: Int
   city: String
   country: String
   description: String
@@ -1676,21 +1645,19 @@ input EventUpdateWithoutExpensesDataInput {
   event_date: DateTime
   image_large: String
   image_small: String
-  rating: Int
   state: String
   title: String
   zip: String
   boards: BoardUpdateManyWithoutId_eventInput
   comments: CommentUpdateManyWithoutId_eventInput
   event_admins: Event_adminUpdateManyWithoutId_eventInput
-  reviews: ReviewUpdateManyWithoutId_eventsInput
+  reviews: ReviewUpdateManyWithoutId_eventInput
 }
 
 input EventUpdateWithoutReviewsDataInput {
   address1: String
   address2: String
   address3: String
-  budget: Int
   city: String
   country: String
   description: String
@@ -1699,7 +1666,6 @@ input EventUpdateWithoutReviewsDataInput {
   event_date: DateTime
   image_large: String
   image_small: String
-  rating: Int
   state: String
   title: String
   zip: String
@@ -1885,28 +1851,6 @@ input EventWhereInput {
 
   """All values not ending with the given string."""
   address3_not_ends_with: String
-  budget: Int
-
-  """All values that are not equal to given value."""
-  budget_not: Int
-
-  """All values that are contained in given list."""
-  budget_in: [Int!]
-
-  """All values that are not contained in given list."""
-  budget_not_in: [Int!]
-
-  """All values less than the given value."""
-  budget_lt: Int
-
-  """All values less than or equal the given value."""
-  budget_lte: Int
-
-  """All values greater than the given value."""
-  budget_gt: Int
-
-  """All values greater than or equal the given value."""
-  budget_gte: Int
   city: String
 
   """All values that are not equal to given value."""
@@ -2173,28 +2117,6 @@ input EventWhereInput {
 
   """All values not ending with the given string."""
   image_small_not_ends_with: String
-  rating: Int
-
-  """All values that are not equal to given value."""
-  rating_not: Int
-
-  """All values that are contained in given list."""
-  rating_in: [Int!]
-
-  """All values that are not contained in given list."""
-  rating_not_in: [Int!]
-
-  """All values less than the given value."""
-  rating_lt: Int
-
-  """All values less than or equal the given value."""
-  rating_lte: Int
-
-  """All values greater than the given value."""
-  rating_gt: Int
-
-  """All values greater than or equal the given value."""
-  rating_gte: Int
   state: String
 
   """All values that are not equal to given value."""
@@ -3176,7 +3098,7 @@ type Review {
   id: Int!
   created_at: DateTime!
   description: String
-  id_events: Event
+  id_event: Event
   id_user: User
   rating: Int!
 }
@@ -3195,12 +3117,12 @@ input ReviewCreateInput {
   created_at: DateTime!
   description: String
   rating: Int!
-  id_events: EventCreateOneWithoutReviewsInput
+  id_event: EventCreateOneWithoutReviewsInput
   id_user: UserCreateOneWithoutReviewsInput
 }
 
-input ReviewCreateManyWithoutId_eventsInput {
-  create: [ReviewCreateWithoutId_eventsInput!]
+input ReviewCreateManyWithoutId_eventInput {
+  create: [ReviewCreateWithoutId_eventInput!]
   connect: [ReviewWhereUniqueInput!]
 }
 
@@ -3209,7 +3131,7 @@ input ReviewCreateManyWithoutId_userInput {
   connect: [ReviewWhereUniqueInput!]
 }
 
-input ReviewCreateWithoutId_eventsInput {
+input ReviewCreateWithoutId_eventInput {
   created_at: DateTime!
   description: String
   rating: Int!
@@ -3220,7 +3142,7 @@ input ReviewCreateWithoutId_userInput {
   created_at: DateTime!
   description: String
   rating: Int!
-  id_events: EventCreateOneWithoutReviewsInput
+  id_event: EventCreateOneWithoutReviewsInput
 }
 
 """An edge in a connection."""
@@ -3293,7 +3215,7 @@ input ReviewUpdateInput {
   created_at: DateTime
   description: String
   rating: Int
-  id_events: EventUpdateOneWithoutReviewsInput
+  id_event: EventUpdateOneWithoutReviewsInput
   id_user: UserUpdateOneWithoutReviewsInput
 }
 
@@ -3303,13 +3225,13 @@ input ReviewUpdateManyMutationInput {
   rating: Int
 }
 
-input ReviewUpdateManyWithoutId_eventsInput {
-  create: [ReviewCreateWithoutId_eventsInput!]
+input ReviewUpdateManyWithoutId_eventInput {
+  create: [ReviewCreateWithoutId_eventInput!]
   connect: [ReviewWhereUniqueInput!]
   disconnect: [ReviewWhereUniqueInput!]
   delete: [ReviewWhereUniqueInput!]
-  update: [ReviewUpdateWithWhereUniqueWithoutId_eventsInput!]
-  upsert: [ReviewUpsertWithWhereUniqueWithoutId_eventsInput!]
+  update: [ReviewUpdateWithWhereUniqueWithoutId_eventInput!]
+  upsert: [ReviewUpsertWithWhereUniqueWithoutId_eventInput!]
 }
 
 input ReviewUpdateManyWithoutId_userInput {
@@ -3321,7 +3243,7 @@ input ReviewUpdateManyWithoutId_userInput {
   upsert: [ReviewUpsertWithWhereUniqueWithoutId_userInput!]
 }
 
-input ReviewUpdateWithoutId_eventsDataInput {
+input ReviewUpdateWithoutId_eventDataInput {
   created_at: DateTime
   description: String
   rating: Int
@@ -3332,12 +3254,12 @@ input ReviewUpdateWithoutId_userDataInput {
   created_at: DateTime
   description: String
   rating: Int
-  id_events: EventUpdateOneWithoutReviewsInput
+  id_event: EventUpdateOneWithoutReviewsInput
 }
 
-input ReviewUpdateWithWhereUniqueWithoutId_eventsInput {
+input ReviewUpdateWithWhereUniqueWithoutId_eventInput {
   where: ReviewWhereUniqueInput!
-  data: ReviewUpdateWithoutId_eventsDataInput!
+  data: ReviewUpdateWithoutId_eventDataInput!
 }
 
 input ReviewUpdateWithWhereUniqueWithoutId_userInput {
@@ -3345,10 +3267,10 @@ input ReviewUpdateWithWhereUniqueWithoutId_userInput {
   data: ReviewUpdateWithoutId_userDataInput!
 }
 
-input ReviewUpsertWithWhereUniqueWithoutId_eventsInput {
+input ReviewUpsertWithWhereUniqueWithoutId_eventInput {
   where: ReviewWhereUniqueInput!
-  update: ReviewUpdateWithoutId_eventsDataInput!
-  create: ReviewCreateWithoutId_eventsInput!
+  update: ReviewUpdateWithoutId_eventDataInput!
+  create: ReviewCreateWithoutId_eventInput!
 }
 
 input ReviewUpsertWithWhereUniqueWithoutId_userInput {
@@ -3472,7 +3394,7 @@ input ReviewWhereInput {
 
   """All values greater than or equal the given value."""
   rating_gte: Int
-  id_events: EventWhereInput
+  id_event: EventWhereInput
   id_user: UserWhereInput
 }
 

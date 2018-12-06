@@ -27,10 +27,9 @@ type Comment @pgTable(name: "comment") {
 type Event @pgTable(name: "event") {
   id: Int! @unique
   address1: String!
-  address2: String!
-  address3: String!
+  address2: String
+  address3: String
   boards: [Board!]!
-  budget: Int!
   city: String!
   comments: [Comment!]!
   country: String!
@@ -42,7 +41,6 @@ type Event @pgTable(name: "event") {
   expenses: [Expense!]!
   image_large: String
   image_small: String
-  rating: Int!
   reviews: [Review!]!
   state: String!
   title: String!
@@ -80,7 +78,7 @@ type Review @pgTable(name: "review") {
   id: Int! @unique
   created_at: DateTime!
   description: String
-  id_events: Event @pgRelation(column: "id_events")
+  id_event: Event @pgRelation(column: "id_event")
   id_user: User @pgRelation(column: "id_user")
   rating: Int!
 }
