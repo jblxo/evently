@@ -17,6 +17,17 @@ type Mutation {
     zip: String!
     boards: BoardCreateManyWithoutEventInput
   ): Event!
+  signup(
+    email: String!
+    firstName: String!
+    lastName: String!
+    password: String!
+    confirmPassword: String!
+    phone: Int
+    resetToken: String
+    resetTokenExpiry: Float
+    username: String!
+  ): User!
 }
 
 type Query {
