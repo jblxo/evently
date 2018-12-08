@@ -111,6 +111,7 @@ class CreateEvent extends Component {
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
+              <h2>Create Your Easily Managable Event!</h2>
               <label htmlFor="address1">
                 Address 1
                 <input
