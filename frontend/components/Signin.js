@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import Form from './styles/Form';
 import Button from './styles/Button';
 import { CURRENT_USER_QUERY } from './User';
+import Error from './Error';
 
 const SINGIN_MUTATION = gql`
   mutation SINGIN_MUTATION($email: String!, $password: String!) {
@@ -48,6 +49,7 @@ class Signin extends Component {
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
+              <Error error={error} />
               <h2>Sign In!</h2>
               <p>{console.log(error)}</p>
               <label htmlFor="email">
@@ -58,6 +60,7 @@ class Signin extends Component {
                   placeholder="Email"
                   value={this.state.email}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
               <label htmlFor="password">
@@ -68,6 +71,7 @@ class Signin extends Component {
                   placeholder="Password"
                   value={this.state.password}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
             </fieldset>

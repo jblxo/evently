@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import Form from './styles/Form';
 import Button from './styles/Button';
 import { CURRENT_USER_QUERY } from './User';
+import Error from './Error';
 
 const SINGUP_MUTATION = gql`
   mutation SINGUP_MUTATION(
@@ -70,6 +71,7 @@ class Signup extends Component {
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
+              <Error error={error} />
               <h2>Sign Up For an Account!</h2>
               {error && <p>{error}</p>}
               <label htmlFor="email">
@@ -80,6 +82,7 @@ class Signup extends Component {
                   placeholder="Email"
                   value={this.state.email}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
               <label htmlFor="username">
@@ -90,6 +93,7 @@ class Signup extends Component {
                   placeholder="JohnWick420"
                   value={this.state.username}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
               <label htmlFor="firstName">
@@ -100,6 +104,7 @@ class Signup extends Component {
                   placeholder="First Name"
                   value={this.state.firstName}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
               <label htmlFor="lastName">
@@ -110,6 +115,7 @@ class Signup extends Component {
                   placeholder="Last Name"
                   value={this.state.lastName}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
               <label htmlFor="password">
@@ -120,6 +126,7 @@ class Signup extends Component {
                   placeholder="Password"
                   value={this.state.password}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
               <label htmlFor="confirmPassword">
@@ -130,6 +137,7 @@ class Signup extends Component {
                   placeholder="Cofnirm Password"
                   value={this.state.confirmPassword}
                   onChange={this.saveToState}
+                  required
                 />
               </label>
             </fieldset>

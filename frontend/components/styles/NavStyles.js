@@ -5,8 +5,10 @@ const NavStyles = styled.ul`
   padding: 0;
   display: flex;
   justify-self: end;
-  background-color: none;
+  background-color: ${props => props.theme.darkGreen};
   flex-direction: row-reverse;
+  position: fixed;
+  width: 100%;
 
   a,
   button {

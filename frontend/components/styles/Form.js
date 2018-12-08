@@ -15,13 +15,12 @@ const Form = styled.form`
     margin: 0;
 
     label {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      font-weight: 300;
+      flex: 1 1 auto;
+      font-weight: 500;
       font-size: 1.7rem;
+      margin: 2.5rem;
       &:not(:last-child) {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
       }
 
       input,
