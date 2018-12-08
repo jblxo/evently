@@ -6,12 +6,16 @@ import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 const theme = {
   maxWidth: '1000px',
   black: '#000',
-  softGreen: '#77dd77',
-  offWhite: '#f9f9f9'
+  softLime: '#E9EFE1',
+  offWhite: '#F2F2F2',
+  paleOrange: '#F0D8CE',
+  rose: '#EDA6A6',
+  darkGreen: '#4A6146',
+  ocean: '#60B89C',
+  softOcean: '#9ED8C2'
 };
 
 const StyledPage = styled.div`
-  background: white;
   color: ${props => props.theme.black};
 `;
 
@@ -91,11 +95,14 @@ const GlobalStyle = createGlobalStyle`
   html {
     box-sizing: border-box;
     font-size: 62.5%;
+    height: 100%;
   }
   *, *:before, *:after {
     box-sizing: inherit;
   }
   body {
+    background: ${props => props.theme.softLime};
+    height: 100%;
     padding: 0;
     margin: 0;
     font-size: 1.5rem;

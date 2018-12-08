@@ -1,28 +1,41 @@
-import styled from 'styled-components';
 import Link from 'next/link';
 import NavStyles from './styles/NavStyles';
+import User from './User';
+import Signout from './Signout';
 
 const Nav = () => (
-  <NavStyles>
-    <Link href="/">
-      <a>Home</a>
-    </Link>
-    <Link href="/about">
-      <a>About</a>
-    </Link>
-    <Link href="/events">
-      <a>Events</a>
-    </Link>
-    <Link href="/login">
-      <a>Log In</a>
-    </Link>
-    <Link href="/account">
-      <a>Account</a>
-    </Link>
-    <Link href="/create">
-      <a>Create Your Own Event</a>
-    </Link>
-  </NavStyles>
+  <User>
+    {({ data: { me } }) => (
+      <NavStyles>
+        <Link href="/">
+          <a>Home</a>
+        </Link>
+        <Link href="/about">
+          <a>About</a>
+        </Link>
+        <Link href="/events">
+          <a>Events</a>
+        </Link>
+        {me && (
+          <>
+            <Link href="/account">
+              <a>Account</a>
+            </Link>
+            <Link href="/create">
+              <a>Create Your Own Event</a>
+            </Link>
+            <Signout />
+          </>
+        )}
+
+        {!me && (
+          <Link href="/signup">
+            <a>Sign Up</a>
+          </Link>
+        )}
+      </NavStyles>
+    )}
+  </User>
 );
 
 export default Nav;

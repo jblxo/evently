@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Thu Dec 06 2018 18:41:45 GMT+0100 (GMT+01:00)
+# timestamp: Fri Dec 07 2018 17:13:40 GMT+0100 (GMT+01:00)
 
 type AggregateBoard {
   count: Int!
@@ -3574,7 +3574,6 @@ type User {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
@@ -3596,7 +3595,6 @@ input UserCreateInput {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String!
@@ -3637,7 +3635,6 @@ input UserCreateWithoutCardsInput {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String!
@@ -3652,7 +3649,6 @@ input UserCreateWithoutCommentsInput {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String!
@@ -3667,7 +3663,6 @@ input UserCreateWithoutEventAdminsInput {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String!
@@ -3682,7 +3677,6 @@ input UserCreateWithoutExpensesInput {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String!
@@ -3697,7 +3691,6 @@ input UserCreateWithoutReviewsInput {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String!
@@ -3727,8 +3720,6 @@ enum UserOrderByInput {
   lastName_DESC
   password_ASC
   password_DESC
-  phone_ASC
-  phone_DESC
   resetToken_ASC
   resetToken_DESC
   resetTokenExpiry_ASC
@@ -3743,7 +3734,6 @@ type UserPreviousValues {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String!
@@ -3793,7 +3783,6 @@ input UserUpdateInput {
   firstName: String
   lastName: String
   password: String
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String
@@ -3809,7 +3798,6 @@ input UserUpdateManyMutationInput {
   firstName: String
   lastName: String
   password: String
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String
@@ -3865,7 +3853,6 @@ input UserUpdateWithoutCardsDataInput {
   firstName: String
   lastName: String
   password: String
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String
@@ -3880,7 +3867,6 @@ input UserUpdateWithoutCommentsDataInput {
   firstName: String
   lastName: String
   password: String
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String
@@ -3895,7 +3881,6 @@ input UserUpdateWithoutEventAdminsDataInput {
   firstName: String
   lastName: String
   password: String
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String
@@ -3910,7 +3895,6 @@ input UserUpdateWithoutExpensesDataInput {
   firstName: String
   lastName: String
   password: String
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String
@@ -3925,7 +3909,6 @@ input UserUpdateWithoutReviewsDataInput {
   firstName: String
   lastName: String
   password: String
-  phone: Int
   resetToken: String
   resetTokenExpiry: Float
   username: String
@@ -4151,28 +4134,6 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
-  phone: Int
-
-  """All values that are not equal to given value."""
-  phone_not: Int
-
-  """All values that are contained in given list."""
-  phone_in: [Int!]
-
-  """All values that are not contained in given list."""
-  phone_not_in: [Int!]
-
-  """All values less than the given value."""
-  phone_lt: Int
-
-  """All values less than or equal the given value."""
-  phone_lte: Int
-
-  """All values greater than the given value."""
-  phone_gt: Int
-
-  """All values greater than or equal the given value."""
-  phone_gte: Int
   resetToken: String
 
   """All values that are not equal to given value."""

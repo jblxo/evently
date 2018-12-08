@@ -99,7 +99,6 @@ type User @pgTable(name: "user") {
   firstName: String!
   lastName: String!
   password: String!
-  phone: Int @default(value: 0)
   resetToken: String
   resetTokenExpiry: Float
   reviews: [Review!]!

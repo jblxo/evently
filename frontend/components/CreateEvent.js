@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import moment from 'moment';
 import Router from 'next/router';
 import Form from './styles/Form';
+import Button from './styles/Button';
 
 const CREATE_EVENT_MUTATION = gql`
   mutation CREATE_EVENT_MUTATION(
@@ -236,7 +237,7 @@ class CreateEvent extends Component {
                   onChange={this.handleChange}
                 />
               </label>
-              <button type="submit">Submit</button>
+              <Button type="submit">Submit</Button>
             </fieldset>
           </Form>
         )}

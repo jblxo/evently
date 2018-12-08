@@ -6,8 +6,15 @@ const NavStyles = styled.ul`
   display: flex;
   justify-self: end;
   background-color: none;
+  flex-direction: row-reverse;
+
   a,
   button {
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 400;
     position: relative;
     display: block;
     padding: 1rem 2rem;
@@ -16,14 +23,10 @@ const NavStyles = styled.ul`
     cursor: pointer;
     transition: all 0.3s;
 
-    &:not(:last-child) {
-      margin-right: 2rem;
-    }
-
     &:hover {
-      background-color: ${props => props.theme.softGreen};
+      background-color: ${props => props.theme.ocean};
       transform: skewY(-3deg);
-      color: ${props => props.theme.offWhite};
+      color: ${props => props.theme.paleOrange};
     }
 
     &:after {
