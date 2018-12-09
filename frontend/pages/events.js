@@ -1,3 +1,5 @@
-const Events = props => <p>Events Page Incoming!</p>;
+import Events from '../components/Events';
 
-export default Events;
+const EventsPage = props => <Events />;
+
+export default EventsPage;

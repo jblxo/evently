@@ -15,6 +15,7 @@ const Form = styled.form`
     margin: 0;
 
     h2 {
+      text-align: center;
       transition: all 0.2s ease-out;
 
       &:hover {

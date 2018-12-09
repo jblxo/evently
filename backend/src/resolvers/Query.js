@@ -10,12 +10,7 @@ const Query = {
     }
     return ctx.db.query.user({ where: { id: ctx.request.userId } }, info);
   },
-  // TODO: Add users query
-  users(parent, args, ctx, info) {
-    // 1. Check if they are logged in
-    // 2. TODO: check if they have the permission to do that
-    // 3. QUery all the users
-  }
+  users: forwardTo('db')
 };
 
 module.exports = Query;

@@ -8,6 +8,14 @@ const CURRENT_USER_QUERY = gql`
       id
       email
       username
+      eventAdmins {
+        user {
+          username
+        }
+        permission {
+          name
+        }
+      }
     }
   }
 `;

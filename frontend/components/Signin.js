@@ -51,7 +51,6 @@ class Signin extends Component {
             <fieldset disabled={loading} aria-busy={loading}>
               <Error error={error} />
               <h2>Sign In!</h2>
-              <p>{console.log(error)}</p>
               <label htmlFor="email">
                 Email
                 <input

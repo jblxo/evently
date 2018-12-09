@@ -4,7 +4,7 @@ class Events extends Component {
   render() {
     return (
       <div>
-        
+        <p>Events Page!</p>
       </div>
     );
   }

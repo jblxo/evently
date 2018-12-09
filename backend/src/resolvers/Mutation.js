@@ -4,12 +4,25 @@ const { isLoggedIn } = require('../utils');
 
 const Mutations = {
   async createEvent(parent, args, ctx, info) {
-    // TODO: Check if user is logged in
     isLoggedIn(ctx.request.userId);
 
     const event = await ctx.db.mutation.createEvent(
       {
         data: {
+          eventAdmins: {
+            create: {
+              user: {
+                connect: {
+                  id: ctx.request.userId
+                }
+              },
+              permission: {
+                connect: {
+                  id: 1
+                }
+              }
+            }
+          },
           boards: {
             create: {
               title: 'Welcome',
@@ -23,7 +36,6 @@ const Mutations = {
                       title: `Hi, I'm a card. Try changing my text!`,
                       user: {
                         connect: {
-                          // TODO: make the connected user the currently logged in
                           id: ctx.request.userId
                         }
                       }
