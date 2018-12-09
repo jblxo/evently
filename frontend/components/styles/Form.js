@@ -14,28 +14,38 @@ const Form = styled.form`
     justify-content: space-between;
     margin: 0;
 
+    h2 {
+      transition: all 0.2s ease-out;
+
+      &:hover {
+        transform: scale(1.1) skewY(-3deg) translateY(-5px);
+        color: ${props => props.theme.rose};
+      }
+    }
+
     label {
       flex: 1 1 auto;
       font-weight: 500;
       font-size: 1.7rem;
       margin: 2.5rem;
+
       &:not(:last-child) {
         margin-bottom: 2rem;
       }
+    }
 
-      input,
-      textarea {
-        padding: 5px;
-        font-size: 1.5rem;
-        border: none;
-        outline: none;
-        border-radius: 3px;
-        transition: border 0.1s ease;
+    input,
+    textarea {
+      padding: 5px;
+      font-size: 1.5rem;
+      border: none;
+      outline: none;
+      border-radius: 3px;
+      transition: border 0.1s ease;
 
-        &:focus {
-          border: 1px solid ${props => props.theme.rose};
-          box-shadow: 0 0 5px ${props => props.theme.rose};
-        }
+      &:focus {
+        border: 1px solid ${props => props.theme.rose};
+        box-shadow: 0 0 5px ${props => props.theme.rose};
       }
     }
   }

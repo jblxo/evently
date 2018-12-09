@@ -22,9 +22,6 @@ class Nav extends React.Component {
     const rect = node.getBoundingClientRect();
     const windowScrollY = window.scrollY;
 
-    console.log(windowScrollY);
-    console.log(rect.height);
-
     if (windowScrollY > rect.height) {
       node.style.backgroundColor = '#4A6146';
     } else {
