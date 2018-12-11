@@ -71,9 +71,8 @@ class Signup extends Component {
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
-              <Error error={error} />
+              {error && <Error error={error} />}
               <h2>Sign Up For an Account!</h2>
-              {error && <p>{error}</p>}
               <label htmlFor="email">
                 Email
                 <input

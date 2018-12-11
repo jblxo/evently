@@ -42,5 +42,6 @@ type Query {
     first: Int
   ): [Event]!
   me: User
+  user(where: UserWhereUniqueInput!): User
   users: [User]!
 }

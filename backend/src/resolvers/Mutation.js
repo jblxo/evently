@@ -60,6 +60,19 @@ const Mutations = {
     if (args.password !== args.confirmPassword)
       throw new Error('The passwords do not match!');
 
+    // 3. check if the email and username are unique
+    const { email, username } = args;
+    const existingUser = await ctx.db.query.user({
+      where: { email, username }
+    });
+
+    let errMessage = '';
+
+    if (existingUser.email) errMessage += 'The username must be unique! \n';
+    if (existingUser.username) errMessage += 'The username must be unique!';
+
+    if (errMessage.length > 0) throw new Error(errMessage);
+
     delete args.confirmPassword;
     // 3. hash the password
     const password = await bcrypt.hash(args.password, 10);

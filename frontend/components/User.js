@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
     me {
+      firstName
+      lastName
       id
       email
       username
@@ -14,6 +16,10 @@ const CURRENT_USER_QUERY = gql`
         }
         permission {
           name
+        }
+        event {
+          id
+          title
         }
       }
     }

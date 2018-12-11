@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const Form = styled.form`
   width: 100%;
   padding: 5rem 7rem;
+  margin: 0 auto;
 
   fieldset {
     background: ${props => props.theme.offWhite};
@@ -21,6 +22,7 @@ const Form = styled.form`
       &:hover {
         transform: scale(1.1) skewY(-3deg) translateY(-5px);
         color: ${props => props.theme.rose};
+        text-shadow: 2px 4px 2rem rgba(0, 0, 0, 0.3);
       }
     }
 
@@ -37,6 +39,8 @@ const Form = styled.form`
 
     input,
     textarea {
+      display: block;
+      margin: 0 auto;
       padding: 5px;
       font-size: 1.5rem;
       border: none;

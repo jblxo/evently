@@ -45,7 +45,12 @@ class Nav extends React.Component {
             </Link>
             {me && (
               <>
-                <Link href="/account">
+                <Link
+                  href={{
+                    pathname: '/user',
+                    query: { id: me.id }
+                  }}
+                >
                   <a>Account</a>
                 </Link>
                 <Link href="/create">
