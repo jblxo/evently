@@ -103,6 +103,26 @@ const Mutations = {
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
+  },
+  async updateUser(parent, args, ctx, info) {
+    // 1. Check if the user is logged in
+    // isLoggedIn(ctx.request.userId);
+    // 2. Authenticate the user
+    // if (ctx.request.userId !== args.id)
+    //   throw new Error("You don't own the account!");
+    // 3. Update the user
+    const updates = { ...args };
+    delete updates.id;
+    const user = await ctx.db.mutation.updateUser(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      },
+      info
+    );
+    return user;
   }
 };
 

@@ -31,6 +31,13 @@ type Mutation {
   ): User!
   signin(email: String!, password: String!): User
   signout: SuccessMessage
+  updateUser(
+    id: Int!
+    email: String
+    username: String
+    firstName: String
+    lastName: String
+  ): User
 }
 
 type Query {
