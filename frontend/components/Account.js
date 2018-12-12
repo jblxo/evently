@@ -82,7 +82,7 @@ class Account extends Component {
                   </div>
                   <div className="AccountStyles__info">
                     <h2>Full Name</h2>
-                    <p>{`${data.user.firstName} ${me.lastName}`}</p>
+                    <p>{`${data.user.firstName} ${data.user.lastName}`}</p>
                   </div>
                   <div className="AccountStyles__info">
                     <h2>Email</h2>
@@ -104,7 +104,7 @@ class Account extends Component {
                   ) : (
                     <h2>You are not part of any events!</h2>
                   )}
-                  {me.id === data.user.id && (
+                  {me && me.id === data.user.id && (
                     <Button
                       onClick={e => {
                         Router.push({

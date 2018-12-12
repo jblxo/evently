@@ -54,6 +54,11 @@ const Form = styled.form`
         box-shadow: 0 0 5px ${props => props.theme.rose};
       }
     }
+
+    textarea {
+      height: 5rem;
+      resize: vertical;
+    }
   }
 `;
 
