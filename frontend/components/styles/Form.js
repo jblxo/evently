@@ -40,6 +40,7 @@ const Form = styled.form`
     input,
     textarea {
       display: block;
+      width: 100%;
       margin: 0 auto;
       padding: 5px;
       font-size: 1.5rem;
