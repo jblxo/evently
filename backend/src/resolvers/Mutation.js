@@ -68,8 +68,10 @@ const Mutations = {
 
     let errMessage = '';
 
-    if (existingUser.email) errMessage += 'The username must be unique! \n';
-    if (existingUser.username) errMessage += 'The username must be unique!';
+    if (existingUser && existingUser.email)
+      errMessage += 'The username must be unique! \n';
+    if (existingUser && existingUser.username)
+      errMessage += 'The username must be unique!';
 
     if (errMessage.length > 0) throw new Error(errMessage);
 

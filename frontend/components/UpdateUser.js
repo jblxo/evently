@@ -1,29 +1,48 @@
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 import Form from './styles/Form';
 import Button from './styles/Button';
 import { CURRENT_USER_QUERY } from './User';
 import Error from './Error';
 
-const SINGIN_MUTATION = gql`
-  mutation SINGIN_MUTATION($email: String!, $password: String!) {
-    signin(email: $email, password: $password) {
+const UPDATE_USER_MUTATION = gql`
+  mutation UPDATE_USER_MUTATION(
+    $id: Int!
+    $email: String
+    $username: String
+    $firstName: String
+    $lastName: String
+  ) {
+    updateUser(
+      id: $id
+      email: $email
+      username: $username
+      firstName: $firstName
+      lastName: $lastName
+    ) {
       id
-      email
-      username
     }
   }
 `;
 
-class Signin extends Component {
-  state = {
-    email: '',
-    password: ''
-  };
+const SIGNLE_USER_QUERY = gql`
+  query SINGLE_USER_QUERY($id: Int!) {
+    user(where: { id: $id }) {
+      email
+      username
+      firstName
+      lastName
+    }
+  }
+`;
+
+class UpdateUser extends Component {
+  state = {};
 
   saveToState = e => {
-    const { name, type, value } = e.target;
+    const { name, value } = e.target;
     this.setState({
       [name]: value
     });
@@ -31,55 +50,92 @@ class Signin extends Component {
 
   render() {
     return (
-      <Mutation
-        mutation={SINGIN_MUTATION}
-        variables={this.state}
-        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-      >
-        {(signin, { error, loading }) => (
-          <Form
-            method="post"
-            onSubmit={async e => {
-              e.preventDefault();
-              await signin();
-              this.setState({
-                email: '',
-                password: ''
-              });
-            }}
-          >
-            <fieldset disabled={loading} aria-busy={loading}>
-              <Error error={error} />
-              <h2>Sign In!</h2>
-              <label htmlFor="email">
-                Email
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={this.state.email}
-                  onChange={this.saveToState}
-                  required
-                />
-              </label>
-              <label htmlFor="password">
-                Password
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={this.state.password}
-                  onChange={this.saveToState}
-                  required
-                />
-              </label>
-            </fieldset>
-            <Button type="submit">Sign In!</Button>
-          </Form>
-        )}
-      </Mutation>
+      <Query query={SIGNLE_USER_QUERY} variables={{ id: this.props.id }}>
+        {({ data, error, loading }) => {
+          if (error) return <Error error={error} />;
+          if (loading) return <p>Loading...</p>;
+          if (!data.user) return <p>No User Found for ID {data.user.id}</p>;
+          return (
+            <Mutation mutation={UPDATE_USER_MUTATION} variables={this.state}>
+              {(updateUser, { error, loading }) => (
+                <Form
+                  method="post"
+                  onSubmit={async e => {
+                    e.preventDefault();
+                    const res = await updateUser({
+                      variables: {
+                        id: this.props.id,
+                        ...this.state
+                      }
+                    });
+
+                    Router.push({
+                      pathname: '/updateUser',
+                      query: { id: res.data.updateUser.id }
+                    });
+                  }}
+                >
+                  <fieldset disabled={loading} aria-busy={loading}>
+                    <Error error={error} />
+                    <h2>Update {data.user.username}!</h2>
+                    <label htmlFor="email">
+                      Email
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Email"
+                        defaultValue={data.user.email}
+                        onChange={this.saveToState}
+                        required
+                      />
+                    </label>
+                    <label htmlFor="username">
+                      Username
+                      <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder="Username"
+                        defaultValue={data.user.username}
+                        onChange={this.saveToState}
+                        required
+                      />
+                    </label>
+                    <label htmlFor="firstName">
+                      First Name
+                      <input
+                        type="text"
+                        name="firstName"
+                        id="firstName"
+                        placeholder="First Name"
+                        defaultValue={data.user.firstName}
+                        onChange={this.saveToState}
+                        required
+                      />
+                    </label>
+                    <label htmlFor="lastName">
+                      Last Name
+                      <input
+                        type="text"
+                        name="lastName"
+                        id="lastName"
+                        placeholder="Last Name"
+                        defaultValue={data.user.lastName}
+                        onChange={this.saveToState}
+                        required
+                      />
+                    </label>
+                  </fieldset>
+                  <Button type="submit">Updat{loading ? 'ing' : 'e'}!</Button>
+                </Form>
+              )}
+            </Mutation>
+          );
+        }}
+      </Query>
     );
   }
 }
 
-export default Signin;
+export default UpdateUser;
