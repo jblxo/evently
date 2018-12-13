@@ -1,6 +1,8 @@
+import Events from '../components/Events';
+
 const Home = props => (
   <div>
-    <h1>Hi from NextJS!</h1>
+    <Events page={parseFloat(props.query.page)} />
   </div>
 );
 

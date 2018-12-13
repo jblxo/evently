@@ -7,8 +7,8 @@ import Error from './Error';
 import Pagination from './Pagination';
 import Event from './Event';
 
-const ALL_ITEMS_QUERY = gql`
-  query ALL_ITEMS_QUERY(
+const ALL_EVENTS_QUERY = gql`
+  query ALL_EVENTS_QUERY(
     $skip: Int = 0, $first: Int = ${perPage}
   ) {
     events(skip: $skip, first: $first, orderBy: createdAt_DESC) {
@@ -33,14 +33,16 @@ const EventsList = styled.div`
   grid-gap: 6rem;
   max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
+  margin-top: 10rem;
 `;
 
 class Events extends Component {
   render() {
+    console.log(this.props.page);
     return (
       <Center>
         <Query
-          query={ALL_ITEMS_QUERY}
+          query={ALL_EVENTS_QUERY}
           variables={{ skip: this.props.page * perPage - perPage }}
         >
           {({ data, error, loading }) => {

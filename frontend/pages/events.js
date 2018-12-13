@@ -1,5 +1,3 @@
-import Events from '../components/Events';
+import Events from './index';
 
-const EventsPage = props => <Events page={props.query.page} />;
-
-export default EventsPage;
+export default Events;
