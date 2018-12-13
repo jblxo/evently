@@ -21,6 +21,23 @@ type Mutation {
     zip: String!
     boards: BoardCreateManyWithoutEventInput
   ): Event!
+  updateEvent(
+    id: Int!
+    address1: String!
+    address2: String
+    address3: String
+    city: String!
+    country: String!
+    description: String
+    entranceTax: Int
+    eventDate: DateTime!
+    imageLarge: String
+    imageSmall: String
+    state: String!
+    title: String!
+    zip: String!
+    boards: BoardCreateManyWithoutEventInput
+  ): Event
   signup(
     email: String!
     firstName: String!
@@ -48,6 +65,7 @@ type Query {
     skip: Int
     first: Int
   ): [Event]!
+  eventsConnection(where: EventWhereInput): EventConnection!
   me: User
   user(where: UserWhereUniqueInput!): User
   users: [User]!

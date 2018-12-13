@@ -53,6 +53,9 @@ const Mutations = {
 
     return event;
   },
+  updateEvent(parent, args, ctx, info) {
+    // 1. check if to user is logged in and has the permission to do that
+  },
   async signup(parent, args, ctx, info) {
     // 1. lowercase email
     args.email = args.email.toLowerCase();

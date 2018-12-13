@@ -4,6 +4,7 @@ const { isLoggedIn } = require('../utils');
 const Query = {
   event: forwardTo('db'),
   events: forwardTo('db'),
+  eventsConnection: forwardTo('db'),
   me(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       return null;

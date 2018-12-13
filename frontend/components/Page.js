@@ -12,7 +12,8 @@ const theme = {
   rose: '#EDA6A6',
   darkGreen: '#4A6146',
   ocean: '#60B89C',
-  softOcean: '#9ED8C2'
+  softOcean: '#9ED8C2',
+  boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)'
 };
 
 const StyledPage = styled.div`
