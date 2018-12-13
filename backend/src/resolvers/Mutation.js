@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { isLoggedIn } = require('../utils');
+const { isLoggedIn, hasPermission } = require('../utils');
 
 const Mutations = {
   async createEvent(parent, args, ctx, info) {
@@ -53,8 +53,45 @@ const Mutations = {
 
     return event;
   },
-  updateEvent(parent, args, ctx, info) {
+  async updateEvent(parent, args, ctx, info) {
+    const updates = { ...args };
     // 1. check if to user is logged in and has the permission to do that
+    isLoggedIn(ctx.request.userId);
+    const event = await ctx.db.query.event({ where: { id: args.id } }, info);
+    console.log(event);
+    let isAdmin = false;
+    event.eventAdmins.forEach(eventAdmin => {
+      if (eventAdmin.user.id === ctx.request.userId) {
+        isAdmin = true;
+      }
+    });
+    if (!isAdmin) throw new Error("You dont't have sufficient permissions!");
+    console.log(ctx.request.user.permission);
+    const permissions = [];
+    ctx.request.user.eventAdmins.forEach(eventAdmin => {
+      if (eventAdmin.event.id === event.id) {
+        permissions.push(eventAdmin.permission.name);
+      }
+    });
+    const user = {
+      permissions: permissions,
+      ...ctx.user
+    };
+    hasPermission(user, ['ADMIN', 'EVENTUPDATE']);
+    // 2. delete event id from args
+    delete updates.id;
+    // 3. update event
+    const res = ctx.db.mutation.updateEvent(
+      {
+        where: {
+          id: args.id
+        },
+        data: {
+          ...updates
+        }
+      },
+      info
+    );
   },
   async signup(parent, args, ctx, info) {
     // 1. lowercase email

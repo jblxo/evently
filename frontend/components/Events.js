@@ -17,6 +17,8 @@ const ALL_ITEMS_QUERY = gql`
       description
       createdAt
       entranceTax
+      imageSmall
+      imageLarge
     }
   }
 `;

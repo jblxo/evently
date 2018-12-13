@@ -5,6 +5,7 @@ import moment from 'moment';
 import Router from 'next/router';
 import Form from './styles/Form';
 import Button from './styles/Button';
+import Error from './Error';
 
 const CREATE_EVENT_MUTATION = gql`
   mutation CREATE_EVENT_MUTATION(
@@ -112,6 +113,7 @@ class CreateEvent extends Component {
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Create Your Easily Managable Event!</h2>
+              <Error error={error} />
               <label htmlFor="address1">
                 Address 1
                 <input

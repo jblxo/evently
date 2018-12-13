@@ -11,7 +11,7 @@ class Event extends Component {
     const { event } = this.props;
     return (
       <EventStyles>
-        {event.smallImage && <img src={event.imageSmall} alt={event.title} />}
+        {event.imageSmall && <img src={event.imageSmall} alt={event.title} />}
         <Title>
           <Link
             href={{
@@ -22,7 +22,7 @@ class Event extends Component {
             <a>{event.title}</a>
           </Link>
         </Title>
-        <EntranceTag>{formatMoney(event.entrance)}</EntranceTag>
+        <EntranceTag>{formatMoney(event.entranceTax)}</EntranceTag>
         <p>{event.description}</p>
         <div className="buttonList">
           <Link

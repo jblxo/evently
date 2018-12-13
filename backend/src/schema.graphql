@@ -23,20 +23,19 @@ type Mutation {
   ): Event!
   updateEvent(
     id: Int!
-    address1: String!
+    address1: String
     address2: String
     address3: String
-    city: String!
-    country: String!
+    city: String
+    country: String
     description: String
     entranceTax: Int
-    eventDate: DateTime!
+    eventDate: DateTime
     imageLarge: String
     imageSmall: String
-    state: String!
-    title: String!
-    zip: String!
-    boards: BoardCreateManyWithoutEventInput
+    state: String
+    title: String
+    zip: String
   ): Event
   signup(
     email: String!

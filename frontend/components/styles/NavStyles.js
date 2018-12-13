@@ -7,6 +7,7 @@ const NavStyles = styled.ul`
   justify-self: end;
   flex-direction: row-reverse;
   position: fixed;
+  z-index: 99;
   width: 100%;
   transition: background 0.5s ease;
 
