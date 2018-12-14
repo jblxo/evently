@@ -25,6 +25,7 @@ const ALL_EVENTS_QUERY = gql`
 
 const Center = styled.div`
   text-align: center;
+  margin-top: 10rem;
 `;
 
 const EventsList = styled.div`
@@ -33,12 +34,10 @@ const EventsList = styled.div`
   grid-gap: 6rem;
   max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
-  margin-top: 10rem;
 `;
 
 class Events extends Component {
   render() {
-    console.log(this.props.page);
     return (
       <Center>
         <Query
