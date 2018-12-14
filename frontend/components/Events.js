@@ -25,7 +25,7 @@ const ALL_EVENTS_QUERY = gql`
 
 const Center = styled.div`
   text-align: center;
-  margin-top: 10rem;
+  margin-top: 5rem;
 `;
 
 const EventsList = styled.div`
@@ -33,7 +33,7 @@ const EventsList = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-gap: 6rem;
   max-width: ${props => props.theme.maxWidth};
-  margin: 0 auto;
+  margin: 3rem auto;
 `;
 
 class Events extends Component {

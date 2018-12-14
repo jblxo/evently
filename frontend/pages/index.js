@@ -2,7 +2,7 @@ import Events from '../components/Events';
 
 const Home = props => (
   <div>
-    <Events page={parseFloat(props.query.page)} />
+    <Events page={parseFloat(props.query.page || 1)} />
   </div>
 );
 
