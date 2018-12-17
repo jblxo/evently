@@ -11,7 +11,10 @@ const CheckPermissions = props => (
           if (loading) return <p>Loading...</p>;
           if (!data.event) return <h2>There is no event for ID {props.id}!</h2>;
           const permissions = data.event.eventAdmins.filter(
-            eventAdmin => eventAdmin.user.id === me.id
+            eventAdmin =>
+              eventAdmin.user.id === me.id &&
+              (eventAdmin.permission.name === 'ADMIN' ||
+                eventAdmin.permission.name === 'EVENTUPDATE')
           );
           console.log(permissions);
           if (permissions.length < 1) {
