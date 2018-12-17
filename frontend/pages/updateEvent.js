@@ -1,9 +1,12 @@
 import UpdateEvent from '../components/UpdateEvent';
 import PleaseSignIn from '../components/PleaseSignIn';
+import CheckPermissions from '../components/CheckPermissions';
 
 const UpdateEventPage = props => (
   <PleaseSignIn>
-    <UpdateEvent id={props.query.id} />
+    <CheckPermissions id={props.query.id}>
+      <UpdateEvent id={props.query.id} />
+    </CheckPermissions>
   </PleaseSignIn>
 );
 

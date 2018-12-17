@@ -161,3 +161,4 @@ class SingleEvent extends Component {
 }
 
 export default SingleEvent;
+export { SINGLE_EVENT_QUERY };
