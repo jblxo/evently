@@ -25,7 +25,6 @@ const ALL_EVENTS_QUERY = gql`
 
 const Center = styled.div`
   text-align: center;
-  margin-top: 5rem;
 `;
 
 const EventsList = styled.div`
