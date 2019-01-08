@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import User from './User';
 import Error from './Error';
 import Title from './styles/Title';
+import CheckPermissions from './CheckPermissions';
+import Button from './styles/Button';
 
 const SINGLE_EVENT_QUERY = gql`
   query SINGLE_EVENT_QUERY($id: Int!) {
@@ -145,10 +147,29 @@ class SingleEvent extends Component {
                           pathname: '/user',
                           query: { id: eventAdmin.user.id }
                         }}
+                        key={eventAdmin.user.id}
                       >
                         <a>{eventAdmin.user.username}</a>
                       </Link>
                     ))}
+                  </div>
+                  <div>
+                    <CheckPermissions
+                      id={event.id}
+                      permissions={['ADMIN', 'PERMISSIONUPDATE']}
+                      prePage={false}
+                    >
+                      <Link
+                        href={{
+                          pathname: '/updatePermission',
+                          query: { id: event.id }
+                        }}
+                      >
+                        <a>
+                          <Button className="btn--small">Update!</Button>
+                        </a>
+                      </Link>
+                    </CheckPermissions>
                   </div>
                 </Event>
               );

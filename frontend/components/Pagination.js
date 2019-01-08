@@ -45,7 +45,7 @@ const Pagination = props => {
             <p>
               Page {page} of {pages}
             </p>
-            <p>{count} Items Total</p>
+            <p>{count} Events Total</p>
             <Link
               href={{
                 pathname: '/events',

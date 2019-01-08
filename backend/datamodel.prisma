@@ -77,7 +77,7 @@ type List @pgTable(name: "list") {
 type Permission @pgTable(name: "permission") {
   id: Int! @unique
   eventAdmins: [EventAdmin!]!
-  name: String!
+  name: String! @unique
 }
 
 type Review @pgTable(name: "review") {

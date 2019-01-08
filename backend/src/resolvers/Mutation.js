@@ -58,7 +58,6 @@ const Mutations = {
     // 1. check if to user is logged in and has the permission to do that
     isLoggedIn(ctx.request.userId);
     const event = await ctx.db.query.event({ where: { id: args.id } }, info);
-    console.log(event);
     let isAdmin = false;
     event.eventAdmins.forEach(eventAdmin => {
       if (eventAdmin.user.id === ctx.request.userId) {
@@ -66,7 +65,7 @@ const Mutations = {
       }
     });
     if (!isAdmin) throw new Error("You dont't have sufficient permissions!");
-    console.log(ctx.request.user.permission);
+
     const permissions = [];
     ctx.request.user.eventAdmins.forEach(eventAdmin => {
       if (eventAdmin.event.id === event.id) {
@@ -178,6 +177,110 @@ const Mutations = {
       info
     );
     return user;
+  },
+  async updateEventAdmins(parent, args, ctx, info) {
+    // isLoggedIn(ctx.request.userId);
+
+    const event = await ctx.db.query.event({
+      where: { id: args.eventId }
+    });
+
+    const currentUser = await ctx.db.query.user(
+      {
+        where: {
+          // change later to ctx.request.userId
+          id: 11
+        }
+      },
+      info
+    );
+
+    // Check if the logged in user has
+    // permissions to update permissions for given event
+    const permissions = [];
+
+    currentUser.eventAdmins.forEach(eventAdmin => {
+      if (eventAdmin.event.id === event.id) {
+        permissions.push(eventAdmin.permission.name);
+      }
+    });
+
+    const userTmp = {
+      permissions: permissions,
+      ...ctx.user
+    };
+
+    hasPermission(userTmp, ['ADMIN', 'PERMISSIONUPDATE']);
+
+    const user = await ctx.db.query.user(
+      {
+        where: {
+          id: args.userId
+        }
+      },
+      info
+    );
+
+    // User permissions for given event
+    const userPerm = [];
+    const permNames = [];
+
+    const permission = await ctx.db.query.permission({
+      where: {
+        name: args.permission
+      }
+    });
+
+    user.eventAdmins.forEach(eventAdmin => {
+      if (
+        eventAdmin.event.id === event.id &&
+        eventAdmin.user.id === args.userId
+      ) {
+        userPerm.push(eventAdmin);
+        permNames.push(eventAdmin.permission.name);
+      }
+    });
+
+    let permId;
+
+    userPerm.forEach(({ id, permission }) => {
+      if (permission.name === args.permission) {
+        permId = id;
+      }
+    });
+
+    if (args.add == true) {
+      const res = await ctx.db.mutation.createEventAdmin({
+        data: {
+          event: {
+            connect: {
+              id: args.eventId
+            }
+          },
+          permission: {
+            connect: {
+              id: permission.id
+            }
+          },
+          user: {
+            connect: {
+              id: args.userId
+            }
+          }
+        }
+      });
+
+      return res;
+    } else {
+      console.log('LUL');
+      const res = await ctx.db.mutation.deleteEventAdmin({
+        where: {
+          id: permId
+        }
+      });
+
+      return res;
+    }
   }
 };
 

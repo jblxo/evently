@@ -2,6 +2,7 @@ import { Query } from 'react-apollo';
 import { SINGLE_EVENT_QUERY } from './SingleEvent';
 import User from './User';
 import Router from 'next/router';
+import Button from './styles/Button';
 
 const CheckPermissions = props => (
   <User>
@@ -13,24 +14,26 @@ const CheckPermissions = props => (
           const permissions = data.event.eventAdmins.filter(
             eventAdmin =>
               eventAdmin.user.id === me.id &&
-              (eventAdmin.permission.name === 'ADMIN' ||
-                eventAdmin.permission.name === 'EVENTUPDATE')
+              props.permissions.includes(eventAdmin.permission.name)
           );
-          console.log(permissions);
           if (permissions.length < 1) {
-            return (
-              <div>
-                <h2>You don't have permission to do that!</h2>
-                <button
-                  type="button"
-                  onClick={() => {
-                    Router.back();
-                  }}
-                >
-                  Go back
-                </button>
-              </div>
-            );
+            if (props.prePage) {
+              return (
+                <div>
+                  <h2>You don't have permission to do that!</h2>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      Router.back();
+                    }}
+                  >
+                    Go back
+                  </Button>
+                </div>
+              );
+            } else {
+              return null;
+            }
           }
           return props.children;
         }}

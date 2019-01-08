@@ -8,7 +8,7 @@ const Button = styled.button`
   margin-top: 2rem;
   border-radius: 3px;
   font-weight: 500;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
   transition: transform 0.3s ease;
   color: ${props => props.theme.offWhite};

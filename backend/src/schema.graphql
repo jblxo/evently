@@ -54,6 +54,12 @@ type Mutation {
     firstName: String
     lastName: String
   ): User
+  updateEventAdmins(
+    permission: String
+    userId: Int!
+    eventId: Int!
+    add: Boolean!
+  ): User
 }
 
 type Query {
