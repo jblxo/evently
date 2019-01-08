@@ -179,7 +179,7 @@ const Mutations = {
     return user;
   },
   async updateEventAdmins(parent, args, ctx, info) {
-    // isLoggedIn(ctx.request.userId);
+    isLoggedIn(ctx.request.userId);
 
     const event = await ctx.db.query.event({
       where: { id: args.eventId }
@@ -189,7 +189,7 @@ const Mutations = {
       {
         where: {
           // change later to ctx.request.userId
-          id: 11
+          id: ctx.request.userId
         }
       },
       info

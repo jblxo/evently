@@ -109,6 +109,12 @@ class SingleEvent extends Component {
               if (loading) return <p>Loading...</p>;
               if (error) return <Error error={error} />;
               const { event } = data;
+              const uniqueAdmins = [];
+              event.eventAdmins.forEach(({ user }) => {
+                if (!uniqueAdmins.includes(user)) {
+                  uniqueAdmins.push(user);
+                }
+              });
               return (
                 <Event>
                   <Title>
@@ -141,15 +147,15 @@ class SingleEvent extends Component {
                   </ul>
                   <div className="event__admins">
                     <h4>Admins</h4>
-                    {event.eventAdmins.map(eventAdmin => (
+                    {uniqueAdmins.map(user => (
                       <Link
                         href={{
                           pathname: '/user',
-                          query: { id: eventAdmin.user.id }
+                          query: { id: user.id }
                         }}
-                        key={eventAdmin.user.id}
+                        key={user.id}
                       >
-                        <a>{eventAdmin.user.username}</a>
+                        <a>{user.username}</a>
                       </Link>
                     ))}
                   </div>
