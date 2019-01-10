@@ -8,7 +8,7 @@ import User from './User';
 import Error from './Error';
 import Title from './styles/Title';
 import CheckPermissions from './CheckPermissions';
-import Button from './styles/Button';
+import ButtonSmall from './styles/ButtonSmall';
 import uniqueUserArr from '../lib/uniqueUserArr';
 
 const SINGLE_EVENT_QUERY = gql`
@@ -168,7 +168,9 @@ class SingleEvent extends Component {
                         }}
                       >
                         <a>
-                          <Button className="btn--small">Update!</Button>
+                          <ButtonSmall className="btn--small">
+                            Update!
+                          </ButtonSmall>
                         </a>
                       </Link>
                     </CheckPermissions>

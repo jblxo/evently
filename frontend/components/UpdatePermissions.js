@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import uniqueUserArr from '../lib/uniqueUserArr';
 import ButtonSmall from './styles/ButtonSmall';
+import Button from './styles/Button';
 import Table from './styles/Table';
 
 const possiblePermissions = ['EVENTUPDATE', 'EVENTDELETE', 'PERMISSIONUPDATE'];
@@ -80,10 +81,14 @@ class UpdatePermissions extends Component {
           return (
             <div>
               <h2>Manage Permissions</h2>
-              <h3>Add Admin</h3>
-              <Link href={{
-                pathname: '/'
-              }}></Link>
+              <Link
+                href={{
+                  pathname: '/addAdmin',
+                  query: { id: this.props.id }
+                }}
+              >
+                <Button>Add Admin</Button>
+              </Link>
               <Table>
                 <thead>
                   <tr>

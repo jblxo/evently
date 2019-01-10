@@ -11,6 +11,7 @@ const CheckPermissions = props => (
         {({ data, error, loading }) => {
           if (loading) return <p>Loading...</p>;
           if (!data.event) return <h2>There is no event for ID {props.id}!</h2>;
+          if (!me) return null;
           const permissions = data.event.eventAdmins.filter(
             eventAdmin =>
               eventAdmin.user.id === me.id &&
