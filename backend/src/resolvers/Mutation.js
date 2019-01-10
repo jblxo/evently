@@ -188,7 +188,6 @@ const Mutations = {
     const currentUser = await ctx.db.query.user(
       {
         where: {
-          // change later to ctx.request.userId
           id: ctx.request.userId
         }
       },
@@ -197,16 +196,16 @@ const Mutations = {
 
     // Check if the logged in user has
     // permissions to update permissions for given event
-    const permissions = [];
+    const currentUserPermissions = [];
 
     currentUser.eventAdmins.forEach(eventAdmin => {
       if (eventAdmin.event.id === event.id) {
-        permissions.push(eventAdmin.permission.name);
+        currentUserPermissions.push(eventAdmin.permission.name);
       }
     });
 
     const userTmp = {
-      permissions: permissions,
+      permissions: currentUserPermissions,
       ...ctx.user
     };
 
@@ -222,12 +221,13 @@ const Mutations = {
     );
 
     // User permissions for given event
-    const userPerm = [];
-    const permNames = [];
+    let userPerm = [];
+    const userPermNames = [];
 
-    const permission = await ctx.db.query.permission({
+    // Query info about new permissions
+    const permissions = await ctx.db.query.permissions({
       where: {
-        name: args.permission
+        name_in: args.permissions
       }
     });
 
@@ -237,50 +237,40 @@ const Mutations = {
         eventAdmin.user.id === args.userId
       ) {
         userPerm.push(eventAdmin);
-        permNames.push(eventAdmin.permission.name);
+        userPermNames.push(eventAdmin.permission.name);
       }
     });
 
-    let permId;
-
-    userPerm.forEach(({ id, permission }) => {
-      if (permission.name === args.permission) {
-        permId = id;
-      }
-    });
-
-    if (args.add == true) {
-      const res = await ctx.db.mutation.createEventAdmin({
-        data: {
-          event: {
-            connect: {
-              id: args.eventId
-            }
-          },
-          permission: {
-            connect: {
-              id: permission.id
-            }
-          },
-          user: {
-            connect: {
-              id: args.userId
+    permissions.forEach(async permission => {
+      if (!userPermNames.includes(permission.name)) {
+        await ctx.db.mutation.createEventAdmin({
+          data: {
+            event: {
+              connect: {
+                id: args.eventId
+              }
+            },
+            permission: {
+              connect: {
+                id: permission.id
+              }
+            },
+            user: {
+              connect: {
+                id: args.userId
+              }
             }
           }
-        }
-      });
+        });
+      }
+      userPerm = userPerm.filter(
+        eventAdmin => eventAdmin.permission.name !== permission.name
+      );
+    });
 
-      return res;
-    } else {
-      console.log('LUL');
-      const res = await ctx.db.mutation.deleteEventAdmin({
-        where: {
-          id: permId
-        }
-      });
-
-      return res;
-    }
+    userPerm.forEach(async ({ id }) => {
+      await ctx.db.mutation.deleteEventAdmin({ where: { id } });
+    });
   }
 };
 

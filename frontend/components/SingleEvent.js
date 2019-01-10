@@ -9,6 +9,7 @@ import Error from './Error';
 import Title from './styles/Title';
 import CheckPermissions from './CheckPermissions';
 import Button from './styles/Button';
+import uniqueUserArr from '../lib/uniqueUserArr';
 
 const SINGLE_EVENT_QUERY = gql`
   query SINGLE_EVENT_QUERY($id: Int!) {
@@ -109,12 +110,7 @@ class SingleEvent extends Component {
               if (loading) return <p>Loading...</p>;
               if (error) return <Error error={error} />;
               const { event } = data;
-              const uniqueAdmins = [];
-              event.eventAdmins.forEach(({ user }) => {
-                if (!uniqueAdmins.includes(user)) {
-                  uniqueAdmins.push(user);
-                }
-              });
+              const uniqueAdmins = uniqueUserArr(event.eventAdmins);
               return (
                 <Event>
                   <Title>
@@ -167,7 +163,7 @@ class SingleEvent extends Component {
                     >
                       <Link
                         href={{
-                          pathname: '/updatePermission',
+                          pathname: '/updatePermissions',
                           query: { id: event.id }
                         }}
                       >
