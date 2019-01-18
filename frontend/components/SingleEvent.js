@@ -110,7 +110,14 @@ class SingleEvent extends Component {
               if (loading) return <p>Loading...</p>;
               if (error) return <Error error={error} />;
               const { event } = data;
-              const uniqueAdmins = uniqueUserArr(event.eventAdmins);
+              const admins = event.eventAdmins.filter(
+                ({ permission: { name } }) => name !== 'USER'
+              );
+              const users = event.eventAdmins.filter(
+                ({ permission: { name } }) => name === 'USER'
+              );
+              const uniqueAdmins = uniqueUserArr(admins);
+              const uniqueUsers = uniqueUserArr(users);
               return (
                 <Event>
                   <Title>
@@ -142,6 +149,18 @@ class SingleEvent extends Component {
                     <li>{event.zip}</li>
                   </ul>
                   <div className="event__admins">
+                    <h4>Users</h4>
+                    {uniqueUsers.map(user => (
+                      <Link
+                        href={{
+                          pathname: '/user',
+                          query: { id: user.id }
+                        }}
+                        key={user.id}
+                      >
+                        <a>{user.username}</a>
+                      </Link>
+                    ))}
                     <h4>Admins</h4>
                     {uniqueAdmins.map(user => (
                       <Link
