@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import User from './User';
 import Button from './styles/Button';
+import uniqueUserArr from '../lib/uniqueUserArr';
 
 const USER_QUERY = gql`
   query USER_QUERY($id: Int!) {
@@ -66,6 +67,13 @@ class Account extends Component {
             {({ data, error, loading }) => {
               if (error) return <Error error={error} />;
               if (loading) return <p>Loading...</p>;
+              const unq = [];
+              data.user.eventAdmins.forEach(({ event }) => {
+                if (!unq.includes(event)) {
+                  unq.push(event);
+                }
+              });
+              console.log(unq);
               if (!data.user)
                 return (
                   <AccountStyles>
@@ -88,10 +96,10 @@ class Account extends Component {
                     <h2>Email</h2>
                     <p>{data.user.email}</p>
                   </div>
-                  {data.user.eventAdmins.length > 0 ? (
+                  {unq.length > 0 ? (
                     <div className="AccountStyles__events">
                       <h2>Your Events</h2>
-                      {data.user.eventAdmins.map(({ event: { id, title } }) => (
+                      {unq.map(({ id, title }) => (
                         <div key={id}>
                           <Link href={`/event?id=${id}`}>
                             <a>

@@ -78,4 +78,13 @@ type Query {
     first: Int
     last: Int
   ): [EventAdmin]!
+  eventUsers(
+    where: EventAdminWhereInput
+    orderBy: EventAdminOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [EventAdmin]!
 }

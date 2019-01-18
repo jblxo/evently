@@ -197,3 +197,4 @@ class Admin extends React.Component {
 }
 
 export default UpdatePermissions;
+export { Admin };

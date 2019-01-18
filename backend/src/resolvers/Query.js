@@ -13,7 +13,19 @@ const Query = {
   },
   users: forwardTo('db'),
   user: forwardTo('db'),
-  eventAdmins: forwardTo('db'),
+  eventAdmins(parent, args, ctx, info) {
+    // isLoggedIn(ctx.request.userId);
+    return ctx.db.query.eventAdmins(
+      { where: { permission: { name_not: 'USER' } } },
+      info
+    );
+  },
+  eventUsers(parent, args, ctx, info) {
+    return ctx.db.query.eventAdmins(
+      { where: { permission: { name: 'USER' } } },
+      info
+    );
+  }
 };
 
 module.exports = Query;
