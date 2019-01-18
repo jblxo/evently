@@ -300,6 +300,47 @@ const Mutations = {
     const res = await ctx.db.mutation.deleteEvent({ where: { id: args.id } });
 
     return res;
+  },
+  async joinEvent(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const user = await ctx.db.query.user(
+      { where: { id: ctx.request.userId } },
+      `{ username }`
+    );
+    const eventUsers = await ctx.db.query.eventAdmins(
+      {
+        where: { permission: { name: 'USER' }, event: { id: args.id } }
+      },
+      `{ user { username } }`
+    );
+
+    const tmp = eventUsers.map(({ user: { username } }) => username);
+    if (!tmp.includes(user.username)) {
+      const res = await ctx.db.mutation.createEventAdmin({
+        data: {
+          event: {
+            connect: {
+              id: args.id
+            }
+          },
+          user: {
+            connect: {
+              id: ctx.request.userId
+            }
+          },
+          permission: {
+            connect: {
+              id: 6
+            }
+          }
+        }
+      });
+
+      return res;
+    }
+
+    throw new Error('You are already part of this event!');
   }
 };
 
