@@ -1,4 +1,4 @@
 # Evently
 
-Semestral Project
-Events simplified!
+<p>Semestral Project</p>
+<p>Events simplified!</p>
