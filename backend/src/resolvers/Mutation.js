@@ -271,6 +271,35 @@ const Mutations = {
     userPerm.forEach(async ({ id }) => {
       await ctx.db.mutation.deleteEventAdmin({ where: { id } });
     });
+  },
+  async deleteEvent(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const userPermissionsForEvent = await ctx.db.query.eventAdmins(
+      {
+        where: {
+          event: {
+            id: args.id
+          },
+          user: {
+            id: ctx.request.userId
+          }
+        }
+      },
+      `{ event { id } user { id } permission {id name} }`
+    );
+
+    const permissions = userPermissionsForEvent.map(
+      ({ permission: { name } }) => name
+    );
+
+    const user = { permissions };
+
+    hasPermission(user, ['ADMIN, EVENTDELETE']);
+
+    const res = await ctx.db.mutation.deleteEvent({ where: { id: args.id } });
+
+    return res;
   }
 };
 
