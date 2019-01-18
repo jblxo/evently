@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import styled from 'styled-components';
 import formatMoney from '../lib/formatMoney';
 import EventStyles from './styles/EventStyles';
 import Title from './styles/Title';
@@ -15,6 +16,10 @@ const DELETE_EVNET_MUTATION = gql`
       id
     }
   }
+`;
+
+const Button = styled.button`
+  cursor: pointer;
 `;
 
 class Event extends Component {
@@ -57,7 +62,7 @@ class Event extends Component {
                       >
                         <a>Update 🖋</a>
                       </Link>
-                      <button onClick={deleteEvent}>Delete 😓</button>
+                      <Button onClick={deleteEvent}>Delete 😓</Button>
                     </div>
                   )}
               </EventStyles>

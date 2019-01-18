@@ -73,7 +73,6 @@ class Account extends Component {
                   unq.push(event);
                 }
               });
-              console.log(unq);
               if (!data.user)
                 return (
                   <AccountStyles>
