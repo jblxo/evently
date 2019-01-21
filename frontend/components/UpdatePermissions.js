@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import Router from 'next/router';
 import uniqueUserArr from '../lib/uniqueUserArr';
 import ButtonSmall from './styles/ButtonSmall';
 import Button from './styles/Button';
@@ -100,11 +101,17 @@ class UpdatePermissions extends Component {
                       <th key={permission}>{permission}</th>
                     ))}
                     <th>👇</th>
+                    <th>🗑</th>
                   </tr>
                 </thead>
                 <tbody>
                   {userPerms.map(user => (
-                    <Admin key={user.id} user={user} eventId={this.props.id} />
+                    <Admin
+                      key={user.id}
+                      user={user}
+                      eventId={this.props.id}
+                      usersCount={userPerms.length}
+                    />
                   ))}
                 </tbody>
               </Table>
@@ -188,6 +195,23 @@ class Admin extends React.Component {
                   onClick={updateEventAdmins}
                 >
                   Updat{loading ? 'ing' : 'e'}
+                </ButtonSmall>
+              </td>
+              <td>
+                <ButtonSmall
+                  type="submit"
+                  disabled={loading || this.props.usersCount < 2}
+                  onClick={() => {
+                    updateEventAdmins({
+                      variables: {
+                        permissions: [],
+                        userId: this.props.user.id,
+                        eventId: this.props.eventId
+                      }
+                    });
+                  }}
+                >
+                  Delet{loading ? 'ing' : 'e'}
                 </ButtonSmall>
               </td>
             </tr>
