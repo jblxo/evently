@@ -200,7 +200,11 @@ class Admin extends React.Component {
               <td>
                 <ButtonSmall
                   type="submit"
-                  disabled={loading || this.props.usersCount < 2}
+                  disabled={
+                    loading ||
+                    this.props.usersCount < 2 ||
+                    user.permissions.includes('ADMIN')
+                  }
                   onClick={() => {
                     updateEventAdmins({
                       variables: {
