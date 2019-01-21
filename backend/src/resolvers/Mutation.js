@@ -194,6 +194,8 @@ const Mutations = {
       info
     );
 
+    console.log(currentUser);
+
     // Check if the logged in user has
     // permissions to update permissions for given event
     const currentUserPermissions = [];

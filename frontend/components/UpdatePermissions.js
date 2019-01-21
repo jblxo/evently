@@ -12,7 +12,9 @@ const possiblePermissions = ['EVENTUPDATE', 'EVENTDELETE', 'PERMISSIONUPDATE'];
 
 const EVENT_ADMINS_QUERY = gql`
   query EVENT_ADMINS_QUERY($id: Int!) {
-    eventAdmins(where: { event: { id: $id } }) {
+    eventAdmins(
+      where: { event: { id: $id }, permission: { name_not: "USER" } }
+    ) {
       user {
         id
         username
@@ -168,9 +170,9 @@ class Admin extends React.Component {
               <td>{user.email}</td>
               {possiblePermissions.map(permission => (
                 <td key={permission}>
-                  <label htmlFor={`${user.id}-permission-${permission}`}>
+                  <label htmlFor={`${user.id}-${permission}`}>
                     <input
-                      id={`${user.id}-permission-${permission}`}
+                      id={`${user.id}-${permission}`}
                       type="checkbox"
                       checked={this.state.permissions.includes(permission)}
                       value={permission}

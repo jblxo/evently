@@ -54,7 +54,7 @@ class CreateEvent extends Component {
     description: '',
     entranceTax: 0,
     eventDate: moment()
-      .add(5, 'days')
+      .add(1, 'days')
       .toISOString(),
     imageLarge: '',
     imageSmall: '',

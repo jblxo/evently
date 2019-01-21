@@ -70,23 +70,6 @@ type Query {
   eventsConnection(where: EventWhereInput): EventConnection!
   me: User
   user(where: UserWhereUniqueInput!): User
-  users: [User]!
-  eventAdmins(
-    where: EventAdminWhereInput
-    orderBy: EventAdminOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [EventAdmin]!
-  eventUsers(
-    where: EventAdminWhereInput
-    orderBy: EventAdminOrderByInput
-    skip: Int
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): [EventAdmin]!
+  users(where: UserWhereInput): [User]!
+  eventAdmins(where: EventAdminWhereInput): [EventAdmin]!
 }

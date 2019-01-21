@@ -51,7 +51,9 @@ class Event extends Component {
                 <p>{event.description}</p>
                 {me &&
                   me.eventAdmins.filter(
-                    eventAdmin => eventAdmin.event.id === event.id
+                    eventAdmin =>
+                      eventAdmin.event.id === event.id &&
+                      eventAdmin.permission.name !== 'USER'
                   ).length > 0 && (
                     <div className="buttonList">
                       <Link
