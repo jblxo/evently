@@ -5,7 +5,7 @@ function hasPermission(user, permissionsNeeded) {
   const matchedPermissions = user.permissions.filter(permissionTheyHave =>
     permissionsNeeded.includes(permissionTheyHave)
   );
-  if (!matchedPermissions.length > 1) {
+  if (matchedPermissions.length < 1) {
     throw new Error(`You don't have sufficient permissions
 
       : ${permissionsNeeded}

@@ -297,7 +297,7 @@ const Mutations = {
 
     const user = { permissions };
 
-    hasPermission(user, ['ADMIN, EVENTDELETE']);
+    hasPermission(user, ['ADMIN', 'EVENTDELETE']);
 
     const res = await ctx.db.mutation.deleteEvent({ where: { id: args.id } });
 
