@@ -147,6 +147,7 @@ class CreateEvent extends Component {
                         placeholder="Address 1"
                         defaultValue={data.event.address1}
                         onChange={this.handleChange}
+                        required
                       />
                     </label>
                     <label htmlFor="address2">
@@ -180,6 +181,7 @@ class CreateEvent extends Component {
                         placeholder="City"
                         defaultValue={data.event.city}
                         onChange={this.handleChange}
+                        required
                       />
                     </label>
                     <label htmlFor="country">
@@ -191,6 +193,7 @@ class CreateEvent extends Component {
                         placeholder="Country"
                         defaultValue={data.event.country}
                         onChange={this.handleChange}
+                        required
                       />
                     </label>
                     <label htmlFor="description">
@@ -240,6 +243,7 @@ class CreateEvent extends Component {
                         placeholder="State"
                         defaultValue={data.event.state}
                         onChange={this.handleChange}
+                        required
                       />
                     </label>
                     <label htmlFor="title">
@@ -251,6 +255,7 @@ class CreateEvent extends Component {
                         placeholder="Title"
                         defaultValue={data.event.title}
                         onChange={this.handleChange}
+                        required
                       />
                     </label>
                     <label htmlFor="zip">
@@ -262,6 +267,7 @@ class CreateEvent extends Component {
                         placeholder="ZIP"
                         defaultValue={data.event.zip}
                         onChange={this.handleChange}
+                        required
                       />
                     </label>
                     <Button type="submit">Submit</Button>

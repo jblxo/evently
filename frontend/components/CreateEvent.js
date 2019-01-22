@@ -123,6 +123,7 @@ class CreateEvent extends Component {
                   placeholder="Address 1"
                   value={this.state.address1}
                   onChange={this.handleChange}
+                  required
                 />
               </label>
               <label htmlFor="address2">
@@ -156,6 +157,7 @@ class CreateEvent extends Component {
                   placeholder="City"
                   value={this.state.city}
                   onChange={this.handleChange}
+                  required
                 />
               </label>
               <label htmlFor="country">
@@ -167,6 +169,7 @@ class CreateEvent extends Component {
                   placeholder="Country"
                   value={this.state.country}
                   onChange={this.handleChange}
+                  required
                 />
               </label>
               <label htmlFor="description">
@@ -216,6 +219,7 @@ class CreateEvent extends Component {
                   placeholder="State"
                   value={this.state.state}
                   onChange={this.handleChange}
+                  required
                 />
               </label>
               <label htmlFor="title">
@@ -227,6 +231,7 @@ class CreateEvent extends Component {
                   placeholder="Title"
                   value={this.state.title}
                   onChange={this.handleChange}
+                  required
                 />
               </label>
               <label htmlFor="zip">
@@ -238,6 +243,7 @@ class CreateEvent extends Component {
                   placeholder="ZIP"
                   value={this.state.zip}
                   onChange={this.handleChange}
+                  required
                 />
               </label>
               <Button type="submit">Submit</Button>
