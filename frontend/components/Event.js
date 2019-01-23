@@ -48,7 +48,7 @@ class Event extends Component {
                   </Link>
                 </Title>
                 <EntranceTag>{formatMoney(event.entranceTax)}</EntranceTag>
-                {event.description && <p>{event.description}</p>}
+                <p>{event.description}</p>
                 {me &&
                   me.eventAdmins.filter(
                     eventAdmin =>

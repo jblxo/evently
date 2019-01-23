@@ -156,6 +156,19 @@ class SingleEvent extends Component {
                           ) : (
                             <h3>Enjoy the Event!</h3>
                           )}
+                          {uniqueAdmins.filter(({ id }) => id === me.id)
+                            .length > 0 && (
+                            <Link
+                              href={{
+                                pathname: '/manage',
+                                query: { id: this.props.id }
+                              }}
+                            >
+                              <a>
+                                <Button>Manage</Button>
+                              </a>
+                            </Link>
+                          )}
                         </center>
                       ) : (
                         <center>
