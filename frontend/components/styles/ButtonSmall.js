@@ -11,6 +11,7 @@ const Button = styled.button`
   font-size: 1rem;
   text-transform: uppercase;
   color: ${props => props.theme.offWhite};
+  cursor: pointer;
 `;
 
 export default Button;

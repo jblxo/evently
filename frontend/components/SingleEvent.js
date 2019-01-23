@@ -167,7 +167,11 @@ class SingleEvent extends Component {
                         </center>
                       )}
                       <h4>Description</h4>
-                      <p>{event.description}</p>
+                      <p>
+                        {event.description.length > 0
+                          ? event.description
+                          : `Event has no description.`}
+                      </p>
                       <h4>Created</h4>
                       <p>
                         {moment(event.createdAt)
