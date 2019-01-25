@@ -57,6 +57,7 @@ type Mutation {
   updateEventAdmins(permissions: [String], userId: Int!, eventId: Int!): User
   deleteEvent(id: Int!): Event
   joinEvent(id: Int!): EventAdmin
+  createBoard(id: Int!, title: String!, description: String): Board!
 }
 
 type Query {

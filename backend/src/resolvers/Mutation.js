@@ -343,6 +343,54 @@ const Mutations = {
     }
 
     throw new Error('You are already part of this event!');
+  },
+  async createBoard(parent, args, ctx, info) {
+    // check if the user is logged in
+    isLoggedIn(ctx.request.userId);
+
+    // check if the logged in user is a steward or admin
+    const userEventAdmins = await ctx.db.query.eventAdmin(
+      { where: { user: { id: ctx.request.userId } }, event: { id: args.id } },
+      `{ permission: {id, name} }`
+    );
+    const userPermissions = userEventAdmins.map(
+      ({ permission: { name } }) => name
+    );
+    const user = { permissions: userPermissions };
+    hasPermission(user, ['ADMIN', 'STEWARD']);
+    // create the board and connect it with the user and event
+    const id = args.id;
+    delete args.id;
+    const res = await ctx.db.mutation.createBoard(
+      {
+        data: {
+          event: {
+            connect: {
+              id
+            }
+          },
+          lists: {
+            create: {
+              description: 'This is description.',
+              order: 1,
+              title: 'First List',
+              cards: {
+                description: 'Change me!',
+                order: 1,
+                title: 'Card #1',
+                user: {
+                  connect: {
+                    id: ctx.request.userId
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      info
+    );
+    return res;
   }
 };
 
