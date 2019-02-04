@@ -6,17 +6,68 @@ import Error from './Error';
 import Title from './styles/Title';
 
 const Management = styled.div`
-  margin: 5rem auto;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
   width: 100%;
-  border-radius: 3px;
-  background-color: ${props => props.theme.softOcean};
+  height: 100%;
 `;
 
-const Event = styled.span`
-  color: ${props => props.theme.rose};
-  transition: transfrom 0.3s ease;
+const SideNav = styled.nav`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  a {
+    margin: 0.3rem 0;
+    display: block;
+    padding: 0.5rem 2rem;
+    border-radius: 3px;
+    transition: all 0.2s ease-out;
+    &:hover {
+      background-color: ${props => props.theme.softOcean};
+    }
+  }
+`;
+
+const BoardsContainer = styled.div`
+  width: 75%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-auto-rows: minmax(75px, 1fr);
+  margin-left: 40px;
+`;
+
+const Board = styled.div`
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  color: white;
+  background-color: ${props => props.theme.paleOrange};
+  width: 100%;
+  height: 100%;
+  position: relative;
+  &::after {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all 0.4s;
+    position: absolute;
+  }
   &:hover {
-    transform: skewX(-3deg);
+    &::after {
+      background-color: rgba(0, 0, 0, 0.1);
+      z-index: 999;
+    }
   }
 `;
 
@@ -29,11 +80,23 @@ class Manage extends Component {
           if (loading) return <p>Loading</p>;
           const { event } = data;
           return (
-            <Management>
-              <Title>
-                Manage Event <Event>{event.title}</Event>
-              </Title>
-            </Management>
+            <>
+              <Title>Manage Event{event.title}</Title>
+              <Management>
+                <SideNav>
+                  <a>🏠 Home</a>
+                  <a>💳 Expenses</a>
+                </SideNav>
+                <BoardsContainer>
+                  <Board>Board</Board>
+                  <Board>Board</Board>
+                  <Board>Board</Board>
+                  <Board>Board</Board>
+                  <Board>Board</Board>
+                  <Board>Create New Board</Board>
+                </BoardsContainer>
+              </Management>
+            </>
           );
         }}
       </Query>

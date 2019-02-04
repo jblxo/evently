@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 
 const Title = styled.h3`
-  margin: 0 1rem;
+  margin: 0 auto;
   text-align: center;
-  margin-top: -3rem;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  font-weight: 500;
   a {
     background: ${props => props.theme.darkGreen};
     display: inline;
