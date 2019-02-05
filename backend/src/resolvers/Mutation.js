@@ -349,10 +349,11 @@ const Mutations = {
     isLoggedIn(ctx.request.userId);
 
     // check if the logged in user is a steward or admin
-    const userEventAdmins = await ctx.db.query.eventAdmin(
+    const userEventAdmins = await ctx.db.query.eventAdmins(
       { where: { user: { id: ctx.request.userId } }, event: { id: args.id } },
-      `{ permission: {id, name} }`
+      `{ permission {id name} }`
     );
+
     const userPermissions = userEventAdmins.map(
       ({ permission: { name } }) => name
     );
@@ -375,17 +376,20 @@ const Mutations = {
               order: 1,
               title: 'First List',
               cards: {
-                description: 'Change me!',
-                order: 1,
-                title: 'Card #1',
-                user: {
-                  connect: {
-                    id: ctx.request.userId
+                create: {
+                  description: 'Change me!',
+                  order: 1,
+                  title: 'Card #1',
+                  user: {
+                    connect: {
+                      id: ctx.request.userId
+                    }
                   }
                 }
               }
             }
-          }
+          },
+          ...args
         }
       },
       info

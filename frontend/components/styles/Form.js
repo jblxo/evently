@@ -1,18 +1,11 @@
 import styled from 'styled-components';
 
 const Form = styled.form`
-  width: 100%;
-  padding: 5rem 7rem;
-  margin: 0 auto;
-
   fieldset {
     background: ${props => props.theme.offWhite};
     border: 2px solid ${props => props.theme.black};
     border-radius: 3px;
     padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     margin: 0;
 
     h2 {
@@ -27,10 +20,12 @@ const Form = styled.form`
     }
 
     label {
-      flex: 1 1 auto;
-      font-weight: 500;
-      font-size: 1.7rem;
-      margin: 2.5rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-left: 1rem;
+      margin-top: 0.7rem;
+      display: block;
+      transition: all 0.3s;
 
       &:not(:last-child) {
         margin-bottom: 2rem;
@@ -39,19 +34,25 @@ const Form = styled.form`
 
     input,
     textarea {
+      color: inherit;
       display: block;
-      width: 100%;
+      width: 90%;
       margin: 0 auto;
-      padding: 5px;
+      font-family: inherit;
+      padding: 1.5rem 2rem;
       font-size: 1.5rem;
       border: none;
-      outline: none;
+      border-bottom: 3px solid transparent;
       border-radius: 3px;
-      transition: border 0.1s ease;
+      transition: all 0.3s;
 
       &:focus {
-        border: 1px solid ${props => props.theme.rose};
-        box-shadow: 0 0 5px ${props => props.theme.rose};
+        outline: none;
+        border-bottom: 3px solid ${props => props.theme.rose};
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+        &:invalid {
+          border-bottom: 3px solid ${props => props.theme.rose};
+        }
       }
     }
 

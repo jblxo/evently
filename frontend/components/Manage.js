@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import { SINGLE_EVENT_QUERY } from './SingleEvent';
 import Error from './Error';
 import Title from './styles/Title';
+import CreateBoard from './CreateBoard';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    background: 'none',
+    border: 'none',
+    transform: 'translate(-50%, -50%)'
+  }
+};
 
 const Management = styled.div`
   margin-top: 5rem;
@@ -40,7 +54,7 @@ const BoardsContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-  grid-auto-rows: minmax(75px, 1fr);
+  grid-auto-rows: minmax(90px, 1fr);
   margin-left: 40px;
 `;
 
@@ -71,7 +85,21 @@ const Board = styled.div`
   }
 `;
 
+Modal.setAppElement('#__next');
+
 class Manage extends Component {
+  state = {
+    modalIsOpen: false
+  };
+
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
   render() {
     return (
       <Query query={SINGLE_EVENT_QUERY} variables={{ id: this.props.id }}>
@@ -88,14 +116,20 @@ class Manage extends Component {
                   <a>💳 Expenses</a>
                 </SideNav>
                 <BoardsContainer>
-                  <Board>Board</Board>
-                  <Board>Board</Board>
-                  <Board>Board</Board>
-                  <Board>Board</Board>
-                  <Board>Board</Board>
-                  <Board>Create New Board</Board>
+                  {event.boards.map(board => (
+                    <Board key={board.id}>{board.title}</Board>
+                  ))}
+                  <Board onClick={this.openModal}>Create New Board</Board>
                 </BoardsContainer>
               </Management>
+              <Modal
+                isOpen={this.state.modalIsOpen}
+                style={customStyles}
+                onRequestClose={this.closeModal}
+                contentLabel="Create New Board"
+              >
+                <CreateBoard id={this.props.id} />
+              </Modal>
             </>
           );
         }}
