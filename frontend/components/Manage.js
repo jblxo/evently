@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import Link from 'next/link';
 import { SINGLE_EVENT_QUERY } from './SingleEvent';
 import Error from './Error';
 import Title from './styles/Title';
@@ -117,7 +118,16 @@ class Manage extends Component {
                 </SideNav>
                 <BoardsContainer>
                   {event.boards.map(board => (
-                    <Board key={board.id}>{board.title}</Board>
+                    <Link
+                      href={{
+                        pathname: '/board',
+                        query: { id: board.id }
+                      }}
+                    >
+                      <a>
+                        <Board key={board.id}>{board.title}</Board>
+                      </a>
+                    </Link>
                   ))}
                   <Board onClick={this.openModal}>Create New Board</Board>
                 </BoardsContainer>
