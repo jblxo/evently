@@ -110,7 +110,7 @@ class Manage extends Component {
           const { event } = data;
           return (
             <>
-              <Title>Manage Event{event.title}</Title>
+              <Title>Manage Event {event.title}</Title>
               <Management>
                 <SideNav>
                   <a>🏠 Home</a>
@@ -119,13 +119,14 @@ class Manage extends Component {
                 <BoardsContainer>
                   {event.boards.map(board => (
                     <Link
+                      key={board.id}
                       href={{
                         pathname: '/board',
-                        query: { id: board.id }
+                        query: { board: board.id, event: this.props.id }
                       }}
                     >
                       <a>
-                        <Board key={board.id}>{board.title}</Board>
+                        <Board>{board.title}</Board>
                       </a>
                     </Link>
                   ))}
