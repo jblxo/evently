@@ -1,5 +1,4 @@
 const { forwardTo } = require('prisma-binding');
-const { isLoggedIn } = require('../utils');
 
 const Query = {
   event: forwardTo('db'),
@@ -8,6 +7,7 @@ const Query = {
   users: forwardTo('db'),
   user: forwardTo('db'),
   eventAdmins: forwardTo('db'),
+  board: forwardTo('db'),
   me(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       return null;
