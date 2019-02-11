@@ -395,6 +395,47 @@ const Mutations = {
       info
     );
     return res;
+  },
+  async addList(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const userPermissions = ctx.request.user.eventAdmins.map(
+      ({ permission: { name }, event: { id } }) => {
+        if ((id = args.event)) {
+          return name;
+        }
+      }
+    );
+
+    console.log(userPermissions);
+
+    hasPermission(userPermissions, ['ADMIN', 'STEWARD']);
+    const boardId = args.board;
+    delete args.event;
+    delete args.board;
+    const res = await ctx.db.mutation.createList(
+      {
+        data: {
+          order: 1,
+          board: {
+            connect: { id: boardId }
+          },
+          cards: {
+            create: {
+              description: 'Card Description',
+              order: 1,
+              title: 'Card #1',
+              user: {
+                connect: ctx.request.userId
+              }
+            }
+          },
+          ...args
+        }
+      },
+      info
+    );
+    return res;
   }
 };
 

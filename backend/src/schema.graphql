@@ -58,6 +58,7 @@ type Mutation {
   deleteEvent(id: Int!): Event
   joinEvent(id: Int!): EventAdmin
   createBoard(id: Int!, title: String!, description: String): Board!
+  addList(description: String, title: String!, event: Int!, board: Int!): List!
 }
 
 type Query {
