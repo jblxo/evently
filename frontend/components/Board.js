@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import CreateList from './CreateList';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    background: 'none',
+    border: 'none',
+    transform: 'translate(-50%, -50%)'
+  }
+};
 
 const BoardContainer = styled.section`
   display: flex;
@@ -18,6 +32,7 @@ const AddListButton = styled.button`
   position: relative;
   cursor: pointer;
   outline: none;
+  margin-left: 1rem;
 
   &::after {
     position: absolute;
@@ -138,7 +153,21 @@ const SINGLE_BOARD_QUERY = gql`
   }
 `;
 
+Modal.setAppElement('#__next');
+
 class Board extends Component {
+  state = {
+    modalIsOpen: false
+  };
+
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
   render() {
     return (
       <Query query={SINGLE_BOARD_QUERY} variables={{ id: this.props.board }}>
@@ -146,25 +175,31 @@ class Board extends Component {
           if (error) return <Error error={error} />;
           if (loading) return <p>Loading...</p>;
           return (
-            <BoardContainer>
-              <ListsContainer>
-                {board.lists.map(list => (
-                  <List key={list.id}>
-                    <h3>{list.title}</h3>
-                    <CardsContainer>
-                      {list.cards.map(card => (
-                        <Card key={card.id}>{card.title}</Card>
-                      ))}
-                      <Card>Card</Card>
-                      <Card>Card</Card>
-                      <Card>Card</Card>
-                      <Card>Card</Card>
-                    </CardsContainer>
-                  </List>
-                ))}
-              </ListsContainer>
-              <AddListButton>Add List</AddListButton>
-            </BoardContainer>
+            <>
+              <BoardContainer>
+                <ListsContainer>
+                  {board.lists.map(list => (
+                    <List key={list.id}>
+                      <h3>{list.title}</h3>
+                      <CardsContainer>
+                        {list.cards.map(card => (
+                          <Card key={card.id}>{card.title}</Card>
+                        ))}
+                      </CardsContainer>
+                    </List>
+                  ))}
+                </ListsContainer>
+                <AddListButton onClick={this.openModal}>Add List</AddListButton>
+              </BoardContainer>
+              <Modal
+                isOpen={this.state.modalIsOpen}
+                style={customStyles}
+                onRequestClose={this.closeModal}
+                contentLabel="Create New List"
+              >
+                <CreateList event={this.props.event} board={this.props.board} />
+              </Modal>
+            </>
           );
         }}
       </Query>
@@ -173,3 +208,4 @@ class Board extends Component {
 }
 
 export default Board;
+export { SINGLE_BOARD_QUERY };

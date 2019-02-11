@@ -1,28 +1,36 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import Router from 'next/router';
-import PropTypes from 'prop-types';
 import Error from './Error';
 import Form from './styles/Form';
 import Button from './styles/Button';
+import { SINGLE_BOARD_QUERY } from './Board';
 
-const CREATE_BOARD_MUTATION = gql`
-  mutation CREATE_BOARD_MUTATION(
-    $id: Int!
+const CREATE_LIST_MUTATION = gql`
+  mutation CREATE_LIST_MUTATION(
     $title: String!
     $description: String
+    $event: Int!
+    $board: Int!
   ) {
-    createBoard(id: $id, title: $title, description: $description) {
+    addList(
+      title: $title
+      description: $description
+      event: $event
+      board: $board
+    ) {
       id
       title
+      board {
+        id
+      }
     }
   }
 `;
 
-class CreateBoard extends React.Component {
+class CreateList extends React.Component {
   state = {
-    title: 'New Board',
+    title: 'New List',
     description: ''
   };
 
@@ -36,22 +44,25 @@ class CreateBoard extends React.Component {
   render() {
     return (
       <Mutation
-        mutation={CREATE_BOARD_MUTATION}
-        variables={{ ...this.state, id: this.props.id }}
+        mutation={CREATE_LIST_MUTATION}
+        variables={{
+          ...this.state,
+          event: this.props.event,
+          board: this.props.board
+        }}
+        refetchQueries={[
+          { query: SINGLE_BOARD_QUERY, variables: { id: this.props.board } }
+        ]}
       >
-        {(createBoard, { loading, error }) => (
+        {(addList, { loading, error }) => (
           <Form
             onSubmit={async e => {
               e.preventDefault();
-              const res = await createBoard();
-              Router.push({
-                pathname: '/board',
-                query: { id: res.data.createBoard.id }
-              });
+              const res = await addList();
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Create New Board!</h2>
+              <h2>Create New List!</h2>
               <Error error={error} />
               <label htmlFor="title">
                 Title
@@ -85,8 +96,4 @@ class CreateBoard extends React.Component {
   }
 }
 
-CreateBoard.propTypes = {
-  id: PropTypes.string.isRequired
-};
-
-export default CreateBoard;
+export default CreateList;

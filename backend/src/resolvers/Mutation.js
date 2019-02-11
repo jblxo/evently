@@ -401,15 +401,15 @@ const Mutations = {
 
     const userPermissions = ctx.request.user.eventAdmins.map(
       ({ permission: { name }, event: { id } }) => {
-        if ((id = args.event)) {
+        if (id === args.event) {
           return name;
         }
       }
     );
 
-    console.log(userPermissions);
+    const user = { permissions: userPermissions };
 
-    hasPermission(userPermissions, ['ADMIN', 'STEWARD']);
+    hasPermission(user, ['ADMIN', 'STEWARD']);
     const boardId = args.board;
     delete args.event;
     delete args.board;
@@ -426,7 +426,7 @@ const Mutations = {
               order: 1,
               title: 'Card #1',
               user: {
-                connect: ctx.request.userId
+                connect: { id: ctx.request.userId }
               }
             }
           },
