@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Error from './Error';
 import Form from './styles/Form';
 import Button from './styles/Button';
+import { SINGLE_EVENT_QUERY } from './SingleEvent';
 
 const CREATE_BOARD_MUTATION = gql`
   mutation CREATE_BOARD_MUTATION(
@@ -38,6 +39,9 @@ class CreateBoard extends React.Component {
       <Mutation
         mutation={CREATE_BOARD_MUTATION}
         variables={{ ...this.state, id: this.props.id }}
+        refetchQueries={[
+          { query: SINGLE_EVENT_QUERY, variables: { id: this.props.id } }
+        ]}
       >
         {(createBoard, { loading, error }) => (
           <Form
@@ -46,7 +50,7 @@ class CreateBoard extends React.Component {
               const res = await createBoard();
               Router.push({
                 pathname: '/board',
-                query: { id: res.data.createBoard.id }
+                query: { board: res.data.createBoard.id, event: this.props.id }
               });
             }}
           >

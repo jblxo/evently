@@ -70,9 +70,7 @@ const ListsContainer = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #66a3c7;
-    border: 0.8rem solid #0079bf;
-    border-top-width: 0;
+    background-color: ${props => props.theme.rose};
   }
 `;
 

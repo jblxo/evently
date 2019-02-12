@@ -12,7 +12,7 @@ const Button = styled.button`
   text-transform: uppercase;
   transition: transform 0.3s ease;
   color: ${props => props.theme.offWhite};
-
+  cursor: pointer;
   &:hover {
     transform: scale(1.2);
   }
