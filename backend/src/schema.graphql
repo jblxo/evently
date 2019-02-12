@@ -59,6 +59,7 @@ type Mutation {
   joinEvent(id: Int!): EventAdmin
   createBoard(id: Int!, title: String!, description: String): Board!
   addList(description: String, title: String!, event: Int!, board: Int!): List!
+  addCard(description: String, title: String!, event: Int!, list: Int!): Card!
 }
 
 type Query {
