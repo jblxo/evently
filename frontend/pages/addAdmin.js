@@ -6,7 +6,7 @@ const AddAdminPage = ({ query }) => (
   <PleaseSignIn>
     <CheckPermissions
       id={query.id}
-      permissions={['ADMIN', 'EVENTUPDATE']}
+      permissions={['ADMIN', 'PERMISSIONUPDATE']}
       prePage="true"
     >
       <AddAdmin id={query.id} />

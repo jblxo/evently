@@ -454,7 +454,6 @@ const Mutations = {
     const listId = args.list;
     delete args.event;
     delete args.list;
-    console.log(args);
     const res = await ctx.db.mutation.createCard(
       {
         data: {
