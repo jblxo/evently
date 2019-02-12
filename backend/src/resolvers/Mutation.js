@@ -454,6 +454,7 @@ const Mutations = {
     const listId = args.list;
     delete args.event;
     delete args.list;
+    console.log(args);
     const res = await ctx.db.mutation.createCard(
       {
         data: {
@@ -467,9 +468,9 @@ const Mutations = {
             connect: {
               id: ctx.request.userId
             }
-          }
-        },
-        ...args
+          },
+          ...args
+        }
       },
       info
     );

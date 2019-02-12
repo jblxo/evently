@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import CreateList from './CreateList';
+import CreateCard from './CreateCard';
 
 const customStyles = {
   content: {
@@ -115,7 +116,7 @@ const Card = styled.li`
   color: #4d4d4d;
   border-bottom: 0.1rem solid #ccc;
   border-radius: 0.3rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0;
   word-wrap: break-word;
   cursor: pointer;
   margin: 0;
@@ -127,6 +128,38 @@ const Card = styled.li`
 
   &:not(:last-child) {
     margin-bottom: 0.6rem;
+  }
+`;
+
+const AddCardButton = styled.button`
+  font-family: inherit;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  display: block;
+  border: none;
+  background-color: ${props => props.theme.darkGreen};
+  color: #fff;
+  padding: 0.65rem 0.6rem;
+  border-radius: 3px;
+  position: relative;
+  outline: none;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    &::after {
+      z-index: 999;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
   }
 `;
 
@@ -155,15 +188,25 @@ Modal.setAppElement('#__next');
 
 class Board extends Component {
   state = {
-    modalIsOpen: false
+    addListModalIsOpen: false,
+    addCardModalIsOpen: false,
+    selectedList: null
   };
 
-  openModal = () => {
-    this.setState({ modalIsOpen: true });
+  openAddListModal = () => {
+    this.setState({ addListModalIsOpen: true });
   };
 
-  closeModal = () => {
-    this.setState({ modalIsOpen: false });
+  closeAddListModal = () => {
+    this.setState({ addListModalIsOpen: false });
+  };
+
+  openAddCardModal = listId => {
+    this.setState({ addCardModalIsOpen: true, selectedList: listId });
+  };
+
+  closeAddCardModal = () => {
+    this.setState({ addCardModalIsOpen: false, selectedList: undefined });
   };
 
   render() {
@@ -183,19 +226,41 @@ class Board extends Component {
                         {list.cards.map(card => (
                           <Card key={card.id}>{card.title}</Card>
                         ))}
+
+                        <AddCardButton
+                          onClick={e => {
+                            this.openAddCardModal(list.id);
+                          }}
+                        >
+                          Add New Card!
+                        </AddCardButton>
                       </CardsContainer>
                     </List>
                   ))}
                 </ListsContainer>
-                <AddListButton onClick={this.openModal}>Add List</AddListButton>
+                <AddListButton onClick={this.openAddListModal}>
+                  Add List
+                </AddListButton>
               </BoardContainer>
               <Modal
-                isOpen={this.state.modalIsOpen}
+                isOpen={this.state.addListModalIsOpen}
                 style={customStyles}
-                onRequestClose={this.closeModal}
+                onRequestClose={this.closeAddListModal}
                 contentLabel="Create New List"
               >
                 <CreateList event={this.props.event} board={this.props.board} />
+              </Modal>
+              <Modal
+                isOpen={this.state.addCardModalIsOpen}
+                style={customStyles}
+                onRequestClose={this.closeAddCardModal}
+                contentLabel="Create New Card"
+              >
+                <CreateCard
+                  event={this.props.event}
+                  list={this.state.selectedList}
+                  board={this.props.board}
+                />
               </Modal>
             </>
           );
