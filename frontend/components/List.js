@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import CreateCard from './CreateCard';
 import Card from './Card';
 
@@ -15,6 +17,13 @@ const customStyles = {
     transform: 'translate(-50%, -50%)'
   }
 };
+
+const EditNameInput = styled.input`
+  background-color: ${props => (props.isEditing ? 'white' : 'transparent')};
+  border: 1px solid ${props => (props.isEditing ? 'black' : 'transparent')};
+  height: 3.5rem;
+  position: absolute;
+`;
 
 const ListStyles = styled.div`
   display: grid;
@@ -78,12 +87,23 @@ const AddCardButton = styled.button`
   }
 `;
 
+const UPDATE_LIST_MUTATION = gql`
+  mutation UPDATE_LIST_MUTATION($id: Int!, $title: String!, $event: Int!) {
+    updateList(id: $id, title: $title, event: $event) {
+      title
+      description
+    }
+  }
+`;
+
 class List extends Component {
   state = {
-    modalIsOpen: false
+    modalIsOpen: false,
+    isEditing: false,
+    title: this.props.list.title
   };
 
-  openModal = listId => {
+  openModal = () => {
     this.setState({ modalIsOpen: true });
   };
 
@@ -91,31 +111,66 @@ class List extends Component {
     this.setState({ modalIsOpen: false });
   };
 
+  handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
   render() {
     const { list } = this.props;
     return (
-      <ListStyles>
-        <h3>{list.title}</h3>
-        <CardsContainer>
-          {list.cards.map(card => (
-            <Card key={card.id} card={card} />
-          ))}
+      <Mutation
+        mutation={UPDATE_LIST_MUTATION}
+        variables={{
+          id: list.id,
+          title: this.state.title,
+          event: this.props.event
+        }}
+      >
+        {(updateList, { loading, error }) => (
+          <ListStyles>
+            <h3
+              onClick={e => {
+                this.state.isEditing
+                  ? this.setState({ isEditing: false })
+                  : this.setState({ isEditing: true });
+              }}
+            >
+              {list.title}
+            </h3>
+            <EditNameInput
+              type="text"
+              name="title"
+              isEditing={this.state.isEditing}
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
+            <CardsContainer>
+              {list.cards.map(card => (
+                <Card key={card.id} card={card} />
+              ))}
 
-          <AddCardButton onClick={this.openModal}>Add New Card!</AddCardButton>
-        </CardsContainer>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          style={customStyles}
-          onRequestClose={this.closeModal}
-          contentLabel="Create New Card"
-        >
-          <CreateCard
-            event={this.props.event}
-            list={list.id}
-            board={this.props.board}
-          />
-        </Modal>
-      </ListStyles>
+              <AddCardButton onClick={this.openModal}>
+                Add New Card!
+              </AddCardButton>
+            </CardsContainer>
+            <Modal
+              isOpen={this.state.modalIsOpen}
+              style={customStyles}
+              onRequestClose={this.closeModal}
+              contentLabel="Create New Card"
+            >
+              <CreateCard
+                event={this.props.event}
+                list={list.id}
+                board={this.props.board}
+              />
+            </Modal>
+          </ListStyles>
+        )}
+      </Mutation>
     );
   }
 }

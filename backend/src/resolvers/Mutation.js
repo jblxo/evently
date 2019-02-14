@@ -474,6 +474,30 @@ const Mutations = {
       info
     );
     return res;
+  },
+  async updateList(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const userPermissions = ctx.request.user.eventAdmins.map(
+      ({ permission: { name }, event: { id } }) => {
+        if (id === args.event) {
+          return name;
+        }
+      }
+    );
+
+    const user = { permissions: userPermissions };
+
+    hasPermission(user, ['ADMIN', 'STEWARD']);
+    const listId = args.id;
+    delete args.id;
+    delete args.event;
+    const res = await ctx.db.mutation.updateList(
+      { where: { id: listId }, data: { ...args } },
+      info
+    );
+
+    return res;
   }
 };
 
