@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import CreateCard from './CreateCard';
+import Card from './Card';
 
 const customStyles = {
   content: {
@@ -42,30 +43,6 @@ const CardsContainer = styled.ul`
 
   &::-webkit-scrollbar-thumb {
     background-color: #c4c9cc;
-  }
-`;
-
-const Card = styled.li`
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 1.3;
-  background-color: #fff;
-  padding: 0.65rem 0.6rem;
-  color: #4d4d4d;
-  border-bottom: 0.1rem solid #ccc;
-  border-radius: 0.3rem;
-  margin-bottom: 0;
-  word-wrap: break-word;
-  cursor: pointer;
-  margin: 0;
-  margin-bottom: 0;
-
-  &:hover {
-    background-color: #eee;
-  }
-
-  &:not(:last-child) {
-    margin-bottom: 0.6rem;
   }
 `;
 
@@ -121,7 +98,7 @@ class List extends Component {
         <h3>{list.title}</h3>
         <CardsContainer>
           {list.cards.map(card => (
-            <Card key={card.id}>{card.title}</Card>
+            <Card key={card.id} card={card} />
           ))}
 
           <AddCardButton onClick={this.openModal}>Add New Card!</AddCardButton>
