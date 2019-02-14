@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import CreateList from './CreateList';
-import CreateCard from './CreateCard';
+import List from './List';
 
 const customStyles = {
   content: {
@@ -75,94 +75,6 @@ const ListsContainer = styled.div`
   }
 `;
 
-const List = styled.div`
-  display: grid;
-  grid-template-rows: auto minmax(auto, 1fr) auto;
-  background-color: ${props => props.theme.paleOrange};
-  margin: 0;
-  max-height: calc(100vh - 11.8rem);
-  border-radius: 0.3rem;
-  margin-right: 1rem;
-
-  & h3 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #333;
-    padding: 1rem;
-  }
-`;
-
-const CardsContainer = styled.ul`
-  /* display: grid;
-  grid-row-gap: 0.6rem; */
-  padding: 0 0.6rem 0.5rem;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 1.2rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #c4c9cc;
-  }
-`;
-
-const Card = styled.li`
-  font-size: 1.4rem;
-  font-weight: 400;
-  line-height: 1.3;
-  background-color: #fff;
-  padding: 0.65rem 0.6rem;
-  color: #4d4d4d;
-  border-bottom: 0.1rem solid #ccc;
-  border-radius: 0.3rem;
-  margin-bottom: 0;
-  word-wrap: break-word;
-  cursor: pointer;
-  margin: 0;
-  margin-bottom: 0;
-
-  &:hover {
-    background-color: #eee;
-  }
-
-  &:not(:last-child) {
-    margin-bottom: 0.6rem;
-  }
-`;
-
-const AddCardButton = styled.button`
-  font-family: inherit;
-  cursor: pointer;
-  width: 100%;
-  margin: 0;
-  display: block;
-  border: none;
-  background-color: ${props => props.theme.darkGreen};
-  color: #fff;
-  padding: 0.65rem 0.6rem;
-  border-radius: 3px;
-  position: relative;
-  outline: none;
-
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: '';
-    width: 100%;
-    height: 100%;
-    transition: all 0.2s;
-  }
-
-  &:hover {
-    &::after {
-      z-index: 999;
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-  }
-`;
-
 const SINGLE_BOARD_QUERY = gql`
   query SINGLE_BOARD_QUERY($id: Int!) {
     board(where: { id: $id }) {
@@ -189,7 +101,6 @@ Modal.setAppElement('#__next');
 class Board extends Component {
   state = {
     addListModalIsOpen: false,
-    addCardModalIsOpen: false,
     selectedList: null
   };
 
@@ -199,14 +110,6 @@ class Board extends Component {
 
   closeAddListModal = () => {
     this.setState({ addListModalIsOpen: false });
-  };
-
-  openAddCardModal = listId => {
-    this.setState({ addCardModalIsOpen: true, selectedList: listId });
-  };
-
-  closeAddCardModal = () => {
-    this.setState({ addCardModalIsOpen: false, selectedList: undefined });
   };
 
   render() {
@@ -220,22 +123,12 @@ class Board extends Component {
               <BoardContainer>
                 <ListsContainer>
                   {board.lists.map(list => (
-                    <List key={list.id}>
-                      <h3>{list.title}</h3>
-                      <CardsContainer>
-                        {list.cards.map(card => (
-                          <Card key={card.id}>{card.title}</Card>
-                        ))}
-
-                        <AddCardButton
-                          onClick={e => {
-                            this.openAddCardModal(list.id);
-                          }}
-                        >
-                          Add New Card!
-                        </AddCardButton>
-                      </CardsContainer>
-                    </List>
+                    <List
+                      key={list.id}
+                      list={list}
+                      board={this.props.board}
+                      event={this.props.event}
+                    />
                   ))}
                 </ListsContainer>
                 <AddListButton onClick={this.openAddListModal}>
@@ -249,18 +142,6 @@ class Board extends Component {
                 contentLabel="Create New List"
               >
                 <CreateList event={this.props.event} board={this.props.board} />
-              </Modal>
-              <Modal
-                isOpen={this.state.addCardModalIsOpen}
-                style={customStyles}
-                onRequestClose={this.closeAddCardModal}
-                contentLabel="Create New Card"
-              >
-                <CreateCard
-                  event={this.props.event}
-                  list={this.state.selectedList}
-                  board={this.props.board}
-                />
               </Modal>
             </>
           );
