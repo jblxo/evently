@@ -5,6 +5,8 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import CreateCard from './CreateCard';
 import Card from './Card';
+import { SINGLE_BOARD_QUERY } from './Board';
+import Error from './Error';
 
 const customStyles = {
   content: {
@@ -18,15 +20,28 @@ const customStyles = {
   }
 };
 
-const EditNameInput = styled.input`
+const EditNameInput = styled.textarea`
   background-color: ${props => (props.isEditing ? 'white' : 'transparent')};
-  border: 1px solid ${props => (props.isEditing ? 'black' : 'transparent')};
-  height: 3.5rem;
+  border: 2px solid
+    ${props => (props.isEditing ? props.theme.softOcean : 'transparent')};
+  height: ${props => props.height};
+  border-radius: 3px;
   position: absolute;
+  top: 2.4rem;
+  left: 1rem;
+  width: 80%;
+  overflow: hidden;
+  display: ${props => (props.isEditing ? 'block' : 'none')};
+  outline: none;
+  resize: none;
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 1rem;
 `;
 
 const ListStyles = styled.div`
   display: grid;
+  position: relative;
   grid-template-rows: auto minmax(auto, 1fr) auto;
   background-color: ${props => props.theme.paleOrange};
   margin: 0;
@@ -37,8 +52,9 @@ const ListStyles = styled.div`
   & h3 {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #333;
+    display: ${props => (props.isEditing ? 'none' : 'block')};
     padding: 1rem;
+    width: 80%;
   }
 `;
 
@@ -100,8 +116,19 @@ class List extends Component {
   state = {
     modalIsOpen: false,
     isEditing: false,
-    title: this.props.list.title
+    title: this.props.list.title,
+    height: 0
   };
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+    const height = this.listTitle.clientHeight;
+    this.setState({ height });
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
 
   openModal = () => {
     this.setState({ modalIsOpen: true });
@@ -111,11 +138,21 @@ class List extends Component {
     this.setState({ modalIsOpen: false });
   };
 
-  handleChange = e => {
+  handleChange = async e => {
     const { name, value } = e.target;
     this.setState({
       [name]: value
     });
+  };
+
+  handleClickOutside = e => {
+    if (this.wrapperRef && !this.wrapperRef.contains(e.target)) {
+      this.setState({ isEditing: false });
+    }
+  };
+
+  setWrapperRef = node => {
+    this.wrapperRef = node;
   };
 
   render() {
@@ -128,24 +165,39 @@ class List extends Component {
           title: this.state.title,
           event: this.props.event
         }}
+        refetchQueries={[
+          { query: SINGLE_BOARD_QUERY, variables: { id: this.props.board } }
+        ]}
       >
         {(updateList, { loading, error }) => (
           <ListStyles>
             <h3
-              onClick={e => {
-                this.state.isEditing
-                  ? this.setState({ isEditing: false })
-                  : this.setState({ isEditing: true });
+              ref={node => (this.listTitle = node)}
+              onClick={() => {
+                this.setState({ isEditing: true });
               }}
             >
               {list.title}
             </h3>
+            <Error error={error} />
             <EditNameInput
-              type="text"
+              ref={this.setWrapperRef}
+              height={`${this.state.height}px`}
+              rows="1"
+              cols="50"
               name="title"
               isEditing={this.state.isEditing}
               value={this.state.title}
-              onChange={this.handleChange}
+              onChange={async e => {
+                e.preventDefault();
+                e.persist();
+                await this.handleChange(e);
+                if (this.state.isEditing) {
+                  await updateList();
+                }
+
+                this.setState({ height: this.listTitle.style.height });
+              }}
             />
             <CardsContainer>
               {list.cards.map(card => (
