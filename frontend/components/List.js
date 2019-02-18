@@ -122,7 +122,7 @@ class List extends Component {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
-    const height = this.listTitle.clientHeight;
+    const height = this.listTitle.style.height;
     this.setState({ height });
   }
 
@@ -138,7 +138,7 @@ class List extends Component {
     this.setState({ modalIsOpen: false });
   };
 
-  handleChange = async e => {
+  handleChange = e => {
     const { name, value } = e.target;
     this.setState({
       [name]: value
