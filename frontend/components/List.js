@@ -138,16 +138,13 @@ class List extends Component {
     this.setState({ modalIsOpen: false });
   };
 
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleClickOutside = e => {
+  handleClickOutside = async e => {
     if (this.wrapperRef && !this.wrapperRef.contains(e.target)) {
-      this.setState({ isEditing: false });
+      if (this.state.title !== '' && this.state.isEditing) {
+        await this.props.setTitle(this.state.title);
+        await this.props.updateList();
+      }
+      this.setState({ isEditing: false, title: this.props.list.title });
     }
   };
 
@@ -155,13 +152,77 @@ class List extends Component {
     this.wrapperRef = node;
   };
 
+  handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
   render() {
-    const { list } = this.props;
+    const { list, error, loading } = this.props;
+    return (
+      <ListStyles>
+        <h3
+          ref={node => (this.listTitle = node)}
+          onClick={() => {
+            this.setState({ isEditing: true });
+          }}
+        >
+          {list.title}
+        </h3>
+        <Error error={error} />
+        <EditNameInput
+          ref={this.setWrapperRef}
+          height={`${this.state.height}px`}
+          rows="1"
+          cols="50"
+          name="title"
+          isEditing={this.state.isEditing}
+          value={this.state.title}
+          onChange={async e => {
+            e.preventDefault();
+            this.handleChange(e);
+            this.setState({ height: this.listTitle.style.height });
+          }}
+        />
+        <CardsContainer>
+          {list.cards.map(card => (
+            <Card key={card.id} card={card} />
+          ))}
+
+          <AddCardButton onClick={this.openModal}>Add New Card!</AddCardButton>
+        </CardsContainer>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          style={customStyles}
+          onRequestClose={this.closeModal}
+          contentLabel="Create New Card"
+        >
+          <CreateCard
+            event={this.props.event}
+            list={list.id}
+            board={this.props.board}
+          />
+        </Modal>
+      </ListStyles>
+    );
+  }
+}
+
+class MutationHelper extends Component {
+  state = {
+    title: this.props.list.title
+  };
+
+  setTitle = async title => {
+    this.setState({ title });
+  };
+
+  render() {
     return (
       <Mutation
         mutation={UPDATE_LIST_MUTATION}
         variables={{
-          id: list.id,
+          id: this.props.list.id,
           title: this.state.title,
           event: this.props.event
         }}
@@ -170,61 +231,17 @@ class List extends Component {
         ]}
       >
         {(updateList, { loading, error }) => (
-          <ListStyles>
-            <h3
-              ref={node => (this.listTitle = node)}
-              onClick={() => {
-                this.setState({ isEditing: true });
-              }}
-            >
-              {list.title}
-            </h3>
-            <Error error={error} />
-            <EditNameInput
-              ref={this.setWrapperRef}
-              height={`${this.state.height}px`}
-              rows="1"
-              cols="50"
-              name="title"
-              isEditing={this.state.isEditing}
-              value={this.state.title}
-              onChange={async e => {
-                e.preventDefault();
-                e.persist();
-                await this.handleChange(e);
-                if (this.state.isEditing) {
-                  await updateList();
-                }
-
-                this.setState({ height: this.listTitle.style.height });
-              }}
-            />
-            <CardsContainer>
-              {list.cards.map(card => (
-                <Card key={card.id} card={card} />
-              ))}
-
-              <AddCardButton onClick={this.openModal}>
-                Add New Card!
-              </AddCardButton>
-            </CardsContainer>
-            <Modal
-              isOpen={this.state.modalIsOpen}
-              style={customStyles}
-              onRequestClose={this.closeModal}
-              contentLabel="Create New Card"
-            >
-              <CreateCard
-                event={this.props.event}
-                list={list.id}
-                board={this.props.board}
-              />
-            </Modal>
-          </ListStyles>
+          <List
+            updateList={updateList}
+            loading={loading}
+            error={error}
+            setTitle={this.setTitle}
+            {...this.props}
+          />
         )}
       </Mutation>
     );
   }
 }
 
-export default List;
+export default MutationHelper;
