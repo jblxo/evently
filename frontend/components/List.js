@@ -21,41 +21,47 @@ const customStyles = {
 };
 
 const EditNameInput = styled.textarea`
-  background-color: ${props => (props.isEditing ? 'white' : 'transparent')};
-  border: 2px solid
-    ${props => (props.isEditing ? props.theme.softOcean : 'transparent')};
-  height: ${props => props.height};
-  border-radius: 3px;
   position: absolute;
-  top: 2.4rem;
-  left: 1rem;
+  background-color: white;
+  border: 2px solid ${props => props => props.theme.softOcean};
+  border-radius: 3px;
+  margin: 1.2rem 0;
   width: 80%;
   overflow: hidden;
-  display: ${props => (props.isEditing ? 'block' : 'none')};
+  display: block;
+  visibility: ${props => (props.isEditing ? 'visible' : 'hidden')};
   outline: none;
   resize: none;
   font-size: 1.4rem;
   font-weight: 700;
   padding: 1rem;
+  font-family: inherit;
+  line-height: inherit;
+  margin-left: 1rem;
+  height: 5.2rem;
 `;
 
 const ListStyles = styled.div`
   display: grid;
   position: relative;
-  grid-template-rows: auto minmax(auto, 1fr) auto;
+  grid-template-rows: minmax(auto, 7.6rem) minmax(auto, 1fr) auto;
   background-color: ${props => props.theme.paleOrange};
   margin: 0;
   max-height: calc(100vh - 11.8rem);
   border-radius: 0.3rem;
   margin-right: 1rem;
+`;
 
-  & h3 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    display: ${props => (props.isEditing ? 'none' : 'block')};
-    padding: 1rem;
-    width: 80%;
-  }
+const ListHeading = styled.h3`
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: block;
+  visibility: ${props => (props.isEditing ? 'hidden' : 'visible')};
+  padding: 1rem 1rem;
+  border: 2px solid transparent;
+  width: 80%;
+  margin: 1.2rem 0 1.2rem 1rem;
+  white-space: pre-wrap;
 `;
 
 const CardsContainer = styled.ul`
@@ -116,18 +122,17 @@ class List extends Component {
   state = {
     modalIsOpen: false,
     isEditing: false,
-    title: this.props.list.title,
-    height: 0
+    title: this.props.list.title
   };
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
-    const height = this.listTitle.style.height;
-    this.setState({ height });
+    this.wrapperRef.addEventListener('input', this.autoResize, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside);
+    this.wrapperRef.removeEventListener('input', this.autoResize, false);
   }
 
   openModal = () => {
@@ -157,32 +162,35 @@ class List extends Component {
     this.setState({ [name]: value });
   };
 
+  autoResize = () => {
+    this.wrapperRef.style.height = '5.2rem';
+    this.wrapperRef.style.height = this.wrapperRef.scrollHeight + 'px';
+    this.listTitle.style.height = this.wrapperRef.style.height;
+    this.wrapperRef.scrollTop = this.wrapperRef.scrollHeight;
+  };
+
   render() {
     const { list, error, loading } = this.props;
     return (
       <ListStyles>
-        <h3
+        <ListHeading
           ref={node => (this.listTitle = node)}
           onClick={() => {
             this.setState({ isEditing: true });
           }}
+          isEditing={this.state.isEditing}
         >
           {list.title}
-        </h3>
+        </ListHeading>
         <Error error={error} />
         <EditNameInput
           ref={this.setWrapperRef}
-          height={`${this.state.height}px`}
-          rows="1"
+          rows={this.state.rows}
           cols="50"
           name="title"
           isEditing={this.state.isEditing}
           value={this.state.title}
-          onChange={async e => {
-            e.preventDefault();
-            this.handleChange(e);
-            this.setState({ height: this.listTitle.style.height });
-          }}
+          onChange={this.handleChange}
         />
         <CardsContainer>
           {list.cards.map(card => (
