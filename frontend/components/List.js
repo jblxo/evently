@@ -20,6 +20,20 @@ const customStyles = {
   }
 };
 
+const RemoveListButton = styled.button`
+  font-family: inherit;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0.7rem;
+  border-radius: 3px;
+  padding: 0.7rem;
+  color: ${props => props.theme.offWhite};
+  cursor: pointer;
+  background-color: ${props => props.theme.ocean};
+  border: none;
+`;
+
 const EditNameInput = styled.textarea`
   position: absolute;
   background-color: white;
@@ -173,6 +187,7 @@ class List extends Component {
     const { list, error, loading } = this.props;
     return (
       <ListStyles>
+        <RemoveListButton>❌</RemoveListButton>
         <ListHeading
           ref={node => (this.listTitle = node)}
           onClick={() => {
