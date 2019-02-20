@@ -38,13 +38,12 @@ const EditNameInput = styled.textarea`
   font-family: inherit;
   line-height: inherit;
   margin-left: 1rem;
-  height: 5.2rem;
 `;
 
 const ListStyles = styled.div`
   display: grid;
   position: relative;
-  grid-template-rows: minmax(auto, 7.6rem) minmax(auto, 1fr) auto;
+  grid-template-rows: auto minmax(auto, 1fr) auto;
   background-color: ${props => props.theme.paleOrange};
   margin: 0;
   max-height: calc(100vh - 11.8rem);
@@ -128,6 +127,7 @@ class List extends Component {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
     this.wrapperRef.addEventListener('input', this.autoResize, false);
+    this.autoResize();
   }
 
   componentWillUnmount() {
@@ -163,7 +163,7 @@ class List extends Component {
   };
 
   autoResize = () => {
-    this.wrapperRef.style.height = '5.2rem';
+    this.wrapperRef.style.height = 'auto';
     this.wrapperRef.style.height = this.wrapperRef.scrollHeight + 'px';
     this.listTitle.style.height = this.wrapperRef.style.height;
     this.wrapperRef.scrollTop = this.wrapperRef.scrollHeight;
@@ -185,7 +185,7 @@ class List extends Component {
         <Error error={error} />
         <EditNameInput
           ref={this.setWrapperRef}
-          rows={this.state.rows}
+          rows="1"
           cols="50"
           name="title"
           isEditing={this.state.isEditing}
