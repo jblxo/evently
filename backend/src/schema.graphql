@@ -77,4 +77,5 @@ type Query {
   users(where: UserWhereInput): [User]!
   eventAdmins(where: EventAdminWhereInput): [EventAdmin]!
   board(where: BoardWhereUniqueInput!): Board
+  card(where: CardWhereUniqueInput!): Card
 }

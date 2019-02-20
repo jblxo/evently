@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 
 const CardStyles = styled.li`
   font-size: 1.4rem;
@@ -25,8 +26,14 @@ const CardStyles = styled.li`
   }
 `;
 
-const Card = ({ card }) => {
-  return <CardStyles>{card.title}</CardStyles>;
+const Card = ({ card, event }) => {
+  return (
+    <Link href={{ pathname: '/card', query: { card: card.id, event: event } }}>
+      <CardStyles>
+        <a>{card.title}</a>
+      </CardStyles>
+    </Link>
+  );
 };
 
 export default Card;

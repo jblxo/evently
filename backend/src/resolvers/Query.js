@@ -8,6 +8,7 @@ const Query = {
   user: forwardTo('db'),
   eventAdmins: forwardTo('db'),
   board: forwardTo('db'),
+  card: forwardTo('db'),
   me(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       return null;
