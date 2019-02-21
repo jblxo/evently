@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Draggable } from 'react-beautiful-dnd';
 
 const CardStyles = styled.li`
   font-size: 1.4rem;
@@ -16,6 +17,7 @@ const CardStyles = styled.li`
   cursor: pointer;
   margin: 0;
   margin-bottom: 0;
+  list-style: none;
 
   &:hover {
     background-color: #eee;
@@ -26,18 +28,26 @@ const CardStyles = styled.li`
   }
 `;
 
-const Card = ({ card, event, board }) => {
+const Card = ({ card, event, board, index, list }) => {
   return (
-    <Link
-      href={{
-        pathname: '/card',
-        query: { card: card.id, event: event, board: board }
-      }}
-    >
-      <CardStyles>
-        <a>{card.title}</a>
-      </CardStyles>
-    </Link>
+    <Draggable draggableId={card.id} index={index}>
+      {provided => (
+        <Link
+          href={{
+            pathname: '/card',
+            query: { card: card.id, event: event, board: board, list: list }
+          }}
+        >
+          <CardStyles
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <a>{card.title}</a>
+          </CardStyles>
+        </Link>
+      )}
+    </Draggable>
   );
 };
 

@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import { DragDropContext } from 'react-beautiful-dnd';
 import CreateList from './CreateList';
 import List from './List';
 
@@ -112,6 +113,10 @@ class Board extends Component {
     this.setState({ addListModalIsOpen: false });
   };
 
+  onDragEnd = result => {
+    // TODO: reorder our column
+  };
+
   render() {
     return (
       <Query query={SINGLE_BOARD_QUERY} variables={{ id: this.props.board }}>
@@ -119,7 +124,7 @@ class Board extends Component {
           if (error) return <Error error={error} />;
           if (loading) return <p>Loading...</p>;
           return (
-            <>
+            <DragDropContext onDragEnd={this.onDragEnd}>
               <BoardContainer>
                 <ListsContainer>
                   {board.lists.map(list => (
@@ -143,7 +148,7 @@ class Board extends Component {
               >
                 <CreateList event={this.props.event} board={this.props.board} />
               </Modal>
-            </>
+            </DragDropContext>
           );
         }}
       </Query>

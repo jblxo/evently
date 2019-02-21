@@ -25,8 +25,8 @@ const SINGLE_CARD_QUERY = gql`
 `;
 
 const DELETE_CARD_MUTATION = gql`
-  mutation DELETE_CARD_MUTATION($id: Int!, $event: Int!) {
-    deleteCard(id: $id, event: $event) {
+  mutation DELETE_CARD_MUTATION($id: Int!, $event: Int!, $list: Int!) {
+    deleteCard(id: $id, event: $event, list: $list) {
       id
     }
   }
@@ -55,7 +55,11 @@ class SingleCard extends Component {
           return (
             <Mutation
               mutation={DELETE_CARD_MUTATION}
-              variables={{ id: card.id, event: this.props.event }}
+              variables={{
+                id: card.id,
+                event: this.props.event,
+                list: this.props.list
+              }}
               refetchQueries={[
                 {
                   query: SINGLE_BOARD_QUERY,

@@ -451,13 +451,21 @@ const Mutations = {
     const user = { permissions: userPermissions };
 
     hasPermission(user, ['ADMIN', 'STEWARD']);
+
+    const card = await ctx.db.query.cards(
+      { where: { list: { id: args.list } }, orderBy: 'order_DESC', first: 1 },
+      `{ id order }`
+    );
+
+    const order = card[0] ? card[0].order + 1 : 1;
+
     const listId = args.list;
     delete args.event;
     delete args.list;
     const res = await ctx.db.mutation.createCard(
       {
         data: {
-          order: 1,
+          order: order,
           list: {
             connect: {
               id: listId
@@ -537,6 +545,28 @@ const Mutations = {
       { where: { id: args.id } },
       info
     );
+
+    const oldCards = await ctx.db.query.cards(
+      { where: { list: { id: args.list } } },
+      `{id order}`
+    );
+
+    const updatedCards = oldCards.map(card => {
+      card.order--;
+      return card;
+    });
+    console.log(updatedCards);
+
+    updatedCards.forEach(async ({ id, order }) => {
+      await ctx.db.mutation.updateCard(
+        {
+          data: { order: order },
+          where: { id: id }
+        },
+        `{id order}`
+      );
+    });
+
     return res;
   }
 };

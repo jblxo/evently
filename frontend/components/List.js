@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Modal from 'react-modal';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Droppable } from 'react-beautiful-dnd';
 import CreateCard from './CreateCard';
 import Card from './Card';
 import { SINGLE_BOARD_QUERY } from './Board';
@@ -229,20 +230,30 @@ class List extends Component {
               value={this.state.title}
               onChange={this.handleChange}
             />
-            <CardsContainer>
-              {list.cards.map(card => (
-                <Card
-                  key={card.id}
-                  card={card}
-                  event={this.props.event}
-                  board={this.props.board}
-                />
-              ))}
+            <Droppable droppableId={list.id.toString()}>
+              {provided => (
+                <CardsContainer
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {list.cards.map((card, index) => (
+                    <Card
+                      key={card.id}
+                      card={card}
+                      event={this.props.event}
+                      board={this.props.board}
+                      index={index}
+                      list={list.id}
+                    />
+                  ))}
+                  {provided.placeholder}
 
-              <AddCardButton onClick={this.openModal}>
-                Add New Card!
-              </AddCardButton>
-            </CardsContainer>
+                  <AddCardButton onClick={this.openModal}>
+                    Add New Card!
+                  </AddCardButton>
+                </CardsContainer>
+              )}
+            </Droppable>
             <Modal
               isOpen={this.state.modalIsOpen}
               style={customStyles}
