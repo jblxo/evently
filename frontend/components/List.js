@@ -8,6 +8,14 @@ import Card from './Card';
 import { SINGLE_BOARD_QUERY } from './Board';
 import Error from './Error';
 
+const DELETE_LIST_MUTATION = gql`
+  mutation DELETE_LIST_MUTATION($id: Int!, $event: Int!) {
+    deleteList(id: $id, event: $event) {
+      id
+    }
+  }
+`;
+
 const customStyles = {
   content: {
     top: '50%',
@@ -186,47 +194,65 @@ class List extends Component {
   render() {
     const { list, error, loading } = this.props;
     return (
-      <ListStyles>
-        <RemoveListButton>❌</RemoveListButton>
-        <ListHeading
-          ref={node => (this.listTitle = node)}
-          onClick={() => {
-            this.setState({ isEditing: true });
-          }}
-          isEditing={this.state.isEditing}
-        >
-          {list.title}
-        </ListHeading>
-        <Error error={error} />
-        <EditNameInput
-          ref={this.setWrapperRef}
-          rows="1"
-          cols="50"
-          name="title"
-          isEditing={this.state.isEditing}
-          value={this.state.title}
-          onChange={this.handleChange}
-        />
-        <CardsContainer>
-          {list.cards.map(card => (
-            <Card key={card.id} card={card} event={this.props.event} />
-          ))}
+      <Mutation
+        mutation={DELETE_LIST_MUTATION}
+        variables={{ id: list.id, event: this.props.event }}
+        refetchQueries={[
+          { query: SINGLE_BOARD_QUERY, variables: { id: this.props.board } }
+        ]}
+      >
+        {(deleteList, { loading, error }) => (
+          <ListStyles>
+            <RemoveListButton
+              onClick={async () => {
+                await deleteList();
+              }}
+            >
+              ❌
+            </RemoveListButton>
+            <ListHeading
+              ref={node => (this.listTitle = node)}
+              onClick={() => {
+                this.setState({ isEditing: true });
+              }}
+              isEditing={this.state.isEditing}
+            >
+              {list.title}
+            </ListHeading>
+            <Error error={error} />
+            <EditNameInput
+              ref={this.setWrapperRef}
+              rows="1"
+              cols="50"
+              name="title"
+              isEditing={this.state.isEditing}
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
+            <CardsContainer>
+              {list.cards.map(card => (
+                <Card key={card.id} card={card} event={this.props.event} />
+              ))}
 
-          <AddCardButton onClick={this.openModal}>Add New Card!</AddCardButton>
-        </CardsContainer>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          style={customStyles}
-          onRequestClose={this.closeModal}
-          contentLabel="Create New Card"
-        >
-          <CreateCard
-            event={this.props.event}
-            list={list.id}
-            board={this.props.board}
-          />
-        </Modal>
-      </ListStyles>
+              <AddCardButton onClick={this.openModal}>
+                Add New Card!
+              </AddCardButton>
+            </CardsContainer>
+            <Modal
+              isOpen={this.state.modalIsOpen}
+              style={customStyles}
+              onRequestClose={this.closeModal}
+              contentLabel="Create New Card"
+            >
+              <CreateCard
+                event={this.props.event}
+                list={list.id}
+                board={this.props.board}
+              />
+            </Modal>
+          </ListStyles>
+        )}
+      </Mutation>
     );
   }
 }

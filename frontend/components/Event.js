@@ -10,8 +10,8 @@ import Title from './styles/Title';
 import EntranceTag from './styles/EntranceTag';
 import User from './User';
 
-const DELETE_EVNET_MUTATION = gql`
-  mutation DELETE_EVNET_MUTATION($id: Int!) {
+const DELETE_EVENT_MUTATION = gql`
+  mutation DELETE_EVENT_MUTATION($id: Int!) {
     deleteEvent(id: $id) {
       id
     }
@@ -29,7 +29,7 @@ class Event extends Component {
       <User>
         {({ data: { me } }) => (
           <Mutation
-            mutation={DELETE_EVNET_MUTATION}
+            mutation={DELETE_EVENT_MUTATION}
             variables={{ id: event.id }}
           >
             {(deleteEvent, { error, loading }) => (
