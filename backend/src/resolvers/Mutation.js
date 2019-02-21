@@ -513,7 +513,6 @@ const Mutations = {
     const user = { permissions: userPermissions };
 
     hasPermission(user, ['ADMIN', 'STEWARD']);
-    const listId = args.id;
     const res = await ctx.db.mutation.deleteList(
       { where: { id: args.id } },
       info
@@ -534,7 +533,6 @@ const Mutations = {
     const user = { permissions: userPermissions };
 
     hasPermission(user, ['ADMIN', 'STEWARD']);
-    const cardId = args.id;
     const res = await ctx.db.mutation.deleteCard(
       { where: { id: args.id } },
       info

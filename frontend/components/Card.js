@@ -26,9 +26,14 @@ const CardStyles = styled.li`
   }
 `;
 
-const Card = ({ card, event }) => {
+const Card = ({ card, event, board }) => {
   return (
-    <Link href={{ pathname: '/card', query: { card: card.id, event: event } }}>
+    <Link
+      href={{
+        pathname: '/card',
+        query: { card: card.id, event: event, board: board }
+      }}
+    >
       <CardStyles>
         <a>{card.title}</a>
       </CardStyles>

@@ -231,7 +231,12 @@ class List extends Component {
             />
             <CardsContainer>
               {list.cards.map(card => (
-                <Card key={card.id} card={card} event={this.props.event} />
+                <Card
+                  key={card.id}
+                  card={card}
+                  event={this.props.event}
+                  board={this.props.board}
+                />
               ))}
 
               <AddCardButton onClick={this.openModal}>
