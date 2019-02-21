@@ -61,6 +61,7 @@ type Mutation {
   addList(description: String, title: String!, event: Int!, board: Int!): List!
   addCard(description: String, title: String!, event: Int!, list: Int!): Card!
   updateList(id: Int!, description: String, title: String!, event: Int!): List
+  deleteList(id: Int!, event: Int!): List
 }
 
 type Query {
