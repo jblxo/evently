@@ -514,10 +514,29 @@ const Mutations = {
 
     hasPermission(user, ['ADMIN', 'STEWARD']);
     const listId = args.id;
-    delete args.id;
-    delete args.event;
     const res = await ctx.db.mutation.deleteList(
-      { where: { id: listId } },
+      { where: { id: args.id } },
+      info
+    );
+    return res;
+  },
+  async deleteCard(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const userPermissions = ctx.request.user.eventAdmins.map(
+      ({ permission: { name }, event: { id } }) => {
+        if (id === args.event) {
+          return name;
+        }
+      }
+    );
+
+    const user = { permissions: userPermissions };
+
+    hasPermission(user, ['ADMIN', 'STEWARD']);
+    const cardId = args.id;
+    const res = await ctx.db.mutation.deleteCard(
+      { where: { id: args.id } },
       info
     );
     return res;
