@@ -28,6 +28,7 @@ const DELETE_CARD_MUTATION = gql`
   mutation DELETE_CARD_MUTATION($id: Int!, $event: Int!, $list: Int!) {
     deleteCard(id: $id, event: $event, list: $list) {
       id
+      order
     }
   }
 `;

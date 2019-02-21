@@ -63,6 +63,13 @@ type Mutation {
   updateList(id: Int!, description: String, title: String!, event: Int!): List
   deleteList(id: Int!, event: Int!): List
   deleteCard(id: Int!, event: Int!, list: Int!): Card
+  reorderCards(
+    card: Int!
+    destinationList: Int!
+    sourceList: Int!
+    destinationOrder: Int!
+    sourceOrder: Int!
+  ): Card
 }
 
 type Query {

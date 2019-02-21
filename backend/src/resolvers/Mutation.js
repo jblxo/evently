@@ -552,10 +552,12 @@ const Mutations = {
     );
 
     const updatedCards = oldCards.map(card => {
-      card.order--;
+      if (card.order > res.order) {
+        card.order--;
+      }
+
       return card;
     });
-    console.log(updatedCards);
 
     updatedCards.forEach(async ({ id, order }) => {
       await ctx.db.mutation.updateCard(
@@ -568,6 +570,73 @@ const Mutations = {
     });
 
     return res;
+  },
+  async reorderCards(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const listCards = await ctx.db.query.cards(
+      { where: { list: { id: args.sourceList }, id_not: args.card } },
+      `{id order}`
+    );
+
+    const reorderedList = listCards.map(card => {
+      if (
+        args.destinationList !== args.sourceList &&
+        card.order >= args.sourceOrder
+      ) {
+        card.order--;
+        return card;
+      }
+
+      if (
+        card.order >= args.destinationOrder &&
+        args.destinationList === args.sourceList
+      ) {
+        card.order++;
+        return card;
+      }
+
+      return card;
+    });
+
+    reorderedList.forEach(async card => {
+      await ctx.db.mutation.updateCard({
+        data: { order: card.order },
+        where: { id: card.id }
+      });
+    });
+
+    const destinationList = await ctx.db.query.cards(
+      {
+        where: { list: { id: args.destinationList } }
+      },
+      `{id order}`
+    );
+
+    destinationList.forEach(async card => {
+      if (
+        card.order >= args.destinationOrder &&
+        args.destinationList !== args.sourceList
+      ) {
+        await ctx.db.mutation.updateCard({
+          data: { order: card.order + 1 },
+          where: { id: card.id }
+        });
+      }
+    });
+
+    const updatedCard = await ctx.db.mutation.updateCard(
+      {
+        data: {
+          order: args.destinationOrder,
+          list: { connect: { id: args.destinationList } }
+        },
+        where: { id: args.card }
+      },
+      info
+    );
+
+    return updatedCard;
   }
 };
 

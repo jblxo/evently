@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-beautiful-dnd';
@@ -85,13 +85,35 @@ const SINGLE_BOARD_QUERY = gql`
         id
         title
         description
-        cards {
+        cards(orderBy: order_ASC) {
           id
           title
           description
           order
         }
       }
+      title
+    }
+  }
+`;
+
+const REORDER_CARDS_MUTATION = gql`
+  mutation REORDER_CARDS_MUTATION(
+    $card: Int!
+    $destinationList: Int!
+    $sourceList: Int!
+    $destinationOrder: Int!
+    $sourceOrder: Int!
+  ) {
+    reorderCards(
+      card: $card
+      destinationList: $destinationList
+      sourceList: $sourceList
+      destinationOrder: $destinationOrder
+      sourceOrder: $sourceOrder
+    ) {
+      id
+      order
       title
     }
   }
@@ -113,8 +135,29 @@ class Board extends Component {
     this.setState({ addListModalIsOpen: false });
   };
 
-  onDragEnd = result => {
-    // TODO: reorder our column
+  onDragEnd = async (result, reorderCards) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const res = await reorderCards({
+      variables: {
+        card: draggableId,
+        destinationList: destination.droppableId,
+        sourceList: source.droppableId,
+        destinationOrder: destination.index + 1,
+        sourceOrder: source.index + 1
+      }
+    });
   };
 
   render() {
@@ -124,31 +167,48 @@ class Board extends Component {
           if (error) return <Error error={error} />;
           if (loading) return <p>Loading...</p>;
           return (
-            <DragDropContext onDragEnd={this.onDragEnd}>
-              <BoardContainer>
-                <ListsContainer>
-                  {board.lists.map(list => (
-                    <List
-                      key={list.id}
-                      list={list}
-                      board={this.props.board}
+            <Mutation
+              mutation={REORDER_CARDS_MUTATION}
+              refetchQueries={[
+                {
+                  query: SINGLE_BOARD_QUERY,
+                  variables: { id: this.props.board }
+                }
+              ]}
+            >
+              {(reorderCards, { loading, error }) => (
+                <DragDropContext
+                  onDragEnd={result => this.onDragEnd(result, reorderCards)}
+                >
+                  <BoardContainer>
+                    <ListsContainer>
+                      {board.lists.map(list => (
+                        <List
+                          key={list.id}
+                          list={list}
+                          board={this.props.board}
+                          event={this.props.event}
+                        />
+                      ))}
+                    </ListsContainer>
+                    <AddListButton onClick={this.openAddListModal}>
+                      Add List
+                    </AddListButton>
+                  </BoardContainer>
+                  <Modal
+                    isOpen={this.state.addListModalIsOpen}
+                    style={customStyles}
+                    onRequestClose={this.closeAddListModal}
+                    contentLabel="Create New List"
+                  >
+                    <CreateList
                       event={this.props.event}
+                      board={this.props.board}
                     />
-                  ))}
-                </ListsContainer>
-                <AddListButton onClick={this.openAddListModal}>
-                  Add List
-                </AddListButton>
-              </BoardContainer>
-              <Modal
-                isOpen={this.state.addListModalIsOpen}
-                style={customStyles}
-                onRequestClose={this.closeAddListModal}
-                contentLabel="Create New List"
-              >
-                <CreateList event={this.props.event} board={this.props.board} />
-              </Modal>
-            </DragDropContext>
+                  </Modal>
+                </DragDropContext>
+              )}
+            </Mutation>
           );
         }}
       </Query>
