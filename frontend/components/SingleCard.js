@@ -33,10 +33,10 @@ const DELETE_CARD_MUTATION = gql`
   }
 `;
 
-const DeleteCardButton = styled.button`
+const CardButton = styled.button`
   font-family: inherit;
   display: block;
-  margin: 0.7rem auto;
+  margin: 0.7rem;
   border-radius: 3px;
   padding: 1rem 2.5rem;
   text-align: center;
@@ -44,6 +44,13 @@ const DeleteCardButton = styled.button`
   cursor: pointer;
   background-color: ${props => props.theme.ocean};
   border: none;
+`;
+
+const ButtonList = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-gap: 1px;
 `;
 
 class SingleCard extends Component {
@@ -71,14 +78,26 @@ class SingleCard extends Component {
               {(deleteCard, { lodaing, error }) => (
                 <CardStyles>
                   <Title>{card.title}</Title>
-                  <DeleteCardButton
-                    onClick={async () => {
-                      await deleteCard();
-                      Router.back();
-                    }}
-                  >
-                    ❌
-                  </DeleteCardButton>
+                  <ButtonList>
+                    <CardButton
+                      onClick={async () => {
+                        await deleteCard();
+                        Router.back();
+                      }}
+                    >
+                      ❌
+                    </CardButton>
+                    <CardButton
+                      onClick={() => {
+                        Router.push({
+                          pathname: '/updateCard',
+                          query: { id: card.id, event: this.props.event }
+                        });
+                      }}
+                    >
+                      Edit
+                    </CardButton>
+                  </ButtonList>
                   <h4>Description</h4>
                   {card.description.length > 0 ? (
                     <p>{card.description}</p>
@@ -106,3 +125,4 @@ class SingleCard extends Component {
 }
 
 export default SingleCard;
+export { SINGLE_CARD_QUERY };

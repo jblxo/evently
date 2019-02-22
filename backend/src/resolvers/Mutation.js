@@ -655,6 +655,7 @@ const Mutations = {
 
     const cardId = args.id;
     delete args.id;
+    delete args.event;
     const res = await ctx.db.mutation.updateCard(
       { data: { ...args }, where: { id: cardId } },
       info

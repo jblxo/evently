@@ -77,7 +77,7 @@ const UPDATE_EVENT_MUTATION = gql`
   }
 `;
 
-class CreateEvent extends Component {
+class UpdateEvent extends Component {
   state = {};
 
   handleChange = e => {
@@ -282,4 +282,4 @@ class CreateEvent extends Component {
   }
 }
 
-export default CreateEvent;
+export default UpdateEvent;
