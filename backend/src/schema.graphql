@@ -70,6 +70,7 @@ type Mutation {
     destinationOrder: Int!
     sourceOrder: Int!
   ): Card
+  updateEvent(id: Int!, title: String, description: String, event: Int!): Card
 }
 
 type Query {

@@ -637,6 +637,30 @@ const Mutations = {
     );
 
     return updatedCard;
+  },
+  async updateCard(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const userPermissions = ctx.request.user.eventAdmins.map(
+      ({ permission: { name }, event: { id } }) => {
+        if (id === args.event) {
+          return name;
+        }
+      }
+    );
+
+    const user = { permissions: userPermissions };
+
+    hasPermission(user, ['ADMIN', 'STEWARD']);
+
+    const cardId = args.id;
+    delete args.id;
+    const res = await ctx.db.mutation.updateCard(
+      { data: { ...args }, where: { id: cardId } },
+      info
+    );
+
+    return res;
   }
 };
 
