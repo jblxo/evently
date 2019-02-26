@@ -100,7 +100,7 @@ const BoardContainer = styled.div`
   position: relative;
   width: 100%;
 
-  &:hover button {
+  &:hover .button {
     opacity: 1;
     z-index: 999;
   }
@@ -113,7 +113,7 @@ const ButtonList = styled.div`
   right: 1rem;
   top: 1rem;
 
-  button {
+  .button {
     opacity: 0;
     text-align: center;
     transition: opacity 0.3s ease;
@@ -124,6 +124,7 @@ const ButtonList = styled.div`
     color: ${props => props.theme.offWhite};
     cursor: pointer;
     border-radius: 3px;
+    font-size: 1.2rem;
 
     &:not(:last-child) {
       margin-bottom: 0.4rem;
@@ -187,6 +188,7 @@ class Manage extends Component {
                             </a>
                             <ButtonList>
                               <button
+                                className="button"
                                 onClick={async () => {
                                   await deleteBoard({
                                     variables: {
@@ -198,7 +200,17 @@ class Manage extends Component {
                               >
                                 ❌
                               </button>
-                              <button>Edit</button>
+                              <Link
+                                href={{
+                                  pathname: '/editBoard',
+                                  query: {
+                                    id: board.id,
+                                    event: this.props.id
+                                  }
+                                }}
+                              >
+                                <a className="button">Edit</a>
+                              </Link>
                             </ButtonList>
                           </BoardContainer>
                         </Link>
