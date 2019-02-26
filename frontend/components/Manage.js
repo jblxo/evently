@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { SINGLE_EVENT_QUERY } from './SingleEvent';
 import Error from './Error';
 import Title from './styles/Title';
 import CreateBoard from './CreateBoard';
+
+const DELETE_BOARD_MUTATION = gql`
+  mutation DELETE_BOARD_MUTATION($id: Int!, $event: Int!) {
+    deleteBoard(id: $id, event: $event) {
+      id
+    }
+  }
+`;
 
 const customStyles = {
   content: {
@@ -111,7 +120,7 @@ const ButtonList = styled.div`
     background: transparent;
     border: none;
     padding: 0.5rem 1rem;
-    transition: background-color 0.2s;
+    transition: all 0.4s ease;
     color: ${props => props.theme.offWhite};
     cursor: pointer;
     border-radius: 3px;
@@ -143,56 +152,76 @@ class Manage extends Component {
 
   render() {
     return (
-      <Query query={SINGLE_EVENT_QUERY} variables={{ id: this.props.id }}>
-        {({ data, error, loading }) => {
-          if (error) return <Error error={error} />;
-          if (loading) return <p>Loading</p>;
-          const { event } = data;
-          return (
-            <>
-              <Title>Manage Event {event.title}</Title>
-              <Management>
-                <SideNav>
-                  <a>🏠 Home</a>
-                  <a>💳 Expenses</a>
-                </SideNav>
-                <BoardsContainer>
-                  {event.boards.map(board => (
-                    <Link
-                      key={board.id}
-                      href={{
-                        pathname: '/board',
-                        query: { board: board.id, event: this.props.id }
-                      }}
-                    >
+      <Mutation
+        mutation={DELETE_BOARD_MUTATION}
+        refetchQueries={[
+          { query: SINGLE_EVENT_QUERY, variables: { id: this.props.id } }
+        ]}
+      >
+        {(deleteBoard, { loading, error }) => (
+          <Query query={SINGLE_EVENT_QUERY} variables={{ id: this.props.id }}>
+            {({ data, error, loading }) => {
+              if (error) return <Error error={error} />;
+              if (loading) return <p>Loading</p>;
+              const { event } = data;
+              return (
+                <>
+                  <Title>Manage Event {event.title}</Title>
+                  <Management>
+                    <SideNav>
+                      <a>🏠 Home</a>
+                      <a>💳 Expenses</a>
+                    </SideNav>
+                    <BoardsContainer>
+                      {event.boards.map(board => (
+                        <Link
+                          key={board.id}
+                          href={{
+                            pathname: '/board',
+                            query: { board: board.id, event: this.props.id }
+                          }}
+                        >
+                          <BoardContainer>
+                            <a>
+                              <Board>{board.title}</Board>
+                            </a>
+                            <ButtonList>
+                              <button
+                                onClick={async () => {
+                                  await deleteBoard({
+                                    variables: {
+                                      id: board.id,
+                                      event: this.props.id
+                                    }
+                                  });
+                                }}
+                              >
+                                ❌
+                              </button>
+                              <button>Edit</button>
+                            </ButtonList>
+                          </BoardContainer>
+                        </Link>
+                      ))}
                       <BoardContainer>
-                        <a>
-                          <Board>{board.title}</Board>
-                        </a>
-                        <ButtonList>
-                          <button>❌</button>
-                          <button>Edit</button>
-                        </ButtonList>
+                        <Board onClick={this.openModal}>Create New Board</Board>
                       </BoardContainer>
-                    </Link>
-                  ))}
-                  <BoardContainer>
-                    <Board onClick={this.openModal}>Create New Board</Board>
-                  </BoardContainer>
-                </BoardsContainer>
-              </Management>
-              <Modal
-                isOpen={this.state.modalIsOpen}
-                style={customStyles}
-                onRequestClose={this.closeModal}
-                contentLabel="Create New Board"
-              >
-                <CreateBoard id={this.props.id} />
-              </Modal>
-            </>
-          );
-        }}
-      </Query>
+                    </BoardsContainer>
+                  </Management>
+                  <Modal
+                    isOpen={this.state.modalIsOpen}
+                    style={customStyles}
+                    onRequestClose={this.closeModal}
+                    contentLabel="Create New Board"
+                  >
+                    <CreateBoard id={this.props.id} />
+                  </Modal>
+                </>
+              );
+            }}
+          </Query>
+        )}
+      </Mutation>
     );
   }
 }
