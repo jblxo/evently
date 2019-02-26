@@ -76,13 +76,52 @@ const Board = styled.div`
     top: 0;
     left: 0;
     z-index: -1;
-    transition: all 0.4s;
+    transition: all 0.3s ease;
     position: absolute;
   }
   &:hover {
     &::after {
       background-color: rgba(0, 0, 0, 0.1);
-      z-index: 999;
+      z-index: 99;
+    }
+  }
+`;
+
+const BoardContainer = styled.div`
+  position: relative;
+  width: 100%;
+
+  &:hover button {
+    opacity: 1;
+    z-index: 999;
+  }
+`;
+
+const ButtonList = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+
+  button {
+    opacity: 0;
+    text-align: center;
+    transition: opacity 0.3s ease;
+    background: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s;
+    color: ${props => props.theme.offWhite};
+    cursor: pointer;
+    border-radius: 3px;
+
+    &:not(:last-child) {
+      margin-bottom: 0.4rem;
+    }
+
+    &:hover {
+      background-color: ${props => props.theme.darkGreen};
     }
   }
 `;
@@ -126,12 +165,20 @@ class Manage extends Component {
                         query: { board: board.id, event: this.props.id }
                       }}
                     >
-                      <a>
-                        <Board>{board.title}</Board>
-                      </a>
+                      <BoardContainer>
+                        <a>
+                          <Board>{board.title}</Board>
+                        </a>
+                        <ButtonList>
+                          <button>❌</button>
+                          <button>Edit</button>
+                        </ButtonList>
+                      </BoardContainer>
                     </Link>
                   ))}
-                  <Board onClick={this.openModal}>Create New Board</Board>
+                  <BoardContainer>
+                    <Board onClick={this.openModal}>Create New Board</Board>
+                  </BoardContainer>
                 </BoardsContainer>
               </Management>
               <Modal

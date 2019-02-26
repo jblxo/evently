@@ -662,6 +662,26 @@ const Mutations = {
     );
 
     return res;
+  },
+  async deleteBoard(parent, args, ctx, info) {
+    isLoggedIn(ctx.request.userId);
+
+    const userPermissions = ctx.request.user.eventAdmins.map(
+      ({ permission: { name }, event: { id } }) => {
+        if (id === args.event) {
+          return name;
+        }
+      }
+    );
+
+    const user = { permissions: userPermissions };
+
+    hasPermission(user, ['ADMIN', 'STEWARD']);
+    const res = await ctx.db.mutation.deleteBoard(
+      { where: { id: args.id } },
+      info
+    );
+    return res;
   }
 };
 
