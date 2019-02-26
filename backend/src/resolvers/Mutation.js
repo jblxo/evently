@@ -672,6 +672,15 @@ const Mutations = {
   },
   async updateBoard(parent, args, ctx, info) {
     authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD']);
+    const boardId = args.id;
+    delete args.id;
+    delete args.event;
+    const res = ctx.db.mutation.updateBoard(
+      { data: { ...args }, where: { id: boardId } },
+      info
+    );
+
+    return res;
   }
 };
 
