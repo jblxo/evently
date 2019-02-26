@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { isLoggedIn, hasPermission } = require('../utils');
+const { isLoggedIn, hasPermission, authorizeUser } = require('../utils');
 
 const Mutations = {
   async createEvent(parent, args, ctx, info) {
@@ -664,24 +664,14 @@ const Mutations = {
     return res;
   },
   async deleteBoard(parent, args, ctx, info) {
-    isLoggedIn(ctx.request.userId);
-
-    const userPermissions = ctx.request.user.eventAdmins.map(
-      ({ permission: { name }, event: { id } }) => {
-        if (id === args.event) {
-          return name;
-        }
-      }
-    );
-
-    const user = { permissions: userPermissions };
-
-    hasPermission(user, ['ADMIN', 'STEWARD']);
     const res = await ctx.db.mutation.deleteBoard(
       { where: { id: args.id } },
       info
     );
     return res;
+  },
+  async updateBoard(parent, args, ctx, info) {
+    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD']);
   }
 };
 

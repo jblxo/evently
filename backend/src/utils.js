@@ -16,6 +16,22 @@ function hasPermission(user, permissionsNeeded) {
     `);
   }
 }
+function authorizeUser(id, event, permissions) {
+  isLoggedIn(id);
+
+  const userPermissions = ctx.request.user.eventAdmins.map(
+    ({ permission: { name }, event: { id } }) => {
+      if (id === event) {
+        return name;
+      }
+    }
+  );
+
+  const user = { permissions: userPermissions };
+
+  hasPermission(user, permissions);
+}
 
 exports.isLoggedIn = isLoggedIn;
 exports.hasPermission = hasPermission;
+exports.authorizeUser = authorizeUser;

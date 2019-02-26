@@ -72,6 +72,7 @@ type Mutation {
   ): Card
   updateCard(id: Int!, title: String, description: String, event: Int!): Card
   deleteBoard(id: Int!, event: Int!): Board
+  updateBoard(id: Int!, title: String, description: String, event: Int!): Board
 }
 
 type Query {
