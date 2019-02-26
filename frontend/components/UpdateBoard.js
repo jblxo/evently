@@ -59,6 +59,12 @@ class UpdateBoard extends React.Component {
                   variables: {
                     id: this.props.event
                   }
+                },
+                {
+                  query: SINGLE_BOARD_QUERY,
+                  variables: {
+                    id: this.props.id
+                  }
                 }
               ]}
             >
@@ -85,7 +91,6 @@ class UpdateBoard extends React.Component {
                         id="title"
                         name="title"
                         placeholder="Enter a title"
-                        value={this.state.title}
                         defaultValue={board.title}
                         onChange={this.handleChange}
                         required
@@ -98,7 +103,6 @@ class UpdateBoard extends React.Component {
                         id="description"
                         name="description"
                         placeholder="Enter a description"
-                        value={this.state.description}
                         defaultValue={board.description}
                         onChange={this.handleChange}
                       />

@@ -175,45 +175,45 @@ class Manage extends Component {
                     </SideNav>
                     <BoardsContainer>
                       {event.boards.map(board => (
-                        <Link
-                          key={board.id}
-                          href={{
-                            pathname: '/board',
-                            query: { board: board.id, event: this.props.id }
-                          }}
-                        >
-                          <BoardContainer>
+                        <BoardContainer>
+                          <Link
+                            key={board.id}
+                            href={{
+                              pathname: '/board',
+                              query: { board: board.id, event: this.props.id }
+                            }}
+                          >
                             <a>
                               <Board>{board.title}</Board>
                             </a>
-                            <ButtonList>
-                              <button
-                                className="button"
-                                onClick={async () => {
-                                  await deleteBoard({
-                                    variables: {
-                                      id: board.id,
-                                      event: this.props.id
-                                    }
-                                  });
-                                }}
-                              >
-                                ❌
-                              </button>
-                              <Link
-                                href={{
-                                  pathname: '/updateBoard',
-                                  query: {
+                          </Link>
+                          <ButtonList>
+                            <button
+                              className="button"
+                              onClick={async () => {
+                                await deleteBoard({
+                                  variables: {
                                     id: board.id,
                                     event: this.props.id
                                   }
-                                }}
-                              >
-                                <a className="button">Edit</a>
-                              </Link>
-                            </ButtonList>
-                          </BoardContainer>
-                        </Link>
+                                });
+                              }}
+                            >
+                              ❌
+                            </button>
+                            <Link
+                              href={{
+                                pathname: '/updateBoard',
+                                query: {
+                                  id: board.id,
+                                  event: this.props.id
+                                }
+                              }}
+                            >
+                              <a className="button">Edit</a>
+                            </Link>
+                          </ButtonList>
+                        </BoardContainer>
                       ))}
                       <BoardContainer>
                         <Board onClick={this.openModal}>Create New Board</Board>
