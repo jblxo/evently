@@ -16,7 +16,7 @@ function hasPermission(user, permissionsNeeded) {
     `);
   }
 }
-function authorizeUser(id, event, permissions) {
+function authorizeUser(id, event, permissions, ctx) {
   isLoggedIn(id);
 
   const userPermissions = ctx.request.user.eventAdmins.map(

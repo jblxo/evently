@@ -202,7 +202,7 @@ class Manage extends Component {
                               </button>
                               <Link
                                 href={{
-                                  pathname: '/editBoard',
+                                  pathname: '/updateBoard',
                                   query: {
                                     id: board.id,
                                     event: this.props.id
