@@ -8,6 +8,8 @@ import { SINGLE_EVENT_QUERY } from './SingleEvent';
 import Error from './Error';
 import Title from './styles/Title';
 import CreateBoard from './CreateBoard';
+import ManageSideNav from './ManageSideNav';
+import Management from './styles/Management';
 
 const DELETE_BOARD_MUTATION = gql`
   mutation DELETE_BOARD_MUTATION($id: Int!, $event: Int!) {
@@ -28,34 +30,6 @@ const customStyles = {
     transform: 'translate(-50%, -50%)'
   }
 };
-
-const Management = styled.div`
-  margin-top: 5rem;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-`;
-
-const SideNav = styled.nav`
-  width: 25%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  a {
-    margin: 0.3rem 0;
-    display: block;
-    padding: 0.5rem 2rem;
-    border-radius: 3px;
-    transition: all 0.2s ease-out;
-    &:hover {
-      background-color: ${props => props.theme.softOcean};
-    }
-  }
-`;
 
 const BoardsContainer = styled.div`
   width: 75%;
@@ -169,10 +143,7 @@ class Manage extends Component {
                 <>
                   <Title>Manage Event {event.title}</Title>
                   <Management>
-                    <SideNav>
-                      <a>🏠 Home</a>
-                      <a>💳 Expenses</a>
-                    </SideNav>
+                    <ManageSideNav id={this.props.id} />
                     <BoardsContainer>
                       {event.boards.map(board => (
                         <BoardContainer>
