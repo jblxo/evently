@@ -690,7 +690,7 @@ const Mutations = {
       {
         data: {
           event: { connect: { id: eventId } },
-          user: { connect: { id: 14 } },
+          user: { connect: { id: ctx.request.userId } },
           ...args
         }
       },

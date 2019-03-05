@@ -7,6 +7,7 @@ import Management from './styles/Management';
 import ManageSideNav from './ManageSideNav';
 import Title from './styles/Title';
 import Error from './Error';
+import Expense from './Expense';
 
 const EVENT_EXPENSES_QUERY = gql`
   query EVENT_EXPENSES_QUERY($event: Int!, $skip: Int = 0, $first: Int = ${expensesPerPage}) {
@@ -28,51 +29,6 @@ const ExpensesContainer = styled.div`
   grid-row-gap: 20px;
   grid-auto-rows: minmax(90px, 1fr);
   margin-left: 40px;
-`;
-
-const Expense = styled.div`
-  border-radius: 3px;
-  padding: 0.5rem 1rem;
-  color: white;
-  background-color: ${props => props.theme.softOcean};
-  width: 100%;
-  height: 100%;
-  position: relative;
-  cursor: pointer;
-
-  p {
-    margin: 0;
-  }
-
-  h3 {
-    margin: 0;
-  }
-
-  .left {
-    float: left;
-  }
-
-  .right {
-    float: right;
-  }
-
-  &::after {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    transition: all 0.3s ease;
-    position: absolute;
-  }
-  &:hover {
-    &::after {
-      background-color: rgba(255, 255, 255, 0.2);
-      z-index: 99;
-    }
-  }
 `;
 
 class Expenses extends Component {
@@ -98,15 +54,7 @@ class Expenses extends Component {
                 <ExpensesContainer>
                   {expenses.length > 0 ? (
                     expenses.map(expense => (
-                      <Expense key={expense.id}>
-                        <div className="left">
-                          <h3>{expense.title}</h3>
-                        </div>
-                        <div className="right">
-                          <p>{expense.description}</p>
-                          <p>{expense.amount}</p>
-                        </div>
-                      </Expense>
+                      <Expense key={expense.id} expense={expense} />
                     ))
                   ) : (
                     <p>No Expenses</p>
