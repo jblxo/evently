@@ -96,4 +96,10 @@ type Query {
   eventAdmins(where: EventAdminWhereInput): [EventAdmin]!
   board(where: BoardWhereUniqueInput!): Board
   card(where: CardWhereUniqueInput!): Card
+  expenses(
+    where: ExpenseWhereInput
+    orderBy: ExpenseOrderByInput
+    skip: Int
+    first: Int
+  ): [Expense]!
 }

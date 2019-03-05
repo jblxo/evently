@@ -33,7 +33,7 @@ const ManageSideNav = props => (
     <Link
       href={{
         pathname: '/expenses',
-        query: { id: props.id }
+        query: { id: props.id, page: 1 }
       }}
     >
       <a>💳 Expenses</a>
