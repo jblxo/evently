@@ -681,6 +681,22 @@ const Mutations = {
     );
 
     return res;
+  },
+  async createExpense(parent, args, ctx, info) {
+    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
+    const eventId = args.event;
+    delete args.event;
+    const res = await ctx.db.mutation.createExpense(
+      {
+        data: {
+          event: { connect: { id: eventId } },
+          user: { connect: { id: 14 } },
+          ...args
+        }
+      },
+      info
+    );
+    return res;
   }
 };
 

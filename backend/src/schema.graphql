@@ -73,6 +73,12 @@ type Mutation {
   updateCard(id: Int!, title: String, description: String, event: Int!): Card
   deleteBoard(id: Int!, event: Int!): Board
   updateBoard(id: Int!, title: String, description: String, event: Int!): Board
+  createExpense(
+    amount: Float!
+    description: String
+    event: Int!
+    title: String!
+  ): Expense!
 }
 
 type Query {
