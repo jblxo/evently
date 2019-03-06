@@ -1,5 +1,6 @@
 import React from 'react';
 import ExpenseStyles from './styles/Expense';
+import formatMoney from '../lib/formatMoney';
 
 const Expense = ({ expense }) => {
   return (
@@ -9,7 +10,7 @@ const Expense = ({ expense }) => {
         <p>{expense.description}</p>
       </div>
 
-      <p>{expense.amount}</p>
+      <p>{formatMoney(expense.amount)}</p>
     </ExpenseStyles>
   );
 };

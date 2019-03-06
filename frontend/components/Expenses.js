@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import Modal from 'react-modal';
 import { expensesPerPage } from '../config';
 import Management from './styles/Management';
 import ManageSideNav from './ManageSideNav';
 import Title from './styles/Title';
 import Error from './Error';
 import Expense from './Expense';
+import customStyles from './styles/ModalStyles';
+import CreateExpense from './CreateExpense';
 
 const EVENT_EXPENSES_QUERY = gql`
   query EVENT_EXPENSES_QUERY($event: Int!, $skip: Int = 0, $first: Int = ${expensesPerPage}) {
@@ -27,11 +30,39 @@ const ExpensesContainer = styled.div`
   grid-template-columns: 1;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+  grid-template-rows: 3.5rem;
   grid-auto-rows: minmax(90px, 1fr);
   margin-left: 40px;
 `;
 
+const AddExpenseButton = styled.button`
+  width: 20rem;
+  font-family: inherit;
+  color: white;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  cursor: pointer;
+  background-color: ${props => props.theme.paleOrange};
+  border: none;
+  outline: none;
+  border-radius: 3px;
+`;
+
+Modal.setAppElement('#__next');
+
 class Expenses extends Component {
+  state = {
+    modalIsOpen: false
+  };
+
+  openModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
   render() {
     return (
       <>
@@ -52,6 +83,9 @@ class Expenses extends Component {
               const { expenses } = data;
               return (
                 <ExpensesContainer>
+                  <AddExpenseButton onClick={this.openModal}>
+                    Add Expense
+                  </AddExpenseButton>
                   {expenses.length > 0 ? (
                     expenses.map(expense => (
                       <Expense key={expense.id} expense={expense} />
@@ -64,9 +98,18 @@ class Expenses extends Component {
             }}
           </Query>
         </Management>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          style={customStyles}
+          onRequestClose={this.closeModal}
+          contentLabel="Create New Expense"
+        >
+          <CreateExpense event={this.props.id} />
+        </Modal>
       </>
     );
   }
 }
 
 export default Expenses;
+export { EVENT_EXPENSES_QUERY };

@@ -140,6 +140,7 @@ const UPDATE_LIST_MUTATION = gql`
   }
 `;
 
+Modal.setAppElement('#__next');
 class List extends Component {
   state = {
     modalIsOpen: false,
