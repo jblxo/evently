@@ -146,9 +146,8 @@ class Manage extends Component {
                     <ManageSideNav id={this.props.id} />
                     <BoardsContainer>
                       {event.boards.map(board => (
-                        <BoardContainer>
+                        <BoardContainer key={board.id}>
                           <Link
-                            key={board.id}
                             href={{
                               pathname: '/board',
                               query: { board: board.id, event: this.props.id }
