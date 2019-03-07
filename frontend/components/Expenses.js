@@ -23,6 +23,11 @@ const EVENT_EXPENSES_QUERY = gql`
     title
     description
     createdAt
+    user {
+      username
+      firstName
+      lastName
+    }
     }
   }
 `;

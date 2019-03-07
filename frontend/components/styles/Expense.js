@@ -16,6 +16,7 @@ const Expense = styled.div`
 
   p {
     margin: 0;
+    text-align: right;
   }
 
   h3 {

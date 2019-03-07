@@ -17,6 +17,10 @@ const Expense = ({ expense }) => {
             .utc()
             .format('DD.MM.YYYY')}
         </p>
+        <p>
+          {expense.user.username} ({expense.user.firstName}{' '}
+          {expense.user.lastName})
+        </p>
       </div>
     </ExpenseStyles>
   );
