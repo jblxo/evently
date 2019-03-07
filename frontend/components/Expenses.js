@@ -13,7 +13,6 @@ import customStyles from './styles/ModalStyles';
 import CreateExpense from './CreateExpense';
 import getTotal from '../lib/getTotal';
 import formatMoney from '../lib/formatMoney';
-import ExpensesPagination from './ExpensesPagiantion';
 import ExpensesPagiantion from './ExpensesPagiantion';
 
 const EVENT_EXPENSES_QUERY = gql`
@@ -24,6 +23,14 @@ const EVENT_EXPENSES_QUERY = gql`
     title
     description
     createdAt
+    }
+  }
+`;
+
+const ALL_EVENT_EXPENSES_QUERY = gql`
+  query ALL_EVENT_EXPENSES_QUERY($event: Int!) {
+    expenses(where: { event: { id: $event } }) {
+      amount
     }
   }
 `;
@@ -41,13 +48,12 @@ const ExpensesContainer = styled.div`
 `;
 
 const Summary = styled.div`
-  width: 80%;
-  margin: 0 auto;
+  width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(1, 3rem);
-  grid-column-gap: 24%;
+  grid-column-gap: 6%;
 `;
 
 const Total = styled.p`
@@ -95,40 +101,55 @@ class Expenses extends Component {
         <Title>Manage Expenses</Title>
         <Management>
           <ManageSideNav id={this.props.id} />
-
           <Query
-            query={EVENT_EXPENSES_QUERY}
-            variables={{
-              event: this.props.id,
-              skip: this.props.page * expensesPerPage - expensesPerPage
-            }}
+            query={ALL_EVENT_EXPENSES_QUERY}
+            variables={{ event: this.props.id }}
           >
             {({ data, loading, error }) => {
               if (loading) return <p>Loading...</p>;
               if (error) return <Error error={error} />;
-              const { expenses } = data;
+              const { expenses: allExpenses } = data;
               return (
-                <ExpensesContainer>
-                  <Summary>
-                    <AddExpenseButton onClick={this.openModal}>
-                      Add Expense
-                    </AddExpenseButton>
-                    <Total>
-                      Visible Total: {formatMoney(getTotal(data.expenses))}
-                    </Total>
-                  </Summary>
-                  {expenses.length > 0 ? (
-                    expenses.map(expense => (
-                      <Expense key={expense.id} expense={expense} />
-                    ))
-                  ) : (
-                    <p>No Expenses</p>
-                  )}
-                  <ExpensesPagiantion
-                    event={this.props.id}
-                    page={parseFloat(this.props.page)}
-                  />
-                </ExpensesContainer>
+                <Query
+                  query={EVENT_EXPENSES_QUERY}
+                  variables={{
+                    event: this.props.id,
+                    skip: this.props.page * expensesPerPage - expensesPerPage
+                  }}
+                >
+                  {({ data, loading, error }) => {
+                    if (loading) return <p>Loading...</p>;
+                    if (error) return <Error error={error} />;
+                    const { expenses } = data;
+                    return (
+                      <ExpensesContainer>
+                        <Summary>
+                          <AddExpenseButton onClick={this.openModal}>
+                            Add Expense
+                          </AddExpenseButton>
+                          <Total>
+                            All Total: {formatMoney(getTotal(allExpenses))}
+                          </Total>
+                          <Total>
+                            Visible Total:{' '}
+                            {formatMoney(getTotal(data.expenses))}
+                          </Total>
+                        </Summary>
+                        {expenses.length > 0 ? (
+                          expenses.map(expense => (
+                            <Expense key={expense.id} expense={expense} />
+                          ))
+                        ) : (
+                          <p>No Expenses</p>
+                        )}
+                        <ExpensesPagiantion
+                          event={this.props.id}
+                          page={parseFloat(this.props.page)}
+                        />
+                      </ExpensesContainer>
+                    );
+                  }}
+                </Query>
               );
             }}
           </Query>
@@ -147,4 +168,4 @@ class Expenses extends Component {
 }
 
 export default Expenses;
-export { EVENT_EXPENSES_QUERY };
+export { EVENT_EXPENSES_QUERY, ALL_EVENT_EXPENSES_QUERY };

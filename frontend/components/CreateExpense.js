@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from './Error';
-import { EVENT_EXPENSES_QUERY } from './Expenses';
+import { EVENT_EXPENSES_QUERY, ALL_EVENT_EXPENSES_QUERY } from './Expenses';
 import Form from './styles/Form';
 import Button from './styles/Button';
 
@@ -45,6 +45,10 @@ class CreateExpense extends Component {
         refetchQueries={[
           {
             query: EVENT_EXPENSES_QUERY,
+            variables: { event: this.props.event }
+          },
+          {
+            query: ALL_EVENT_EXPENSES_QUERY,
             variables: { event: this.props.event }
           }
         ]}
