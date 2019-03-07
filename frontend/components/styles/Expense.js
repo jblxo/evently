@@ -5,7 +5,7 @@ const Expense = styled.div`
   flex-direction: row;
   justify-content: space-between;
   border-radius: 3px;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   color: white;
   background-color: ${props => props.theme.softOcean};
   width: 100%;

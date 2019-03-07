@@ -13,6 +13,8 @@ import customStyles from './styles/ModalStyles';
 import CreateExpense from './CreateExpense';
 import getTotal from '../lib/getTotal';
 import formatMoney from '../lib/formatMoney';
+import ExpensesPagination from './ExpensesPagiantion';
+import ExpensesPagiantion from './ExpensesPagiantion';
 
 const EVENT_EXPENSES_QUERY = gql`
   query EVENT_EXPENSES_QUERY($event: Int!, $skip: Int = 0, $first: Int = ${expensesPerPage}) {
@@ -21,6 +23,7 @@ const EVENT_EXPENSES_QUERY = gql`
     amount
     title
     description
+    createdAt
     }
   }
 `;
@@ -110,7 +113,9 @@ class Expenses extends Component {
                     <AddExpenseButton onClick={this.openModal}>
                       Add Expense
                     </AddExpenseButton>
-                    <Total>Total: {formatMoney(getTotal(data.expenses))}</Total>
+                    <Total>
+                      Visible Total: {formatMoney(getTotal(data.expenses))}
+                    </Total>
                   </Summary>
                   {expenses.length > 0 ? (
                     expenses.map(expense => (
@@ -119,6 +124,10 @@ class Expenses extends Component {
                   ) : (
                     <p>No Expenses</p>
                   )}
+                  <ExpensesPagiantion
+                    event={this.props.id}
+                    page={parseFloat(this.props.page)}
+                  />
                 </ExpensesContainer>
               );
             }}

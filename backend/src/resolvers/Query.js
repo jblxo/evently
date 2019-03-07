@@ -10,6 +10,7 @@ const Query = {
   board: forwardTo('db'),
   card: forwardTo('db'),
   expenses: forwardTo('db'),
+  expensesConnection: forwardTo('db'),
   me(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       return null;
