@@ -11,6 +11,8 @@ import Error from './Error';
 import Expense from './Expense';
 import customStyles from './styles/ModalStyles';
 import CreateExpense from './CreateExpense';
+import getTotal from '../lib/getTotal';
+import formatMoney from '../lib/formatMoney';
 
 const EVENT_EXPENSES_QUERY = gql`
   query EVENT_EXPENSES_QUERY($event: Int!, $skip: Int = 0, $first: Int = ${expensesPerPage}) {
@@ -27,12 +29,33 @@ const ExpensesContainer = styled.div`
   width: 75%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1;
+  grid-auto-columns: 1;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   grid-template-rows: 3.5rem;
   grid-auto-rows: minmax(90px, 1fr);
   margin-left: 40px;
+`;
+
+const Summary = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 3rem);
+  grid-column-gap: 24%;
+`;
+
+const Total = styled.p`
+  margin: 0;
+  width: 20rem;
+  text-align: center;
+  background-color: ${props => props.theme.rose};
+  display: block;
+  border-radius: 3px;
+  color: white;
+  padding: 0 1rem;
 `;
 
 const AddExpenseButton = styled.button`
@@ -83,9 +106,12 @@ class Expenses extends Component {
               const { expenses } = data;
               return (
                 <ExpensesContainer>
-                  <AddExpenseButton onClick={this.openModal}>
-                    Add Expense
-                  </AddExpenseButton>
+                  <Summary>
+                    <AddExpenseButton onClick={this.openModal}>
+                      Add Expense
+                    </AddExpenseButton>
+                    <Total>Total: {formatMoney(getTotal(data.expenses))}</Total>
+                  </Summary>
                   {expenses.length > 0 ? (
                     expenses.map(expense => (
                       <Expense key={expense.id} expense={expense} />
