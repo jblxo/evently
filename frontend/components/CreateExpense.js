@@ -32,9 +32,16 @@ class CreateExpense extends Component {
   };
 
   handleChange = e => {
-    const { value, type, name } = e.target;
-    const val = type === 'number' ? parseFloat(value) : value;
-    this.setState({ [name]: val });
+    const { value, name } = e.target;
+    this.setState({ [name]: value });
+  };
+
+  handleAmountChange = e => {
+    const amount = e.target.value;
+
+    if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ amount });
+    }
   };
 
   render() {
@@ -57,7 +64,10 @@ class CreateExpense extends Component {
           <Form
             onSubmit={async e => {
               e.preventDefault();
-              const res = await createExpense();
+              const amountToStore = parseFloat(this.state.amount, 10);
+              const res = await createExpense({
+                variables: { amount: amountToStore }
+              });
             }}
           >
             <fieldset disabled={loading} aria-disabled={loading}>
@@ -89,12 +99,12 @@ class CreateExpense extends Component {
               <label htmlFor="amount">
                 Amount
                 <input
-                  type="number"
+                  type="text"
                   id="amount"
                   name="amount"
                   placeholder="250"
                   value={this.state.amount}
-                  onChange={this.handleChange}
+                  onChange={this.handleAmountChange}
                 />
               </label>
               <Button type="submit">Create ➕</Button>

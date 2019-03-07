@@ -71,6 +71,14 @@ class CreateEvent extends Component {
     });
   };
 
+  handleAmountChange = e => {
+    const amount = e.target.value;
+
+    if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState({ entranceTax: amount });
+    }
+  };
+
   uploadFile = async e => {
     const files = e.target.files;
     const data = new FormData();
@@ -104,7 +112,8 @@ class CreateEvent extends Component {
           <Form
             onSubmit={async e => {
               e.preventDefault();
-              const res = await createEvent();
+              const entranceTax = parseFloat(this.state.entranceTax, 10);
+              const res = await createEvent({ variables: { entranceTax } });
               Router.push({
                 pathname: '/event',
                 query: { id: res.data.createEvent.id }
@@ -185,12 +194,12 @@ class CreateEvent extends Component {
               <label htmlFor="entranceTax">
                 Entrance
                 <input
-                  type="number"
+                  type="text"
                   id="entranceTax"
                   name="entranceTax"
                   placeholder="2500"
                   value={this.state.entranceTax}
-                  onChange={this.handleChange}
+                  onChange={this.handleAmountChange}
                 />
               </label>
               <label htmlFor="file">
