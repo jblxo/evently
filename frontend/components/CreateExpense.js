@@ -64,7 +64,7 @@ class CreateExpense extends Component {
           <Form
             onSubmit={async e => {
               e.preventDefault();
-              const amountToStore = parseFloat(this.state.amount, 10);
+              const amountToStore = this.state.amount * 100;
               const res = await createExpense({
                 variables: { amount: amountToStore }
               });
