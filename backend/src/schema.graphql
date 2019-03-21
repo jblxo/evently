@@ -103,4 +103,5 @@ type Query {
     first: Int
   ): [Expense]!
   expensesConnection(where: ExpenseWhereInput): ExpenseConnection!
+  expense(where: ExpenseWhereUniqueInput!): Expense
 }

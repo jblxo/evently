@@ -10,7 +10,7 @@ const NavStyles = styled.ul`
   position: fixed;
   z-index: 99;
   width: 100%;
-  transition: background 0.5s ease;
+  transition: background 0.2s;
 
   a,
   button {
@@ -25,7 +25,7 @@ const NavStyles = styled.ul`
     text-decoration: none;
     color: ${props => props.theme.black};
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
 
     &:hover {
       background-color: ${props => props.theme.ocean};

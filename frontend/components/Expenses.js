@@ -28,6 +28,9 @@ const EVENT_EXPENSES_QUERY = gql`
       firstName
       lastName
     }
+    event {
+      id
+    }
     }
   }
 `;

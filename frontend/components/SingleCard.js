@@ -8,6 +8,8 @@ import CardStyles from './styles/CardStyles';
 import Title from './styles/Title';
 import ButtonSmall from './styles/ButtonSmall';
 import { SINGLE_BOARD_QUERY } from './Board';
+import ButtonList from './styles/ButtonList';
+import CardButton from './styles/CardButton';
 
 const SINGLE_CARD_QUERY = gql`
   query SINGLE_CARD_QUERY($id: Int!) {
@@ -31,26 +33,6 @@ const DELETE_CARD_MUTATION = gql`
       order
     }
   }
-`;
-
-const CardButton = styled.button`
-  font-family: inherit;
-  display: block;
-  margin: 0.7rem;
-  border-radius: 3px;
-  padding: 1rem 2.5rem;
-  text-align: center;
-  color: ${props => props.theme.offWhite};
-  cursor: pointer;
-  background-color: ${props => props.theme.ocean};
-  border: none;
-`;
-
-const ButtonList = styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-gap: 1px;
 `;
 
 class SingleCard extends Component {
