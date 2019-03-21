@@ -664,6 +664,7 @@ const Mutations = {
     return res;
   },
   async deleteBoard(parent, args, ctx, info) {
+    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
     const res = await ctx.db.mutation.deleteBoard(
       { where: { id: args.id } },
       info
@@ -694,6 +695,14 @@ const Mutations = {
           ...args
         }
       },
+      info
+    );
+    return res;
+  },
+  async deleteExpense(parent, args, ctx, info) {
+    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
+    const res = await ctx.db.mutation.deleteExpense(
+      { where: { id: args.id } },
       info
     );
     return res;

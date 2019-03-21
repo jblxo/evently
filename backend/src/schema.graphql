@@ -79,6 +79,7 @@ type Mutation {
     event: Int!
     title: String!
   ): Expense!
+  deleteExpense(id: Int!, event: Int!): Expense
 }
 
 type Query {
