@@ -129,6 +129,10 @@ class Expenses extends Component {
                     if (loading) return <p>Loading...</p>;
                     if (error) return <Error error={error} />;
                     const { expenses } = data;
+                    const allExpensesTotal = formatMoney(getTotal(allExpenses));
+                    const visibleExpensesTotal = formatMoney(
+                      getTotal(data.expenses)
+                    );
                     return (
                       <ExpensesContainer>
                         <Summary>
@@ -136,11 +140,16 @@ class Expenses extends Component {
                             Add Expense
                           </AddExpenseButton>
                           <Total>
-                            All Total: {formatMoney(getTotal(allExpenses))}
+                            All Total:{' '}
+                            {allExpensesTotal === 'FREE'
+                              ? '$0.0'
+                              : allExpensesTotal}
                           </Total>
                           <Total>
                             Visible Total:{' '}
-                            {formatMoney(getTotal(data.expenses))}
+                            {visibleExpensesTotal === 'FREE'
+                              ? '$0.0'
+                              : visibleExpensesTotal}
                           </Total>
                         </Summary>
                         {expenses.length > 0 ? (

@@ -10,7 +10,7 @@ const ExpensePage = ({ query: { id, event } }) => (
       id={event}
       permissions={['STEWARD', 'ADMIN']}
     >
-      <Expense id={id} />
+      <Expense id={id} event={event} />
     </CheckPermissions>
   </PlesaseSingIn>
 );
