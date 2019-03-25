@@ -72,7 +72,6 @@ class UpdateCard extends React.Component {
                         id="title"
                         name="title"
                         placeholder="Enter a title"
-                        value={this.state.title}
                         defaultValue={data.card.title}
                         onChange={this.handleChange}
                         required
@@ -85,8 +84,7 @@ class UpdateCard extends React.Component {
                         id="description"
                         name="description"
                         placeholder="Enter a description"
-                        value={this.state.description}
-                        defaultChecked={data.card.description}
+                        defaultValue={data.card.description}
                         onChange={this.handleChange}
                       />
                     </label>

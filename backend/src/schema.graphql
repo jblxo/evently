@@ -80,6 +80,13 @@ type Mutation {
     title: String!
   ): Expense!
   deleteExpense(id: Int!, event: Int!): Expense
+  updateExpense(
+    id: Int!
+    amount: Float
+    description: String
+    event: Int!
+    title: String
+  ): Expense
 }
 
 type Query {

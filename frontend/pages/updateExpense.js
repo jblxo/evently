@@ -1,17 +1,17 @@
 import PleaseSignIn from '../components/PleaseSignIn';
 import CheckPermissions from '../components/CheckPermissions';
-import UpdateCard from '../components/UpdateCard';
+import UpdateExpense from '../components/UpdateExpense';
 
-const UpdateCardPage = ({ query: { id, event } }) => (
+const UpdateExpensePage = ({ query: { id, event } }) => (
   <PleaseSignIn>
     <CheckPermissions
       prePage="true"
       id={event}
       permissions={['STEWARD', 'ADMIN']}
     >
-      <UpdateCard id={id} event={event} />
+      <UpdateExpense id={id} event={event} />
     </CheckPermissions>
   </PleaseSignIn>
 );
 
-export default UpdateCardPage;
+export default UpdateExpensePage;

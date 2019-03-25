@@ -60,7 +60,16 @@ class SingleExpense extends Component {
                     >
                       ❌
                     </CardButton>
-                    <CardButton>Edit</CardButton>
+                    <CardButton
+                      onClick={() => {
+                        Router.push({
+                          pathname: '/updateExpense',
+                          query: { id: this.props.id, event: this.props.event }
+                        });
+                      }}
+                    >
+                      Edit
+                    </CardButton>
                   </ButtonList>
                   <h4>Description</h4>
                   {expense.description.length > 0 ? (
@@ -96,3 +105,4 @@ class SingleExpense extends Component {
 }
 
 export default SingleExpense;
+export { SINGLE_EXPENSE_QUERY };

@@ -706,6 +706,21 @@ const Mutations = {
       info
     );
     return res;
+  },
+  async updateExpense(parent, args, ctx, info) {
+    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
+    const expenseId = args.id;
+    delete args.id;
+    delete args.event;
+    const res = await ctx.db.mutation.updateExpense(
+      {
+        data: { ...args },
+        where: { id: expenseId }
+      },
+      info
+    );
+
+    return res;
   }
 };
 
