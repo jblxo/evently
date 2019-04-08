@@ -7,58 +7,53 @@ import debounce from 'lodash.debounce';
 import Error from './Error';
 import Title from './styles/Title';
 import { Dropdown, DropdownInput, DropdownContent } from './styles/Dropdown';
+import { SINGLE_CARD_QUERY } from './SingleCard';
 
 const SEARCH_USERS_QUERY = gql`
-  query SEARCH_USERS_QUERY($search: String!) {
-    users(
+  query SEARCH_USERS_QUERY($search: String!, $event: Int!) {
+    eventAdmins(
       where: {
-        OR: [
-          { username_contains: $search }
-          { firstName_contains: $search }
-          { lastName_contains: $search }
-        ]
+        user: {
+          OR: [
+            { username_contains: $search }
+            { firstName_contains: $search }
+            { lastName_contains: $search }
+          ]
+        }
+        event: { id: $event }
       }
     ) {
-      id
-      username
-      email
-    }
-  }
-`;
-
-const ADD_USER_AS_STEWARD = gql`
-  mutation ADD_USER_AS_STEWARD(
-    $eventId: Int!
-    $userId: Int!
-    $permissions: [String] = ["STEWARD"]
-  ) {
-    updateEventAdmins(
-      permissions: $permissions
-      userId: $userId
-      eventId: $eventId
-    ) {
-      id
-      username
-      eventAdmins {
+      user {
         id
-        event {
-          id
-        }
-        permission {
-          id
-          name
-        }
-        user {
-          id
+        username
+        email
+      }
+    }
+  }
+`;
+
+const ASSIGN_USER_TO_TASK_MUTATION = gql`
+  mutation ASSIGN_USER_TO_TASK_MUTATION(
+    $user: Int!
+    $event: Int!
+    $card: Int!
+  ) {
+    assignUserToTask(user: $user, event: $event, card: $card) {
+      id
+      list {
+        board {
+          event {
+            id
+          }
         }
       }
     }
   }
 `;
 
-class AutoComplete extends Component {
+class AdminAutoComplete extends Component {
   state = {
-    users: [],
+    admins: [],
     loading: false
   };
 
@@ -66,25 +61,39 @@ class AutoComplete extends Component {
     this.setState({ loading: true });
     const res = await client.query({
       query: SEARCH_USERS_QUERY,
-      variables: { search: e.target.value }
+      variables: { search: e.target.value, event: this.props.id }
     });
-    this.setState({ users: res.data.users, loading: false });
+    const admins = res.data.eventAdmins.map(admin => admin.user);
+    const uniqueAdmins = Array.from(new Set(admins.map(admin => admin.id))).map(
+      id => {
+        return {
+          id: id,
+          username: admins.find(a => a.id === id).username
+        };
+      }
+    );
+    this.setState({ admins: uniqueAdmins, loading: false });
   }, 350);
 
   render() {
     return (
-      <Mutation mutation={ADD_USER_AS_STEWARD}>
-        {(updateEventAdmins, { loading, error }) => {
+      <Mutation
+        mutation={ASSIGN_USER_TO_TASK_MUTATION}
+        refetchQueries={[
+          { query: SINGLE_CARD_QUERY, variables: { id: this.props.card } }
+        ]}
+      >
+        {(assignUserToTask, { loading, error }) => {
           if (error) return <Error error={error} />;
           return (
             <Downshift
               onChange={async user => {
-                const res = await updateEventAdmins({
-                  variables: { eventId: this.props.id, userId: user.id }
-                });
-                Router.push({
-                  pathname: '/updatePermissions',
-                  query: { id: this.props.id }
+                const res = await assignUserToTask({
+                  variables: {
+                    user: user.id,
+                    event: this.props.id,
+                    card: this.props.card
+                  }
                 });
               }}
               itemToString={user => (user === null ? '' : user.username)}
@@ -102,7 +111,7 @@ class AutoComplete extends Component {
                       <DropdownInput
                         {...getInputProps({
                           type: 'search',
-                          placeholder: 'Search for a user',
+                          placeholder: 'Search for a admin',
                           id: 'search',
                           className: this.state.loading ? 'lodaing' : '',
                           onChange: e => {
@@ -115,16 +124,16 @@ class AutoComplete extends Component {
                   </ApolloConsumer>
                   {isOpen && (
                     <Dropdown>
-                      {this.state.users.map((user, i) => (
+                      {this.state.admins.map((admin, i) => (
                         <DropdownContent
                           {...getItemProps({
-                            key: user.id,
+                            key: admin.id,
                             index: i,
-                            item: user,
+                            item: admin,
                             highlighted: i === highlightedIndex
                           })}
                         >
-                          {user.username}
+                          {admin.username}
                         </DropdownContent>
                       ))}
                     </Dropdown>
@@ -139,15 +148,15 @@ class AutoComplete extends Component {
   }
 }
 
-class AddAdmin extends Component {
+class SelectAdmin extends Component {
   render() {
     return (
       <div>
-        <Title>Add Admin Page</Title>
-        <AutoComplete />
+        <Title>Assign Admin</Title>
+        <AdminAutoComplete id={this.props.id} card={this.props.card} />
       </div>
     );
   }
 }
 
-export default AddAdmin;
+export default SelectAdmin;

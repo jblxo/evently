@@ -721,6 +721,44 @@ const Mutations = {
     );
 
     return res;
+  },
+  async assignUserToTask(parent, args, ctx, info) {
+    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
+
+    const userEventAdmins = await ctx.db.query.user(
+      { where: { id: args.user } },
+      `{ eventAdmins { user { id username email} permission { id name } event { id } } }`
+    );
+
+    const userPermissions = userEventAdmins.eventAdmins.map(
+      ({ permission: { name }, event: { id } }) => {
+        if (id === args.event) {
+          return name;
+        }
+      }
+    );
+
+    const user = { permissions: userPermissions };
+
+    hasPermission(user, ['ADMIN', 'STEWARD']);
+
+    const res = await ctx.db.mutation.updateCard(
+      {
+        data: {
+          assignedUser: {
+            connect: {
+              id: args.user
+            }
+          }
+        },
+        where: {
+          id: args.card
+        }
+      },
+      info
+    );
+
+    return res;
   }
 };
 

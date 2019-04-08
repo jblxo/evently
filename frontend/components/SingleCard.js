@@ -4,12 +4,17 @@ import Router from 'next/router';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import SelectAdmin from './SelectAdmin';
 import CardStyles from './styles/CardStyles';
 import Title from './styles/Title';
 import ButtonSmall from './styles/ButtonSmall';
 import { SINGLE_BOARD_QUERY } from './Board';
 import ButtonList from './styles/ButtonList';
 import CardButton from './styles/CardButton';
+
+const SelectAdminContainer = styled.div`
+  margin-top: 3.5rem;
+`;
 
 const SINGLE_CARD_QUERY = gql`
   query SINGLE_CARD_QUERY($id: Int!) {
@@ -19,6 +24,10 @@ const SINGLE_CARD_QUERY = gql`
       description
       order
       user {
+        id
+        username
+      }
+      assignedUser {
         id
         username
       }
@@ -96,6 +105,22 @@ class SingleCard extends Component {
                       </a>
                     </Link>
                   )}
+                  <h4>Assigned Admin</h4>
+                  {card.assignedUser.username && (
+                    <Link
+                      href={{
+                        pathname: '/user',
+                        query: { id: card.assignedUser.id }
+                      }}
+                    >
+                      <a>
+                        <ButtonSmall>{card.assignedUser.username}</ButtonSmall>
+                      </a>
+                    </Link>
+                  )}
+                  <SelectAdminContainer>
+                    <SelectAdmin id={this.props.event} card={this.props.id} />
+                  </SelectAdminContainer>
                 </CardStyles>
               )}
             </Mutation>

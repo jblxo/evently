@@ -75,7 +75,7 @@ class UpdateExpense extends Component {
                   }}
                 >
                   <fieldset disabled={loading} aria-disabled={loading}>
-                    <h2>Create Expense</h2>
+                    <h2>Update Expense</h2>
                     <Error error={error} />
                     <label htmlFor="title">
                       Title

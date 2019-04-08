@@ -8,12 +8,13 @@ type Board @pgTable(name: "board") {
 
 type Card @pgTable(name: "card") {
   id: Int! @unique
+  assignedUser: User @pgRelation(column: "assignedUser") @relation(name: "CardsAssignedUsers")
   createdAt: DateTime!
   description: String
   list: List @pgRelation(column: "list")
   order: Int!
   title: String!
-  user: User @pgRelation(column: "user")
+  user: User @pgRelation(column: "user") @relation(name: "CardsUsers")
 }
 
 type Comment @pgTable(name: "comment") {
@@ -56,7 +57,7 @@ type EventAdmin @pgTable(name: "eventAdmin") {
 
 type Expense @pgTable(name: "expense") {
   id: Int! @unique
-  amount: Float!
+  amount: Int!
   createdAt: DateTime!
   description: String
   event: Event @pgRelation(column: "event")
@@ -91,7 +92,8 @@ type Review @pgTable(name: "review") {
 
 type User @pgTable(name: "user") {
   id: Int! @unique
-  cards: [Card!]!
+  cards_assignedUsers: [Card!]! @relation(name: "CardsAssignedUsers")
+  cards_users: [Card!]! @relation(name: "CardsUsers")
   comments: [Comment!]!
   email: String! @unique
   eventAdmins: [EventAdmin!]!

@@ -14,6 +14,7 @@ import CreateExpense from './CreateExpense';
 import getTotal from '../lib/getTotal';
 import formatMoney from '../lib/formatMoney';
 import ExpensesPagiantion from './ExpensesPagiantion';
+import ExpensesChart from './ExpensesChart';
 
 const EVENT_EXPENSES_QUERY = gql`
   query EVENT_EXPENSES_QUERY($event: Int!, $skip: Int = 0, $first: Int = ${expensesPerPage}) {
@@ -39,6 +40,7 @@ const ALL_EVENT_EXPENSES_QUERY = gql`
   query ALL_EVENT_EXPENSES_QUERY($event: Int!) {
     expenses(where: { event: { id: $event } }) {
       amount
+      createdAt
     }
   }
 `;
@@ -107,70 +109,75 @@ class Expenses extends Component {
     return (
       <>
         <Title>Manage Expenses</Title>
-        <Management>
-          <ManageSideNav id={this.props.id} />
-          <Query
-            query={ALL_EVENT_EXPENSES_QUERY}
-            variables={{ event: this.props.id }}
-          >
-            {({ data, loading, error }) => {
-              if (loading) return <p>Loading...</p>;
-              if (error) return <Error error={error} />;
-              const { expenses: allExpenses } = data;
-              return (
-                <Query
-                  query={EVENT_EXPENSES_QUERY}
-                  variables={{
-                    event: this.props.id,
-                    skip: this.props.page * expensesPerPage - expensesPerPage
-                  }}
-                >
-                  {({ data, loading, error }) => {
-                    if (loading) return <p>Loading...</p>;
-                    if (error) return <Error error={error} />;
-                    const { expenses } = data;
-                    const allExpensesTotal = formatMoney(getTotal(allExpenses));
-                    const visibleExpensesTotal = formatMoney(
-                      getTotal(data.expenses)
-                    );
-                    return (
-                      <ExpensesContainer>
-                        <Summary>
-                          <AddExpenseButton onClick={this.openModal}>
-                            Add Expense
-                          </AddExpenseButton>
-                          <Total>
-                            All Total:{' '}
-                            {allExpensesTotal === 'FREE'
-                              ? '$0.0'
-                              : allExpensesTotal}
-                          </Total>
-                          <Total>
-                            Visible Total:{' '}
-                            {visibleExpensesTotal === 'FREE'
-                              ? '$0.0'
-                              : visibleExpensesTotal}
-                          </Total>
-                        </Summary>
-                        {expenses.length > 0 ? (
-                          expenses.map(expense => (
-                            <Expense key={expense.id} expense={expense} />
-                          ))
-                        ) : (
-                          <p>No Expenses</p>
-                        )}
-                        <ExpensesPagiantion
-                          event={this.props.id}
-                          page={parseFloat(this.props.page)}
-                        />
-                      </ExpensesContainer>
-                    );
-                  }}
-                </Query>
-              );
-            }}
-          </Query>
-        </Management>
+        <Query
+          query={ALL_EVENT_EXPENSES_QUERY}
+          variables={{ event: this.props.id }}
+        >
+          {({ data, loading, error }) => {
+            if (loading) return <p>Loading...</p>;
+            if (error) return <Error error={error} />;
+            const { expenses: allExpenses } = data;
+            return (
+              <>
+                <Management>
+                  <ManageSideNav id={this.props.id} />
+                  <Query
+                    query={EVENT_EXPENSES_QUERY}
+                    variables={{
+                      event: this.props.id,
+                      skip: this.props.page * expensesPerPage - expensesPerPage
+                    }}
+                  >
+                    {({ data, loading, error }) => {
+                      if (loading) return <p>Loading...</p>;
+                      if (error) return <Error error={error} />;
+                      const { expenses } = data;
+                      const allExpensesTotal = formatMoney(
+                        getTotal(allExpenses)
+                      );
+                      const visibleExpensesTotal = formatMoney(
+                        getTotal(data.expenses)
+                      );
+                      return (
+                        <ExpensesContainer>
+                          <Summary>
+                            <AddExpenseButton onClick={this.openModal}>
+                              Add Expense
+                            </AddExpenseButton>
+                            <Total>
+                              All Total:{' '}
+                              {allExpensesTotal === 'FREE'
+                                ? '$0.0'
+                                : allExpensesTotal}
+                            </Total>
+                            <Total>
+                              Visible Total:{' '}
+                              {visibleExpensesTotal === 'FREE'
+                                ? '$0.0'
+                                : visibleExpensesTotal}
+                            </Total>
+                          </Summary>
+                          {expenses.length > 0 ? (
+                            expenses.map(expense => (
+                              <Expense key={expense.id} expense={expense} />
+                            ))
+                          ) : (
+                            <p>No Expenses</p>
+                          )}
+                          <ExpensesPagiantion
+                            event={this.props.id}
+                            page={parseFloat(this.props.page)}
+                          />
+                        </ExpensesContainer>
+                      );
+                    }}
+                  </Query>
+                </Management>
+                <ExpensesChart expenses={allExpenses} />
+              </>
+            );
+          }}
+        </Query>
         <Modal
           isOpen={this.state.modalIsOpen}
           style={customStyles}
