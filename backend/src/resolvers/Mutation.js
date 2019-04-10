@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { isLoggedIn, hasPermission, authorizeUser } = require('../utils');
+const { transport } = require('../Mail');
+const { assignedToCard } = require('../templates/assignedToCard');
 
 const Mutations = {
   async createEvent(parent, args, ctx, info) {
@@ -757,6 +759,30 @@ const Mutations = {
       },
       info
     );
+
+    const userToRecieveNotification = await ctx.db.query.user(
+      { where: { id: args.user } },
+      `{ username email }`
+    );
+
+    const card = await ctx.db.query.card(
+      { where: { id: args.card } },
+      `{ id list { id board { id event { id } } } }`
+    );
+
+    const mailRes = await transport.sendMail({
+      from: 'notifications@evently.com',
+      to: userToRecieveNotification.email,
+      subject: 'You have been assigned to card',
+      html: assignedToCard(
+        `
+      You have been assigned to Card! \n\n
+      <a href="${process.env.FRONTEND_URL}/card?card=${card.id}&event=${
+          card.list.board.event.id
+        }&board=${card.list.board.id}&list=${card.list.id}">Go check it out</a>
+      `
+      )
+    });
 
     return res;
   }
