@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Thu Apr 04 2019 13:24:10 GMT+0200 (GMT+02:00)
+# timestamp: Thu Apr 11 2019 13:20:19 GMT+0200 (GMT+02:00)
 
 type AggregateBoard {
   count: Int!
@@ -26,6 +26,10 @@ type AggregateExpense {
 }
 
 type AggregateList {
+  count: Int!
+}
+
+type AggregateNotification {
   count: Int!
 }
 
@@ -2994,6 +2998,7 @@ type Mutation {
   createEventAdmin(data: EventAdminCreateInput!): EventAdmin!
   createExpense(data: ExpenseCreateInput!): Expense!
   createList(data: ListCreateInput!): List!
+  createNotification(data: NotificationCreateInput!): Notification!
   createPermission(data: PermissionCreateInput!): Permission!
   createReview(data: ReviewCreateInput!): Review!
   createUser(data: UserCreateInput!): User!
@@ -3004,6 +3009,7 @@ type Mutation {
   updateEventAdmin(data: EventAdminUpdateInput!, where: EventAdminWhereUniqueInput!): EventAdmin
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
   updateList(data: ListUpdateInput!, where: ListWhereUniqueInput!): List
+  updateNotification(data: NotificationUpdateInput!, where: NotificationWhereUniqueInput!): Notification
   updatePermission(data: PermissionUpdateInput!, where: PermissionWhereUniqueInput!): Permission
   updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -3014,6 +3020,7 @@ type Mutation {
   deleteEventAdmin(where: EventAdminWhereUniqueInput!): EventAdmin
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
   deleteList(where: ListWhereUniqueInput!): List
+  deleteNotification(where: NotificationWhereUniqueInput!): Notification
   deletePermission(where: PermissionWhereUniqueInput!): Permission
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteUser(where: UserWhereUniqueInput!): User
@@ -3024,6 +3031,7 @@ type Mutation {
   upsertEventAdmin(where: EventAdminWhereUniqueInput!, create: EventAdminCreateInput!, update: EventAdminUpdateInput!): EventAdmin!
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
   upsertList(where: ListWhereUniqueInput!, create: ListCreateInput!, update: ListUpdateInput!): List!
+  upsertNotification(where: NotificationWhereUniqueInput!, create: NotificationCreateInput!, update: NotificationUpdateInput!): Notification!
   upsertPermission(where: PermissionWhereUniqueInput!, create: PermissionCreateInput!, update: PermissionUpdateInput!): Permission!
   upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
@@ -3033,6 +3041,7 @@ type Mutation {
   updateManyEvents(data: EventUpdateManyMutationInput!, where: EventWhereInput): BatchPayload!
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
   updateManyLists(data: ListUpdateManyMutationInput!, where: ListWhereInput): BatchPayload!
+  updateManyNotifications(data: NotificationUpdateManyMutationInput!, where: NotificationWhereInput): BatchPayload!
   updateManyPermissions(data: PermissionUpdateManyMutationInput!, where: PermissionWhereInput): BatchPayload!
   updateManyReviews(data: ReviewUpdateManyMutationInput!, where: ReviewWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -3043,6 +3052,7 @@ type Mutation {
   deleteManyEventAdmins(where: EventAdminWhereInput): BatchPayload!
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
   deleteManyLists(where: ListWhereInput): BatchPayload!
+  deleteManyNotifications(where: NotificationWhereInput): BatchPayload!
   deleteManyPermissions(where: PermissionWhereInput): BatchPayload!
   deleteManyReviews(where: ReviewWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
@@ -3052,6 +3062,220 @@ enum MutationType {
   CREATED
   UPDATED
   DELETED
+}
+
+type Notification {
+  id: Int!
+  body: String!
+  user: User
+  viewed: Boolean!
+}
+
+"""A connection to a list of items."""
+type NotificationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [NotificationEdge]!
+  aggregate: AggregateNotification!
+}
+
+input NotificationCreateInput {
+  body: String!
+  viewed: Boolean!
+  user: UserCreateOneWithoutNotificationsInput
+}
+
+input NotificationCreateManyWithoutUserInput {
+  create: [NotificationCreateWithoutUserInput!]
+  connect: [NotificationWhereUniqueInput!]
+}
+
+input NotificationCreateWithoutUserInput {
+  body: String!
+  viewed: Boolean!
+}
+
+"""An edge in a connection."""
+type NotificationEdge {
+  """The item at the end of the edge."""
+  node: Notification!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum NotificationOrderByInput {
+  id_ASC
+  id_DESC
+  body_ASC
+  body_DESC
+  viewed_ASC
+  viewed_DESC
+}
+
+type NotificationPreviousValues {
+  id: Int!
+  body: String!
+  viewed: Boolean!
+}
+
+type NotificationSubscriptionPayload {
+  mutation: MutationType!
+  node: Notification
+  updatedFields: [String!]
+  previousValues: NotificationPreviousValues
+}
+
+input NotificationSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [NotificationSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [NotificationSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [NotificationSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: NotificationWhereInput
+}
+
+input NotificationUpdateInput {
+  body: String
+  viewed: Boolean
+  user: UserUpdateOneWithoutNotificationsInput
+}
+
+input NotificationUpdateManyMutationInput {
+  body: String
+  viewed: Boolean
+}
+
+input NotificationUpdateManyWithoutUserInput {
+  create: [NotificationCreateWithoutUserInput!]
+  connect: [NotificationWhereUniqueInput!]
+  disconnect: [NotificationWhereUniqueInput!]
+  delete: [NotificationWhereUniqueInput!]
+  update: [NotificationUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [NotificationUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input NotificationUpdateWithoutUserDataInput {
+  body: String
+  viewed: Boolean
+}
+
+input NotificationUpdateWithWhereUniqueWithoutUserInput {
+  where: NotificationWhereUniqueInput!
+  data: NotificationUpdateWithoutUserDataInput!
+}
+
+input NotificationUpsertWithWhereUniqueWithoutUserInput {
+  where: NotificationWhereUniqueInput!
+  update: NotificationUpdateWithoutUserDataInput!
+  create: NotificationCreateWithoutUserInput!
+}
+
+input NotificationWhereInput {
+  """Logical AND on all given filters."""
+  AND: [NotificationWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [NotificationWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [NotificationWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  body: String
+
+  """All values that are not equal to given value."""
+  body_not: String
+
+  """All values that are contained in given list."""
+  body_in: [String!]
+
+  """All values that are not contained in given list."""
+  body_not_in: [String!]
+
+  """All values less than the given value."""
+  body_lt: String
+
+  """All values less than or equal the given value."""
+  body_lte: String
+
+  """All values greater than the given value."""
+  body_gt: String
+
+  """All values greater than or equal the given value."""
+  body_gte: String
+
+  """All values containing the given string."""
+  body_contains: String
+
+  """All values not containing the given string."""
+  body_not_contains: String
+
+  """All values starting with the given string."""
+  body_starts_with: String
+
+  """All values not starting with the given string."""
+  body_not_starts_with: String
+
+  """All values ending with the given string."""
+  body_ends_with: String
+
+  """All values not ending with the given string."""
+  body_not_ends_with: String
+  viewed: Boolean
+
+  """All values that are not equal to given value."""
+  viewed_not: Boolean
+  user: UserWhereInput
+}
+
+input NotificationWhereUniqueInput {
+  id: Int
 }
 
 """Information about pagination in a connection."""
@@ -3275,6 +3499,7 @@ type Query {
   eventAdmins(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EventAdmin]!
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
   lists(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [List]!
+  notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification]!
   permissions(where: PermissionWhereInput, orderBy: PermissionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Permission]!
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
@@ -3285,6 +3510,7 @@ type Query {
   eventAdmin(where: EventAdminWhereUniqueInput!): EventAdmin
   expense(where: ExpenseWhereUniqueInput!): Expense
   list(where: ListWhereUniqueInput!): List
+  notification(where: NotificationWhereUniqueInput!): Notification
   permission(where: PermissionWhereUniqueInput!): Permission
   review(where: ReviewWhereUniqueInput!): Review
   user(where: UserWhereUniqueInput!): User
@@ -3295,6 +3521,7 @@ type Query {
   eventAdminsConnection(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventAdminConnection!
   expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
   listsConnection(where: ListWhereInput, orderBy: ListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ListConnection!
+  notificationsConnection(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotificationConnection!
   permissionsConnection(where: PermissionWhereInput, orderBy: PermissionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PermissionConnection!
   reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -3609,6 +3836,7 @@ type Subscription {
   eventAdmin(where: EventAdminSubscriptionWhereInput): EventAdminSubscriptionPayload
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
   list(where: ListSubscriptionWhereInput): ListSubscriptionPayload
+  notification(where: NotificationSubscriptionWhereInput): NotificationSubscriptionPayload
   permission(where: PermissionSubscriptionWhereInput): PermissionSubscriptionPayload
   review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -3624,6 +3852,7 @@ type User {
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense!]
   firstName: String!
   lastName: String!
+  notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification!]
   password: String!
   resetToken: String
   resetTokenExpiry: Float
@@ -3654,6 +3883,7 @@ input UserCreateInput {
   comments: CommentCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
   expenses: ExpenseCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
   reviews: ReviewCreateManyWithoutUserInput
 }
 
@@ -3682,6 +3912,11 @@ input UserCreateOneWithoutExpensesInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutNotificationsInput {
+  create: UserCreateWithoutNotificationsInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateOneWithoutReviewsInput {
   create: UserCreateWithoutReviewsInput
   connect: UserWhereUniqueInput
@@ -3699,6 +3934,7 @@ input UserCreateWithoutCards_assignedUsersInput {
   comments: CommentCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
   expenses: ExpenseCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
   reviews: ReviewCreateManyWithoutUserInput
 }
 
@@ -3714,6 +3950,7 @@ input UserCreateWithoutCards_usersInput {
   comments: CommentCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
   expenses: ExpenseCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
   reviews: ReviewCreateManyWithoutUserInput
 }
 
@@ -3729,6 +3966,7 @@ input UserCreateWithoutCommentsInput {
   cards_users: CardCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
   expenses: ExpenseCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
   reviews: ReviewCreateManyWithoutUserInput
 }
 
@@ -3744,6 +3982,7 @@ input UserCreateWithoutEventAdminsInput {
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
   expenses: ExpenseCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
   reviews: ReviewCreateManyWithoutUserInput
 }
 
@@ -3759,6 +3998,23 @@ input UserCreateWithoutExpensesInput {
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
+  reviews: ReviewCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutNotificationsInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  username: String!
+  cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
+  cards_users: CardCreateManyWithoutUserInput
+  comments: CommentCreateManyWithoutUserInput
+  eventAdmins: EventAdminCreateManyWithoutUserInput
+  expenses: ExpenseCreateManyWithoutUserInput
   reviews: ReviewCreateManyWithoutUserInput
 }
 
@@ -3775,6 +4031,7 @@ input UserCreateWithoutReviewsInput {
   comments: CommentCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
   expenses: ExpenseCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
 }
 
 """An edge in a connection."""
@@ -3868,6 +4125,7 @@ input UserUpdateInput {
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
   expenses: ExpenseUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutUserInput
 }
 
@@ -3926,6 +4184,15 @@ input UserUpdateOneWithoutExpensesInput {
   upsert: UserUpsertWithoutExpensesInput
 }
 
+input UserUpdateOneWithoutNotificationsInput {
+  create: UserCreateWithoutNotificationsInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutNotificationsDataInput
+  upsert: UserUpsertWithoutNotificationsInput
+}
+
 input UserUpdateOneWithoutReviewsInput {
   create: UserCreateWithoutReviewsInput
   connect: UserWhereUniqueInput
@@ -3947,6 +4214,7 @@ input UserUpdateWithoutCards_assignedUsersDataInput {
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
   expenses: ExpenseUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutUserInput
 }
 
@@ -3962,6 +4230,7 @@ input UserUpdateWithoutCards_usersDataInput {
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
   expenses: ExpenseUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutUserInput
 }
 
@@ -3977,6 +4246,7 @@ input UserUpdateWithoutCommentsDataInput {
   cards_users: CardUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
   expenses: ExpenseUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutUserInput
 }
 
@@ -3992,6 +4262,7 @@ input UserUpdateWithoutEventAdminsDataInput {
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
   expenses: ExpenseUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutUserInput
 }
 
@@ -4007,6 +4278,23 @@ input UserUpdateWithoutExpensesDataInput {
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutNotificationsDataInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  username: String
+  cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
+  cards_users: CardUpdateManyWithoutUserInput
+  comments: CommentUpdateManyWithoutUserInput
+  eventAdmins: EventAdminUpdateManyWithoutUserInput
+  expenses: ExpenseUpdateManyWithoutUserInput
   reviews: ReviewUpdateManyWithoutUserInput
 }
 
@@ -4023,6 +4311,7 @@ input UserUpdateWithoutReviewsDataInput {
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
   expenses: ExpenseUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
 }
 
 input UserUpsertWithoutCards_assignedUsersInput {
@@ -4048,6 +4337,11 @@ input UserUpsertWithoutEventAdminsInput {
 input UserUpsertWithoutExpensesInput {
   update: UserUpdateWithoutExpensesDataInput!
   create: UserCreateWithoutExpensesInput!
+}
+
+input UserUpsertWithoutNotificationsInput {
+  update: UserUpdateWithoutNotificationsDataInput!
+  create: UserCreateWithoutNotificationsInput!
 }
 
 input UserUpsertWithoutReviewsInput {
@@ -4363,6 +4657,9 @@ input UserWhereInput {
   expenses_every: ExpenseWhereInput
   expenses_some: ExpenseWhereInput
   expenses_none: ExpenseWhereInput
+  notifications_every: NotificationWhereInput
+  notifications_some: NotificationWhereInput
+  notifications_none: NotificationWhereInput
   reviews_every: ReviewWhereInput
   reviews_some: ReviewWhereInput
   reviews_none: ReviewWhereInput

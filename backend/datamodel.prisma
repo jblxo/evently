@@ -8,7 +8,9 @@ type Board @pgTable(name: "board") {
 
 type Card @pgTable(name: "card") {
   id: Int! @unique
-  assignedUser: User @pgRelation(column: "assignedUser") @relation(name: "CardsAssignedUsers")
+  assignedUser: User
+    @pgRelation(column: "assignedUser")
+    @relation(name: "CardsAssignedUsers")
   createdAt: DateTime!
   description: String
   list: List @pgRelation(column: "list")
@@ -75,6 +77,13 @@ type List @pgTable(name: "list") {
   title: String!
 }
 
+type Notification @pgTable(name: "notification") {
+  id: Int! @unique
+  body: String!
+  user: User @pgRelation(column: "user")
+  viewed: Boolean!
+}
+
 type Permission @pgTable(name: "permission") {
   id: Int! @unique
   eventAdmins: [EventAdmin!]!
@@ -100,6 +109,7 @@ type User @pgTable(name: "user") {
   expenses: [Expense!]!
   firstName: String!
   lastName: String!
+  notifications: [Notification!]!
   password: String!
   resetToken: String
   resetTokenExpiry: Float

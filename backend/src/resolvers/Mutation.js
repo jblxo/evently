@@ -725,7 +725,7 @@ const Mutations = {
     return res;
   },
   async assignUserToTask(parent, args, ctx, info) {
-    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
+    // authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
 
     const userEventAdmins = await ctx.db.query.user(
       { where: { id: args.user } },
@@ -767,7 +767,7 @@ const Mutations = {
 
     const card = await ctx.db.query.card(
       { where: { id: args.card } },
-      `{ id list { id board { id event { id } } } }`
+      `{ id list { id board { id event { id } } } assignedUser { id username } user { id username } }`
     );
 
     const mailRes = await transport.sendMail({
@@ -783,6 +783,8 @@ const Mutations = {
       `
       )
     });
+
+    ctx.pubsub.publish('USER_ASSIGNED', { adminAssignedToCard: card });
 
     return res;
   }

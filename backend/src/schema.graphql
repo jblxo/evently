@@ -114,3 +114,7 @@ type Query {
   expensesConnection(where: ExpenseWhereInput): ExpenseConnection!
   expense(where: ExpenseWhereUniqueInput!): Expense
 }
+
+type Subscription {
+  adminAssignedToCard: Card
+}
