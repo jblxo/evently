@@ -11,19 +11,12 @@ type Card @pgTable(name: "card") {
   assignedUser: User
     @pgRelation(column: "assignedUser")
     @relation(name: "CardsAssignedUsers")
-  cardNotificationAlerts: [CardNotificationAlert!]!
   createdAt: DateTime!
   description: String
   list: List @pgRelation(column: "list")
   order: Int!
   title: String!
   user: User @pgRelation(column: "user") @relation(name: "CardsUsers")
-}
-
-type CardNotificationAlert @pgTable(name: "cardNotificationAlert") {
-  id: Int! @unique
-  card: Card @pgRelation(column: "card")
-  user: User @pgRelation(column: "user")
 }
 
 type Comment @pgTable(name: "comment") {
@@ -108,7 +101,6 @@ type Review @pgTable(name: "review") {
 
 type User @pgTable(name: "user") {
   id: Int! @unique
-  cardNotificationAlerts: [CardNotificationAlert!]!
   cards_assignedUsers: [Card!]! @relation(name: "CardsAssignedUsers")
   cards_users: [Card!]! @relation(name: "CardsUsers")
   comments: [Comment!]!
