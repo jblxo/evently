@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Downshift from 'downshift';
-import Router from 'next/router';
 import { ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import debounce from 'lodash.debounce';
@@ -109,11 +108,12 @@ class AdminAutoComplete extends Component {
                   <ApolloConsumer>
                     {client => (
                       <DropdownInput
+                        disabled={loading}
                         {...getInputProps({
                           type: 'search',
                           placeholder: 'Search for a admin',
                           id: 'search',
-                          className: this.state.loading ? 'lodaing' : '',
+                          className: this.state.loading ? 'loading' : '',
                           onChange: e => {
                             e.persist();
                             this.onChange(e, client);

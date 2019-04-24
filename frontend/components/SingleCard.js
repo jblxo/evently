@@ -106,7 +106,7 @@ class SingleCard extends Component {
                     </Link>
                   )}
                   <h4>Assigned Admin</h4>
-                  {card.assignedUser.username && (
+                  {card.assignedUser && (
                     <Link
                       href={{
                         pathname: '/user',
