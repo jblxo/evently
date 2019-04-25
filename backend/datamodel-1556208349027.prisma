@@ -1,4 +1,0 @@
-type _RelayId @pgTable(name: "_RelayId") {
-  id: ID! @id @unique
-  stableModelIdentifier: String!
-}
