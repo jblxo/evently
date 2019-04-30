@@ -822,6 +822,38 @@ const Mutations = {
     ctx.pubsub.publish('USER_ASSIGNED', { adminAssignedToCard: card });
 
     return res;
+  },
+  async changeCardNotificationAlert(parent, args, ctx, info) {
+    const currentCardNotAlert = await ctx.db.query.cardNotificationAlerts(
+      {
+        where: { AND: [{ user: { id: args.user }, card: { id: args.card } }] }
+      },
+      `{ id }`
+    );
+
+    if (!currentCardNotAlert[0]) {
+      const res = await ctx.db.mutation.createCardNotificationAlert(
+        {
+          data: {
+            user: { connect: { id: args.user } },
+            card: { connect: { id: args.card } }
+          }
+        },
+        `{ id }`
+      );
+
+      return {
+        message: 'You will be notified!'
+      };
+    }
+
+    const res = await ctx.db.mutation.deleteManyCardNotificationAlerts({
+      where: { AND: [{ user: { id: args.user }, card: { id: args.card } }] }
+    });
+
+    return {
+      message: `You won't be notified!`
+    };
   }
 };
 
