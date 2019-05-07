@@ -79,7 +79,10 @@ class AdminAutoComplete extends Component {
       <Mutation
         mutation={ASSIGN_USER_TO_TASK_MUTATION}
         refetchQueries={[
-          { query: SINGLE_CARD_QUERY, variables: { id: this.props.card } }
+          {
+            query: SINGLE_CARD_QUERY,
+            variables: { id: this.props.card, user: this.props.user }
+          }
         ]}
       >
         {(assignUserToTask, { loading, error }) => {
@@ -153,7 +156,11 @@ class SelectAdmin extends Component {
     return (
       <div>
         <Title>Assign Admin</Title>
-        <AdminAutoComplete id={this.props.id} card={this.props.card} />
+        <AdminAutoComplete
+          id={this.props.id}
+          card={this.props.card}
+          user={this.props.user}
+        />
       </div>
     );
   }
