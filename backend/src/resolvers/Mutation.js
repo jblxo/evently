@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { isLoggedIn, hasPermission, authorizeUser } = require('../utils');
 const { transport } = require('../Mail');
 const { assignedToCard } = require('../templates/assignedToCard');
+const { cardCreated } = require('../templates/cardCreated');
 
 const Mutations = {
   async createEvent(parent, args, ctx, info) {
@@ -487,7 +488,7 @@ const Mutations = {
 
     const eventAdmins = await ctx.db.query.eventAdmins(
       { where: { event: { id: eventId } } },
-      `{ user { id username } }`
+      `{ user { id username email } }`
     );
 
     const admins = eventAdmins.map(admin => admin.user);
@@ -496,7 +497,8 @@ const Mutations = {
       id => {
         return {
           id: id,
-          username: admins.find(a => a.id === id).username
+          username: admins.find(a => a.id === id).username,
+          email: admins.find(a => a.id === id).email
         };
       }
     );
@@ -508,7 +510,25 @@ const Mutations = {
           card: { connect: { id: res.id } }
         }
       });
+
+      const mailRes = await transport.sendMail({
+        from: 'notifications@evently.com',
+        to: admin.email,
+        subject: 'New card has benn created',
+        html: cardCreated(
+          `
+        ${res.user.firstName} ${res.user.lastName} aka ${
+            res.user.username
+          } has created a new card - ${res.title}! \n\n
+        <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
+            res.list.board.event.id
+          }&board=${res.list.board.id}&list=${res.list.id}">Go check it out</a>
+        `
+        )
+      });
     });
+
+    ctx.pubsub.publish('CARD_CREATED', { cardCreated: res });
 
     return res;
   },

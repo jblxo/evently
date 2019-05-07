@@ -177,6 +177,7 @@ class SingleCard extends Component {
                             <SelectAdmin
                               id={this.props.event}
                               card={this.props.id}
+                              user={me.id}
                             />
                           </SelectAdminContainer>
                         </CardStyles>

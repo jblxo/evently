@@ -118,4 +118,5 @@ type Query {
 
 type Subscription {
   adminAssignedToCard: Card
+  cardCreated: Card
 }
