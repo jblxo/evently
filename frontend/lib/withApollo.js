@@ -1,20 +1,30 @@
 import withApollo from 'next-with-apollo';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
-import { onError } from 'apollo-link-error';
-import { ApolloLink } from 'apollo-link';
+import { ApolloClient } from 'apollo-client';
+import { ApolloLink, concat } from 'apollo-link';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { GRAPHQL_URL } from '../config';
 
-const link = createHttpLink({
-  uri: GRAPHQL_URL,
-  credentials: 'same-origin'
+const httpLink = createHttpLink({
+  uri: GRAPHQL_URL
 });
+
+const authMiddleware = headers =>
+  new ApolloLink((operation, forward) => {
+    operation.setContext({
+      fetchOptions: {
+        credentials: 'include'
+      },
+      headers
+    });
+
+    return forward(operation);
+  });
 
 export default withApollo(
   ({ headers }) =>
     new ApolloClient({
-      cache: new InMemoryCache(),
-      link
+      link: concat(authMiddleware(headers), httpLink),
+      cache: new InMemoryCache()
     })
 );
