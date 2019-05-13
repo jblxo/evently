@@ -1,11 +1,15 @@
 # source: http://localhost:4466
-# timestamp: Thu Apr 11 2019 13:20:19 GMT+0200 (GMT+02:00)
+# timestamp: Thu Apr 25 2019 21:27:59 GMT+0200 (GMT+02:00)
 
 type AggregateBoard {
   count: Int!
 }
 
 type AggregateCard {
+  count: Int!
+}
+
+type AggregateCardNotificationAlert {
   count: Int!
 }
 
@@ -121,6 +125,119 @@ type BoardPreviousValues {
   title: String!
 }
 
+input BoardScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BoardScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BoardScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BoardScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+}
+
 type BoardSubscriptionPayload {
   mutation: MutationType!
   node: Board
@@ -167,6 +284,11 @@ input BoardUpdateInput {
   lists: ListUpdateManyWithoutBoardInput
 }
 
+input BoardUpdateManyDataInput {
+  description: String
+  title: String
+}
+
 input BoardUpdateManyMutationInput {
   description: String
   title: String
@@ -178,7 +300,14 @@ input BoardUpdateManyWithoutEventInput {
   disconnect: [BoardWhereUniqueInput!]
   delete: [BoardWhereUniqueInput!]
   update: [BoardUpdateWithWhereUniqueWithoutEventInput!]
+  updateMany: [BoardUpdateManyWithWhereNestedInput!]
+  deleteMany: [BoardScalarWhereInput!]
   upsert: [BoardUpsertWithWhereUniqueWithoutEventInput!]
+}
+
+input BoardUpdateManyWithWhereNestedInput {
+  where: BoardScalarWhereInput!
+  data: BoardUpdateManyDataInput!
 }
 
 input BoardUpdateOneWithoutListsInput {
@@ -342,6 +471,7 @@ input BoardWhereUniqueInput {
 type Card {
   id: Int!
   assignedUser: User
+  cardNotificationAlerts(where: CardNotificationAlertWhereInput, orderBy: CardNotificationAlertOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CardNotificationAlert!]
   createdAt: DateTime!
   description: String
   list: List
@@ -365,6 +495,7 @@ input CardCreateInput {
   order: Int!
   title: String!
   assignedUser: UserCreateOneWithoutCards_assignedUsersInput
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutCardInput
   list: ListCreateOneWithoutCardsInput
   user: UserCreateOneWithoutCards_usersInput
 }
@@ -384,10 +515,25 @@ input CardCreateManyWithoutUserInput {
   connect: [CardWhereUniqueInput!]
 }
 
+input CardCreateOneWithoutCardNotificationAlertsInput {
+  create: CardCreateWithoutCardNotificationAlertsInput
+  connect: CardWhereUniqueInput
+}
+
 input CardCreateWithoutAssignedUserInput {
   description: String
   order: Int!
   title: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutCardInput
+  list: ListCreateOneWithoutCardsInput
+  user: UserCreateOneWithoutCards_usersInput
+}
+
+input CardCreateWithoutCardNotificationAlertsInput {
+  description: String
+  order: Int!
+  title: String!
+  assignedUser: UserCreateOneWithoutCards_assignedUsersInput
   list: ListCreateOneWithoutCardsInput
   user: UserCreateOneWithoutCards_usersInput
 }
@@ -397,6 +543,7 @@ input CardCreateWithoutListInput {
   order: Int!
   title: String!
   assignedUser: UserCreateOneWithoutCards_assignedUsersInput
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutCardInput
   user: UserCreateOneWithoutCards_usersInput
 }
 
@@ -405,6 +552,7 @@ input CardCreateWithoutUserInput {
   order: Int!
   title: String!
   assignedUser: UserCreateOneWithoutCards_assignedUsersInput
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutCardInput
   list: ListCreateOneWithoutCardsInput
 }
 
@@ -415,6 +563,229 @@ type CardEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+type CardNotificationAlert {
+  id: Int!
+  card: Card
+  user: User
+}
+
+"""A connection to a list of items."""
+type CardNotificationAlertConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CardNotificationAlertEdge]!
+  aggregate: AggregateCardNotificationAlert!
+}
+
+input CardNotificationAlertCreateInput {
+  card: CardCreateOneWithoutCardNotificationAlertsInput
+  user: UserCreateOneWithoutCardNotificationAlertsInput
+}
+
+input CardNotificationAlertCreateManyWithoutCardInput {
+  create: [CardNotificationAlertCreateWithoutCardInput!]
+  connect: [CardNotificationAlertWhereUniqueInput!]
+}
+
+input CardNotificationAlertCreateManyWithoutUserInput {
+  create: [CardNotificationAlertCreateWithoutUserInput!]
+  connect: [CardNotificationAlertWhereUniqueInput!]
+}
+
+input CardNotificationAlertCreateWithoutCardInput {
+  user: UserCreateOneWithoutCardNotificationAlertsInput
+}
+
+input CardNotificationAlertCreateWithoutUserInput {
+  card: CardCreateOneWithoutCardNotificationAlertsInput
+}
+
+"""An edge in a connection."""
+type CardNotificationAlertEdge {
+  """The item at the end of the edge."""
+  node: CardNotificationAlert!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CardNotificationAlertOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type CardNotificationAlertPreviousValues {
+  id: Int!
+}
+
+input CardNotificationAlertScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CardNotificationAlertScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CardNotificationAlertScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CardNotificationAlertScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+}
+
+type CardNotificationAlertSubscriptionPayload {
+  mutation: MutationType!
+  node: CardNotificationAlert
+  updatedFields: [String!]
+  previousValues: CardNotificationAlertPreviousValues
+}
+
+input CardNotificationAlertSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CardNotificationAlertSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CardNotificationAlertSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CardNotificationAlertSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CardNotificationAlertWhereInput
+}
+
+input CardNotificationAlertUpdateInput {
+  card: CardUpdateOneWithoutCardNotificationAlertsInput
+  user: UserUpdateOneWithoutCardNotificationAlertsInput
+}
+
+input CardNotificationAlertUpdateManyWithoutCardInput {
+  create: [CardNotificationAlertCreateWithoutCardInput!]
+  connect: [CardNotificationAlertWhereUniqueInput!]
+  disconnect: [CardNotificationAlertWhereUniqueInput!]
+  delete: [CardNotificationAlertWhereUniqueInput!]
+  update: [CardNotificationAlertUpdateWithWhereUniqueWithoutCardInput!]
+  deleteMany: [CardNotificationAlertScalarWhereInput!]
+  upsert: [CardNotificationAlertUpsertWithWhereUniqueWithoutCardInput!]
+}
+
+input CardNotificationAlertUpdateManyWithoutUserInput {
+  create: [CardNotificationAlertCreateWithoutUserInput!]
+  connect: [CardNotificationAlertWhereUniqueInput!]
+  disconnect: [CardNotificationAlertWhereUniqueInput!]
+  delete: [CardNotificationAlertWhereUniqueInput!]
+  update: [CardNotificationAlertUpdateWithWhereUniqueWithoutUserInput!]
+  deleteMany: [CardNotificationAlertScalarWhereInput!]
+  upsert: [CardNotificationAlertUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input CardNotificationAlertUpdateWithoutCardDataInput {
+  user: UserUpdateOneWithoutCardNotificationAlertsInput
+}
+
+input CardNotificationAlertUpdateWithoutUserDataInput {
+  card: CardUpdateOneWithoutCardNotificationAlertsInput
+}
+
+input CardNotificationAlertUpdateWithWhereUniqueWithoutCardInput {
+  where: CardNotificationAlertWhereUniqueInput!
+  data: CardNotificationAlertUpdateWithoutCardDataInput!
+}
+
+input CardNotificationAlertUpdateWithWhereUniqueWithoutUserInput {
+  where: CardNotificationAlertWhereUniqueInput!
+  data: CardNotificationAlertUpdateWithoutUserDataInput!
+}
+
+input CardNotificationAlertUpsertWithWhereUniqueWithoutCardInput {
+  where: CardNotificationAlertWhereUniqueInput!
+  update: CardNotificationAlertUpdateWithoutCardDataInput!
+  create: CardNotificationAlertCreateWithoutCardInput!
+}
+
+input CardNotificationAlertUpsertWithWhereUniqueWithoutUserInput {
+  where: CardNotificationAlertWhereUniqueInput!
+  update: CardNotificationAlertUpdateWithoutUserDataInput!
+  create: CardNotificationAlertCreateWithoutUserInput!
+}
+
+input CardNotificationAlertWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CardNotificationAlertWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CardNotificationAlertWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CardNotificationAlertWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  card: CardWhereInput
+  user: UserWhereInput
+}
+
+input CardNotificationAlertWhereUniqueInput {
+  id: Int
 }
 
 enum CardOrderByInput {
@@ -436,6 +807,163 @@ type CardPreviousValues {
   description: String
   order: Int!
   title: String!
+}
+
+input CardScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CardScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CardScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CardScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  order: Int
+
+  """All values that are not equal to given value."""
+  order_not: Int
+
+  """All values that are contained in given list."""
+  order_in: [Int!]
+
+  """All values that are not contained in given list."""
+  order_not_in: [Int!]
+
+  """All values less than the given value."""
+  order_lt: Int
+
+  """All values less than or equal the given value."""
+  order_lte: Int
+
+  """All values greater than the given value."""
+  order_gt: Int
+
+  """All values greater than or equal the given value."""
+  order_gte: Int
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
 }
 
 type CardSubscriptionPayload {
@@ -482,8 +1010,15 @@ input CardUpdateInput {
   order: Int
   title: String
   assignedUser: UserUpdateOneWithoutCards_assignedUsersInput
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutCardInput
   list: ListUpdateOneWithoutCardsInput
   user: UserUpdateOneWithoutCards_usersInput
+}
+
+input CardUpdateManyDataInput {
+  description: String
+  order: Int
+  title: String
 }
 
 input CardUpdateManyMutationInput {
@@ -498,6 +1033,8 @@ input CardUpdateManyWithoutAssignedUserInput {
   disconnect: [CardWhereUniqueInput!]
   delete: [CardWhereUniqueInput!]
   update: [CardUpdateWithWhereUniqueWithoutAssignedUserInput!]
+  updateMany: [CardUpdateManyWithWhereNestedInput!]
+  deleteMany: [CardScalarWhereInput!]
   upsert: [CardUpsertWithWhereUniqueWithoutAssignedUserInput!]
 }
 
@@ -507,6 +1044,8 @@ input CardUpdateManyWithoutListInput {
   disconnect: [CardWhereUniqueInput!]
   delete: [CardWhereUniqueInput!]
   update: [CardUpdateWithWhereUniqueWithoutListInput!]
+  updateMany: [CardUpdateManyWithWhereNestedInput!]
+  deleteMany: [CardScalarWhereInput!]
   upsert: [CardUpsertWithWhereUniqueWithoutListInput!]
 }
 
@@ -516,13 +1055,39 @@ input CardUpdateManyWithoutUserInput {
   disconnect: [CardWhereUniqueInput!]
   delete: [CardWhereUniqueInput!]
   update: [CardUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [CardUpdateManyWithWhereNestedInput!]
+  deleteMany: [CardScalarWhereInput!]
   upsert: [CardUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input CardUpdateManyWithWhereNestedInput {
+  where: CardScalarWhereInput!
+  data: CardUpdateManyDataInput!
+}
+
+input CardUpdateOneWithoutCardNotificationAlertsInput {
+  create: CardCreateWithoutCardNotificationAlertsInput
+  connect: CardWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: CardUpdateWithoutCardNotificationAlertsDataInput
+  upsert: CardUpsertWithoutCardNotificationAlertsInput
 }
 
 input CardUpdateWithoutAssignedUserDataInput {
   description: String
   order: Int
   title: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutCardInput
+  list: ListUpdateOneWithoutCardsInput
+  user: UserUpdateOneWithoutCards_usersInput
+}
+
+input CardUpdateWithoutCardNotificationAlertsDataInput {
+  description: String
+  order: Int
+  title: String
+  assignedUser: UserUpdateOneWithoutCards_assignedUsersInput
   list: ListUpdateOneWithoutCardsInput
   user: UserUpdateOneWithoutCards_usersInput
 }
@@ -532,6 +1097,7 @@ input CardUpdateWithoutListDataInput {
   order: Int
   title: String
   assignedUser: UserUpdateOneWithoutCards_assignedUsersInput
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutCardInput
   user: UserUpdateOneWithoutCards_usersInput
 }
 
@@ -540,6 +1106,7 @@ input CardUpdateWithoutUserDataInput {
   order: Int
   title: String
   assignedUser: UserUpdateOneWithoutCards_assignedUsersInput
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutCardInput
   list: ListUpdateOneWithoutCardsInput
 }
 
@@ -556,6 +1123,11 @@ input CardUpdateWithWhereUniqueWithoutListInput {
 input CardUpdateWithWhereUniqueWithoutUserInput {
   where: CardWhereUniqueInput!
   data: CardUpdateWithoutUserDataInput!
+}
+
+input CardUpsertWithoutCardNotificationAlertsInput {
+  update: CardUpdateWithoutCardNotificationAlertsDataInput!
+  create: CardCreateWithoutCardNotificationAlertsInput!
 }
 
 input CardUpsertWithWhereUniqueWithoutAssignedUserInput {
@@ -732,6 +1304,9 @@ input CardWhereInput {
   """All values not ending with the given string."""
   title_not_ends_with: String
   assignedUser: UserWhereInput
+  cardNotificationAlerts_every: CardNotificationAlertWhereInput
+  cardNotificationAlerts_some: CardNotificationAlertWhereInput
+  cardNotificationAlerts_none: CardNotificationAlertWhereInput
   list: ListWhereInput
   user: UserWhereInput
 }
@@ -808,6 +1383,101 @@ type CommentPreviousValues {
   createdAt: DateTime!
 }
 
+input CommentScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CommentScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CommentScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CommentScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+}
+
 type CommentSubscriptionPayload {
   mutation: MutationType!
   node: Comment
@@ -853,6 +1523,10 @@ input CommentUpdateInput {
   user: UserUpdateOneWithoutCommentsInput
 }
 
+input CommentUpdateManyDataInput {
+  content: String
+}
+
 input CommentUpdateManyMutationInput {
   content: String
 }
@@ -863,6 +1537,8 @@ input CommentUpdateManyWithoutEventInput {
   disconnect: [CommentWhereUniqueInput!]
   delete: [CommentWhereUniqueInput!]
   update: [CommentUpdateWithWhereUniqueWithoutEventInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+  deleteMany: [CommentScalarWhereInput!]
   upsert: [CommentUpsertWithWhereUniqueWithoutEventInput!]
 }
 
@@ -872,7 +1548,14 @@ input CommentUpdateManyWithoutUserInput {
   disconnect: [CommentWhereUniqueInput!]
   delete: [CommentWhereUniqueInput!]
   update: [CommentUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+  deleteMany: [CommentScalarWhereInput!]
   upsert: [CommentUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyDataInput!
 }
 
 input CommentUpdateWithoutEventDataInput {
@@ -1104,6 +1787,39 @@ type EventAdminPreviousValues {
   id: Int!
 }
 
+input EventAdminScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EventAdminScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EventAdminScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EventAdminScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+}
+
 type EventAdminSubscriptionPayload {
   mutation: MutationType!
   node: EventAdmin
@@ -1155,6 +1871,7 @@ input EventAdminUpdateManyWithoutEventInput {
   disconnect: [EventAdminWhereUniqueInput!]
   delete: [EventAdminWhereUniqueInput!]
   update: [EventAdminUpdateWithWhereUniqueWithoutEventInput!]
+  deleteMany: [EventAdminScalarWhereInput!]
   upsert: [EventAdminUpsertWithWhereUniqueWithoutEventInput!]
 }
 
@@ -1164,6 +1881,7 @@ input EventAdminUpdateManyWithoutPermissionInput {
   disconnect: [EventAdminWhereUniqueInput!]
   delete: [EventAdminWhereUniqueInput!]
   update: [EventAdminUpdateWithWhereUniqueWithoutPermissionInput!]
+  deleteMany: [EventAdminScalarWhereInput!]
   upsert: [EventAdminUpsertWithWhereUniqueWithoutPermissionInput!]
 }
 
@@ -1173,6 +1891,7 @@ input EventAdminUpdateManyWithoutUserInput {
   disconnect: [EventAdminWhereUniqueInput!]
   delete: [EventAdminWhereUniqueInput!]
   update: [EventAdminUpdateWithWhereUniqueWithoutUserInput!]
+  deleteMany: [EventAdminScalarWhereInput!]
   upsert: [EventAdminUpsertWithWhereUniqueWithoutUserInput!]
 }
 
@@ -2366,6 +3085,163 @@ type ExpensePreviousValues {
   title: String!
 }
 
+input ExpenseScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExpenseScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExpenseScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExpenseScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  amount: Int
+
+  """All values that are not equal to given value."""
+  amount_not: Int
+
+  """All values that are contained in given list."""
+  amount_in: [Int!]
+
+  """All values that are not contained in given list."""
+  amount_not_in: [Int!]
+
+  """All values less than the given value."""
+  amount_lt: Int
+
+  """All values less than or equal the given value."""
+  amount_lte: Int
+
+  """All values greater than the given value."""
+  amount_gt: Int
+
+  """All values greater than or equal the given value."""
+  amount_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+}
+
 type ExpenseSubscriptionPayload {
   mutation: MutationType!
   node: Expense
@@ -2413,6 +3289,12 @@ input ExpenseUpdateInput {
   user: UserUpdateOneWithoutExpensesInput
 }
 
+input ExpenseUpdateManyDataInput {
+  amount: Int
+  description: String
+  title: String
+}
+
 input ExpenseUpdateManyMutationInput {
   amount: Int
   description: String
@@ -2425,6 +3307,8 @@ input ExpenseUpdateManyWithoutEventInput {
   disconnect: [ExpenseWhereUniqueInput!]
   delete: [ExpenseWhereUniqueInput!]
   update: [ExpenseUpdateWithWhereUniqueWithoutEventInput!]
+  updateMany: [ExpenseUpdateManyWithWhereNestedInput!]
+  deleteMany: [ExpenseScalarWhereInput!]
   upsert: [ExpenseUpsertWithWhereUniqueWithoutEventInput!]
 }
 
@@ -2434,7 +3318,14 @@ input ExpenseUpdateManyWithoutUserInput {
   disconnect: [ExpenseWhereUniqueInput!]
   delete: [ExpenseWhereUniqueInput!]
   update: [ExpenseUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ExpenseUpdateManyWithWhereNestedInput!]
+  deleteMany: [ExpenseScalarWhereInput!]
   upsert: [ExpenseUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ExpenseUpdateManyWithWhereNestedInput {
+  where: ExpenseScalarWhereInput!
+  data: ExpenseUpdateManyDataInput!
 }
 
 input ExpenseUpdateWithoutEventDataInput {
@@ -2718,6 +3609,163 @@ type ListPreviousValues {
   title: String!
 }
 
+input ListScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ListScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ListScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ListScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  order: Int
+
+  """All values that are not equal to given value."""
+  order_not: Int
+
+  """All values that are contained in given list."""
+  order_in: [Int!]
+
+  """All values that are not contained in given list."""
+  order_not_in: [Int!]
+
+  """All values less than the given value."""
+  order_lt: Int
+
+  """All values less than or equal the given value."""
+  order_lte: Int
+
+  """All values greater than the given value."""
+  order_gt: Int
+
+  """All values greater than or equal the given value."""
+  order_gte: Int
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+}
+
 type ListSubscriptionPayload {
   mutation: MutationType!
   node: List
@@ -2765,6 +3813,12 @@ input ListUpdateInput {
   cards: CardUpdateManyWithoutListInput
 }
 
+input ListUpdateManyDataInput {
+  description: String
+  order: Int
+  title: String
+}
+
 input ListUpdateManyMutationInput {
   description: String
   order: Int
@@ -2777,7 +3831,14 @@ input ListUpdateManyWithoutBoardInput {
   disconnect: [ListWhereUniqueInput!]
   delete: [ListWhereUniqueInput!]
   update: [ListUpdateWithWhereUniqueWithoutBoardInput!]
+  updateMany: [ListUpdateManyWithWhereNestedInput!]
+  deleteMany: [ListScalarWhereInput!]
   upsert: [ListUpsertWithWhereUniqueWithoutBoardInput!]
+}
+
+input ListUpdateManyWithWhereNestedInput {
+  where: ListScalarWhereInput!
+  data: ListUpdateManyDataInput!
 }
 
 input ListUpdateOneWithoutCardsInput {
@@ -2993,6 +4054,7 @@ scalar Long
 type Mutation {
   createBoard(data: BoardCreateInput!): Board!
   createCard(data: CardCreateInput!): Card!
+  createCardNotificationAlert(data: CardNotificationAlertCreateInput!): CardNotificationAlert!
   createComment(data: CommentCreateInput!): Comment!
   createEvent(data: EventCreateInput!): Event!
   createEventAdmin(data: EventAdminCreateInput!): EventAdmin!
@@ -3004,6 +4066,7 @@ type Mutation {
   createUser(data: UserCreateInput!): User!
   updateBoard(data: BoardUpdateInput!, where: BoardWhereUniqueInput!): Board
   updateCard(data: CardUpdateInput!, where: CardWhereUniqueInput!): Card
+  updateCardNotificationAlert(data: CardNotificationAlertUpdateInput!, where: CardNotificationAlertWhereUniqueInput!): CardNotificationAlert
   updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
   updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateEventAdmin(data: EventAdminUpdateInput!, where: EventAdminWhereUniqueInput!): EventAdmin
@@ -3015,6 +4078,7 @@ type Mutation {
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteBoard(where: BoardWhereUniqueInput!): Board
   deleteCard(where: CardWhereUniqueInput!): Card
+  deleteCardNotificationAlert(where: CardNotificationAlertWhereUniqueInput!): CardNotificationAlert
   deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteEvent(where: EventWhereUniqueInput!): Event
   deleteEventAdmin(where: EventAdminWhereUniqueInput!): EventAdmin
@@ -3026,6 +4090,7 @@ type Mutation {
   deleteUser(where: UserWhereUniqueInput!): User
   upsertBoard(where: BoardWhereUniqueInput!, create: BoardCreateInput!, update: BoardUpdateInput!): Board!
   upsertCard(where: CardWhereUniqueInput!, create: CardCreateInput!, update: CardUpdateInput!): Card!
+  upsertCardNotificationAlert(where: CardNotificationAlertWhereUniqueInput!, create: CardNotificationAlertCreateInput!, update: CardNotificationAlertUpdateInput!): CardNotificationAlert!
   upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   upsertEvent(where: EventWhereUniqueInput!, create: EventCreateInput!, update: EventUpdateInput!): Event!
   upsertEventAdmin(where: EventAdminWhereUniqueInput!, create: EventAdminCreateInput!, update: EventAdminUpdateInput!): EventAdmin!
@@ -3047,6 +4112,7 @@ type Mutation {
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyBoards(where: BoardWhereInput): BatchPayload!
   deleteManyCards(where: CardWhereInput): BatchPayload!
+  deleteManyCardNotificationAlerts(where: CardNotificationAlertWhereInput): BatchPayload!
   deleteManyComments(where: CommentWhereInput): BatchPayload!
   deleteManyEvents(where: EventWhereInput): BatchPayload!
   deleteManyEventAdmins(where: EventAdminWhereInput): BatchPayload!
@@ -3121,6 +4187,83 @@ type NotificationPreviousValues {
   viewed: Boolean!
 }
 
+input NotificationScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [NotificationScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [NotificationScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [NotificationScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  body: String
+
+  """All values that are not equal to given value."""
+  body_not: String
+
+  """All values that are contained in given list."""
+  body_in: [String!]
+
+  """All values that are not contained in given list."""
+  body_not_in: [String!]
+
+  """All values less than the given value."""
+  body_lt: String
+
+  """All values less than or equal the given value."""
+  body_lte: String
+
+  """All values greater than the given value."""
+  body_gt: String
+
+  """All values greater than or equal the given value."""
+  body_gte: String
+
+  """All values containing the given string."""
+  body_contains: String
+
+  """All values not containing the given string."""
+  body_not_contains: String
+
+  """All values starting with the given string."""
+  body_starts_with: String
+
+  """All values not starting with the given string."""
+  body_not_starts_with: String
+
+  """All values ending with the given string."""
+  body_ends_with: String
+
+  """All values not ending with the given string."""
+  body_not_ends_with: String
+  viewed: Boolean
+
+  """All values that are not equal to given value."""
+  viewed_not: Boolean
+}
+
 type NotificationSubscriptionPayload {
   mutation: MutationType!
   node: Notification
@@ -3166,6 +4309,11 @@ input NotificationUpdateInput {
   user: UserUpdateOneWithoutNotificationsInput
 }
 
+input NotificationUpdateManyDataInput {
+  body: String
+  viewed: Boolean
+}
+
 input NotificationUpdateManyMutationInput {
   body: String
   viewed: Boolean
@@ -3177,7 +4325,14 @@ input NotificationUpdateManyWithoutUserInput {
   disconnect: [NotificationWhereUniqueInput!]
   delete: [NotificationWhereUniqueInput!]
   update: [NotificationUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [NotificationUpdateManyWithWhereNestedInput!]
+  deleteMany: [NotificationScalarWhereInput!]
   upsert: [NotificationUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input NotificationUpdateManyWithWhereNestedInput {
+  where: NotificationScalarWhereInput!
+  data: NotificationUpdateManyDataInput!
 }
 
 input NotificationUpdateWithoutUserDataInput {
@@ -3494,6 +4649,7 @@ input PermissionWhereUniqueInput {
 type Query {
   boards(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Board]!
   cards(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card]!
+  cardNotificationAlerts(where: CardNotificationAlertWhereInput, orderBy: CardNotificationAlertOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CardNotificationAlert]!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
   eventAdmins(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [EventAdmin]!
@@ -3505,6 +4661,7 @@ type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   board(where: BoardWhereUniqueInput!): Board
   card(where: CardWhereUniqueInput!): Card
+  cardNotificationAlert(where: CardNotificationAlertWhereUniqueInput!): CardNotificationAlert
   comment(where: CommentWhereUniqueInput!): Comment
   event(where: EventWhereUniqueInput!): Event
   eventAdmin(where: EventAdminWhereUniqueInput!): EventAdmin
@@ -3516,6 +4673,7 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   boardsConnection(where: BoardWhereInput, orderBy: BoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BoardConnection!
   cardsConnection(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CardConnection!
+  cardNotificationAlertsConnection(where: CardNotificationAlertWhereInput, orderBy: CardNotificationAlertOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CardNotificationAlertConnection!
   commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
   eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
   eventAdminsConnection(where: EventAdminWhereInput, orderBy: EventAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventAdminConnection!
@@ -3602,6 +4760,123 @@ type ReviewPreviousValues {
   rating: Int!
 }
 
+input ReviewScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ReviewScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ReviewScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ReviewScalarWhereInput!]
+  id: Int
+
+  """All values that are not equal to given value."""
+  id_not: Int
+
+  """All values that are contained in given list."""
+  id_in: [Int!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [Int!]
+
+  """All values less than the given value."""
+  id_lt: Int
+
+  """All values less than or equal the given value."""
+  id_lte: Int
+
+  """All values greater than the given value."""
+  id_gt: Int
+
+  """All values greater than or equal the given value."""
+  id_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  rating: Int
+
+  """All values that are not equal to given value."""
+  rating_not: Int
+
+  """All values that are contained in given list."""
+  rating_in: [Int!]
+
+  """All values that are not contained in given list."""
+  rating_not_in: [Int!]
+
+  """All values less than the given value."""
+  rating_lt: Int
+
+  """All values less than or equal the given value."""
+  rating_lte: Int
+
+  """All values greater than the given value."""
+  rating_gt: Int
+
+  """All values greater than or equal the given value."""
+  rating_gte: Int
+}
+
 type ReviewSubscriptionPayload {
   mutation: MutationType!
   node: Review
@@ -3648,6 +4923,11 @@ input ReviewUpdateInput {
   user: UserUpdateOneWithoutReviewsInput
 }
 
+input ReviewUpdateManyDataInput {
+  description: String
+  rating: Int
+}
+
 input ReviewUpdateManyMutationInput {
   description: String
   rating: Int
@@ -3659,6 +4939,8 @@ input ReviewUpdateManyWithoutEventInput {
   disconnect: [ReviewWhereUniqueInput!]
   delete: [ReviewWhereUniqueInput!]
   update: [ReviewUpdateWithWhereUniqueWithoutEventInput!]
+  updateMany: [ReviewUpdateManyWithWhereNestedInput!]
+  deleteMany: [ReviewScalarWhereInput!]
   upsert: [ReviewUpsertWithWhereUniqueWithoutEventInput!]
 }
 
@@ -3668,7 +4950,14 @@ input ReviewUpdateManyWithoutUserInput {
   disconnect: [ReviewWhereUniqueInput!]
   delete: [ReviewWhereUniqueInput!]
   update: [ReviewUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [ReviewUpdateManyWithWhereNestedInput!]
+  deleteMany: [ReviewScalarWhereInput!]
   upsert: [ReviewUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input ReviewUpdateManyWithWhereNestedInput {
+  where: ReviewScalarWhereInput!
+  data: ReviewUpdateManyDataInput!
 }
 
 input ReviewUpdateWithoutEventDataInput {
@@ -3831,6 +5120,7 @@ input ReviewWhereUniqueInput {
 type Subscription {
   board(where: BoardSubscriptionWhereInput): BoardSubscriptionPayload
   card(where: CardSubscriptionWhereInput): CardSubscriptionPayload
+  cardNotificationAlert(where: CardNotificationAlertSubscriptionWhereInput): CardNotificationAlertSubscriptionPayload
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
   eventAdmin(where: EventAdminSubscriptionWhereInput): EventAdminSubscriptionPayload
@@ -3844,6 +5134,7 @@ type Subscription {
 
 type User {
   id: Int!
+  cardNotificationAlerts(where: CardNotificationAlertWhereInput, orderBy: CardNotificationAlertOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CardNotificationAlert!]
   cards_assignedUsers(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card!]
   cards_users(where: CardWhereInput, orderBy: CardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Card!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
@@ -3878,6 +5169,7 @@ input UserCreateInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
@@ -3885,6 +5177,11 @@ input UserCreateInput {
   expenses: ExpenseCreateManyWithoutUserInput
   notifications: NotificationCreateManyWithoutUserInput
   reviews: ReviewCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutCardNotificationAlertsInput {
+  create: UserCreateWithoutCardNotificationAlertsInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutCards_assignedUsersInput {
@@ -3922,6 +5219,23 @@ input UserCreateOneWithoutReviewsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateWithoutCardNotificationAlertsInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  username: String!
+  cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
+  cards_users: CardCreateManyWithoutUserInput
+  comments: CommentCreateManyWithoutUserInput
+  eventAdmins: EventAdminCreateManyWithoutUserInput
+  expenses: ExpenseCreateManyWithoutUserInput
+  notifications: NotificationCreateManyWithoutUserInput
+  reviews: ReviewCreateManyWithoutUserInput
+}
+
 input UserCreateWithoutCards_assignedUsersInput {
   email: String!
   firstName: String!
@@ -3930,6 +5244,7 @@ input UserCreateWithoutCards_assignedUsersInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
@@ -3946,6 +5261,7 @@ input UserCreateWithoutCards_usersInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
   comments: CommentCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
@@ -3962,6 +5278,7 @@ input UserCreateWithoutCommentsInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
   cards_users: CardCreateManyWithoutUserInput
   eventAdmins: EventAdminCreateManyWithoutUserInput
@@ -3978,6 +5295,7 @@ input UserCreateWithoutEventAdminsInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
@@ -3994,6 +5312,7 @@ input UserCreateWithoutExpensesInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
@@ -4010,6 +5329,7 @@ input UserCreateWithoutNotificationsInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
@@ -4026,6 +5346,7 @@ input UserCreateWithoutReviewsInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String!
+  cardNotificationAlerts: CardNotificationAlertCreateManyWithoutUserInput
   cards_assignedUsers: CardCreateManyWithoutAssignedUserInput
   cards_users: CardCreateManyWithoutUserInput
   comments: CommentCreateManyWithoutUserInput
@@ -4120,6 +5441,7 @@ input UserUpdateInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
@@ -4137,6 +5459,15 @@ input UserUpdateManyMutationInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+}
+
+input UserUpdateOneWithoutCardNotificationAlertsInput {
+  create: UserCreateWithoutCardNotificationAlertsInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutCardNotificationAlertsDataInput
+  upsert: UserUpsertWithoutCardNotificationAlertsInput
 }
 
 input UserUpdateOneWithoutCards_assignedUsersInput {
@@ -4202,6 +5533,23 @@ input UserUpdateOneWithoutReviewsInput {
   upsert: UserUpsertWithoutReviewsInput
 }
 
+input UserUpdateWithoutCardNotificationAlertsDataInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  username: String
+  cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
+  cards_users: CardUpdateManyWithoutUserInput
+  comments: CommentUpdateManyWithoutUserInput
+  eventAdmins: EventAdminUpdateManyWithoutUserInput
+  expenses: ExpenseUpdateManyWithoutUserInput
+  notifications: NotificationUpdateManyWithoutUserInput
+  reviews: ReviewUpdateManyWithoutUserInput
+}
+
 input UserUpdateWithoutCards_assignedUsersDataInput {
   email: String
   firstName: String
@@ -4210,6 +5558,7 @@ input UserUpdateWithoutCards_assignedUsersDataInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
@@ -4226,6 +5575,7 @@ input UserUpdateWithoutCards_usersDataInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
@@ -4242,6 +5592,7 @@ input UserUpdateWithoutCommentsDataInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
   cards_users: CardUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
@@ -4258,6 +5609,7 @@ input UserUpdateWithoutEventAdminsDataInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
@@ -4274,6 +5626,7 @@ input UserUpdateWithoutExpensesDataInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
@@ -4290,6 +5643,7 @@ input UserUpdateWithoutNotificationsDataInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
@@ -4306,12 +5660,18 @@ input UserUpdateWithoutReviewsDataInput {
   resetToken: String
   resetTokenExpiry: Float
   username: String
+  cardNotificationAlerts: CardNotificationAlertUpdateManyWithoutUserInput
   cards_assignedUsers: CardUpdateManyWithoutAssignedUserInput
   cards_users: CardUpdateManyWithoutUserInput
   comments: CommentUpdateManyWithoutUserInput
   eventAdmins: EventAdminUpdateManyWithoutUserInput
   expenses: ExpenseUpdateManyWithoutUserInput
   notifications: NotificationUpdateManyWithoutUserInput
+}
+
+input UserUpsertWithoutCardNotificationAlertsInput {
+  update: UserUpdateWithoutCardNotificationAlertsDataInput!
+  create: UserCreateWithoutCardNotificationAlertsInput!
 }
 
 input UserUpsertWithoutCards_assignedUsersInput {
@@ -4642,6 +6002,9 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   username_not_ends_with: String
+  cardNotificationAlerts_every: CardNotificationAlertWhereInput
+  cardNotificationAlerts_some: CardNotificationAlertWhereInput
+  cardNotificationAlerts_none: CardNotificationAlertWhereInput
   cards_assignedUsers_every: CardWhereInput
   cards_assignedUsers_some: CardWhereInput
   cards_assignedUsers_none: CardWhereInput

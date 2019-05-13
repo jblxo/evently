@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { isLoggedIn, hasPermission, authorizeUser } = require('../utils');
 const { transport } = require('../Mail');
 const { assignedToCard } = require('../templates/assignedToCard');
+const { cardCreated } = require('../templates/cardCreated');
 
 const Mutations = {
   async createEvent(parent, args, ctx, info) {
@@ -462,6 +463,7 @@ const Mutations = {
     const order = card[0] ? card[0].order + 1 : 1;
 
     const listId = args.list;
+    const eventId = args.event;
     delete args.event;
     delete args.list;
     const res = await ctx.db.mutation.createCard(
@@ -483,6 +485,51 @@ const Mutations = {
       },
       info
     );
+
+    const eventAdmins = await ctx.db.query.eventAdmins(
+      { where: { event: { id: eventId } } },
+      `{ user { id username email } }`
+    );
+
+    const admins = eventAdmins.map(admin => admin.user);
+
+    const uniqueAdmins = Array.from(new Set(admins.map(admin => admin.id))).map(
+      id => {
+        return {
+          id: id,
+          username: admins.find(a => a.id === id).username,
+          email: admins.find(a => a.id === id).email
+        };
+      }
+    );
+
+    uniqueAdmins.forEach(async admin => {
+      await ctx.db.mutation.createCardNotificationAlert({
+        data: {
+          user: { connect: { id: admin.id } },
+          card: { connect: { id: res.id } }
+        }
+      });
+
+      const mailRes = await transport.sendMail({
+        from: 'notifications@evently.com',
+        to: admin.email,
+        subject: 'New card has benn created',
+        html: cardCreated(
+          `
+        ${res.user.firstName} ${res.user.lastName} aka ${
+            res.user.username
+          } has created a new card - ${res.title}! \n\n
+        <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
+            res.list.board.event.id
+          }&board=${res.list.board.id}&list=${res.list.id}">Go check it out</a>
+        `
+        )
+      });
+    });
+
+    ctx.pubsub.publish('CARD_CREATED', { cardCreated: res });
+
     return res;
   },
   async updateList(parent, args, ctx, info) {
@@ -725,7 +772,7 @@ const Mutations = {
     return res;
   },
   async assignUserToTask(parent, args, ctx, info) {
-    // authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
+    authorizeUser(ctx.request.userId, args.event, ['ADMIN', 'STEWARD'], ctx);
 
     const userEventAdmins = await ctx.db.query.user(
       { where: { id: args.user } },
@@ -765,28 +812,68 @@ const Mutations = {
       `{ username email }`
     );
 
+    const cardNotificationsAlerts = await ctx.db.query.cardNotificationAlerts(
+      { where: { user: { id: args.user }, card: { id: args.card } } },
+      `{ id }`
+    );
+
     const card = await ctx.db.query.card(
       { where: { id: args.card } },
       `{ id list { id board { id event { id } } } assignedUser { id username } user { id username } }`
     );
 
-    const mailRes = await transport.sendMail({
-      from: 'notifications@evently.com',
-      to: userToRecieveNotification.email,
-      subject: 'You have been assigned to card',
-      html: assignedToCard(
+    if (cardNotificationsAlerts.length > 0) {
+      const mailRes = await transport.sendMail({
+        from: 'notifications@evently.com',
+        to: userToRecieveNotification.email,
+        subject: 'You have been assigned to card',
+        html: assignedToCard(
+          `
+        You have been assigned to Card! \n\n
+        <a href="${process.env.FRONTEND_URL}/card?card=${card.id}&event=${
+            card.list.board.event.id
+          }&board=${card.list.board.id}&list=${
+            card.list.id
+          }">Go check it out</a>
         `
-      You have been assigned to Card! \n\n
-      <a href="${process.env.FRONTEND_URL}/card?card=${card.id}&event=${
-          card.list.board.event.id
-        }&board=${card.list.board.id}&list=${card.list.id}">Go check it out</a>
-      `
-      )
-    });
-
+        )
+      });
+    }
     ctx.pubsub.publish('USER_ASSIGNED', { adminAssignedToCard: card });
 
     return res;
+  },
+  async changeCardNotificationAlert(parent, args, ctx, info) {
+    const currentCardNotAlert = await ctx.db.query.cardNotificationAlerts(
+      {
+        where: { AND: [{ user: { id: args.user }, card: { id: args.card } }] }
+      },
+      `{ id }`
+    );
+
+    if (!currentCardNotAlert[0]) {
+      const res = await ctx.db.mutation.createCardNotificationAlert(
+        {
+          data: {
+            user: { connect: { id: args.user } },
+            card: { connect: { id: args.card } }
+          }
+        },
+        `{ id }`
+      );
+
+      return {
+        message: 'You will be notified!'
+      };
+    }
+
+    const res = await ctx.db.mutation.deleteManyCardNotificationAlerts({
+      where: { AND: [{ user: { id: args.user }, card: { id: args.card } }] }
+    });
+
+    return {
+      message: `You won't be notified!`
+    };
   }
 };
 

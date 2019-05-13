@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 import { CURRENT_USER_QUERY } from './User';
 
 const SIGNOUT_MUTATION = gql`
@@ -20,7 +21,16 @@ const Signout = props => (
       }
     ]}
   >
-    {signout => <button onClick={signout}>Sign Out</button>}
+    {signout => (
+      <button
+        onClick={async () => {
+          await Router.push('/');
+          signout();
+        }}
+      >
+        Sign Out
+      </button>
+    )}
   </Mutation>
 );
 

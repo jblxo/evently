@@ -23,6 +23,18 @@ const CREATE_CARD_MUTATION = gql`
       title
       list {
         id
+        board {
+          id
+          event {
+            id
+          }
+        }
+      }
+      user {
+        id
+        username
+        firstName
+        lastName
       }
     }
   }
