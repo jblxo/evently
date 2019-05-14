@@ -37,9 +37,15 @@ server.start(
     cors: {
       credentials: true,
       origin: process.env.FRONTEND_URL
-    }
+    },
+    subscriptions: process.env.WS_ENDPOINT
   },
   deets => {
     console.log(`Server is now running on port http://localhost:${deets.port}`);
+    console.log(
+      `WebSockets endpoint is running on ws://localhost:${deets.port}${
+        deets.subscriptions
+      }`
+    );
   }
 );
