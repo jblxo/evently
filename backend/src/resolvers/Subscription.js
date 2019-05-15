@@ -8,6 +8,11 @@ const Subscription = {
     subscribe: (parent, args, { pubsub }) => {
       return pubsub.asyncIterator('CARD_CREATED');
     }
+  },
+  notificationAdded: {
+    subscribe: (parent, args, { pubsub }) => {
+      return pubsub.asyncIterator('notificationAdded');
+    }
   }
 };
 

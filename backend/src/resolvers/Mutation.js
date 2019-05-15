@@ -197,8 +197,6 @@ const Mutations = {
       info
     );
 
-    console.log(currentUser);
-
     // Check if the logged in user has
     // permissions to update permissions for given event
     const currentUserPermissions = [];
@@ -503,31 +501,56 @@ const Mutations = {
       }
     );
 
-    uniqueAdmins.forEach(async admin => {
-      await ctx.db.mutation.createCardNotificationAlert({
-        data: {
-          user: { connect: { id: admin.id } },
-          card: { connect: { id: res.id } }
-        }
-      });
+    const addNotifications = async () => {
+      for (const admin of uniqueAdmins) {
+        await ctx.db.mutation.createCardNotificationAlert({
+          data: {
+            user: { connect: { id: admin.id } },
+            card: { connect: { id: res.id } }
+          }
+        });
 
-      const mailRes = await transport.sendMail({
-        from: 'notifications@evently.com',
-        to: admin.email,
-        subject: 'New card has benn created',
-        html: cardCreated(
-          `
-        ${res.user.firstName} ${res.user.lastName} aka ${
-            res.user.username
-          } has created a new card - ${res.title}! \n\n
-        <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
-            res.list.board.event.id
-          }&board=${res.list.board.id}&list=${res.list.id}">Go check it out</a>
-        `
-        )
-      });
+        await ctx.db.mutation.createNotification(
+          {
+            data: {
+              body: `New card has beed added.`,
+              user: { connect: { id: admin.id } },
+              viewed: false
+            }
+          },
+          `{ body user { id username } viewed }`
+        );
+
+        // const mailRes = await transport.sendMail({
+        //   from: 'notifications@evently.com',
+        //   to: admin.email,
+        //   subject: 'New card has benn created',
+        //   html: cardCreated(
+        //     `
+        //   ${res.user.firstName} ${res.user.lastName} aka ${
+        //       res.user.username
+        //     } has created a new card - ${res.title}! \n\n
+        //   <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
+        //       res.list.board.event.id
+        //     }&board=${res.list.board.id}&list=${res.list.id}">Go check it out</a>
+        //   `
+        //   )
+        // });
+      }
+    };
+
+    await addNotifications();
+
+    const usersNotific = await ctx.db.query.notifications(
+      { where: { user: { id: ctx.request.userId }, viewed: false } },
+      `{ body user { id username } viewed }`
+    );
+
+    console.log(usersNotific);
+
+    ctx.pubsub.publish('notificationAdded', {
+      notificationAdded: usersNotific
     });
-
     ctx.pubsub.publish('CARD_CREATED', { cardCreated: res });
 
     return res;
