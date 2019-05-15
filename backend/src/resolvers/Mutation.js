@@ -501,6 +501,8 @@ const Mutations = {
       }
     );
 
+    const newNotifications = [];
+
     const addNotifications = async () => {
       for (const admin of uniqueAdmins) {
         await ctx.db.mutation.createCardNotificationAlert({
@@ -510,15 +512,17 @@ const Mutations = {
           }
         });
 
-        await ctx.db.mutation.createNotification(
-          {
-            data: {
-              body: `New card has beed added.`,
-              user: { connect: { id: admin.id } },
-              viewed: false
-            }
-          },
-          `{ body user { id username } viewed }`
+        newNotifications.push(
+          await ctx.db.mutation.createNotification(
+            {
+              data: {
+                body: `New card has beed added.`,
+                user: { connect: { id: admin.id } },
+                viewed: false
+              }
+            },
+            `{ body user { id username } viewed }`
+          )
         );
 
         // const mailRes = await transport.sendMail({
@@ -532,7 +536,9 @@ const Mutations = {
         //     } has created a new card - ${res.title}! \n\n
         //   <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
         //       res.list.board.event.id
-        //     }&board=${res.list.board.id}&list=${res.list.id}">Go check it out</a>
+        //     }&board=${res.list.board.id}&list=${
+        //       res.list.id
+        //     }">Go check it out</a>
         //   `
         //   )
         // });
@@ -541,17 +547,9 @@ const Mutations = {
 
     await addNotifications();
 
-    const usersNotific = await ctx.db.query.notifications(
-      { where: { user: { id: ctx.request.userId }, viewed: false } },
-      `{ body user { id username } viewed }`
-    );
-
-    console.log(usersNotific);
-
     ctx.pubsub.publish('notificationAdded', {
-      notificationAdded: usersNotific
+      notificationAdded: newNotifications
     });
-    ctx.pubsub.publish('CARD_CREATED', { cardCreated: res });
 
     return res;
   },
