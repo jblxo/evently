@@ -56,6 +56,9 @@ class Nav extends React.Component {
                 <Link href="/create">
                   <a>Create Your Own Event</a>
                 </Link>
+                <Link href="/notifications">
+                  <a>Notifications</a>
+                </Link>
                 <Signout />
               </>
             )}

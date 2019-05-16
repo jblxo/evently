@@ -12,6 +12,7 @@ const Query = {
   expenses: forwardTo('db'),
   expensesConnection: forwardTo('db'),
   expense: forwardTo('db'),
+  notifications: forwardTo('db'),
   me(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       return null;

@@ -20,7 +20,9 @@ const Subscription = {
           ({ user }) => user.id === variables.user
         );
 
-        payload.notificationAdded = filtered;
+        payload.notificationAdded = filtered[0];
+
+        console.log(payload);
 
         return filtered.length > 0 ? true : false;
       }

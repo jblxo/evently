@@ -114,10 +114,11 @@ type Query {
   ): [Expense]!
   expensesConnection(where: ExpenseWhereInput): ExpenseConnection!
   expense(where: ExpenseWhereUniqueInput!): Expense
+  notifications(where: NotificationWhereInput!): [Notification]
 }
 
 type Subscription {
   adminAssignedToCard: Card
   cardCreated: Card
-  notificationAdded(user: Int!): [Notification]
+  notificationAdded(user: Int!): Notification
 }

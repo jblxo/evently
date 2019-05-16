@@ -516,12 +516,14 @@ const Mutations = {
           await ctx.db.mutation.createNotification(
             {
               data: {
-                body: `New card has beed added.`,
+                body: `New card "${res.title}" has beed added by ${
+                  res.user.username
+                }.`,
                 user: { connect: { id: admin.id } },
                 viewed: false
               }
             },
-            `{ body user { id username } viewed }`
+            `{ id body user { id username } viewed }`
           )
         );
 
