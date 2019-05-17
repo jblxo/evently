@@ -118,7 +118,5 @@ type Query {
 }
 
 type Subscription {
-  adminAssignedToCard: Card
-  cardCreated: Card
   notificationAdded(user: Int!): Notification
 }

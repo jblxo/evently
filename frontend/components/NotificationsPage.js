@@ -10,7 +10,7 @@ class NotificationsPage extends React.Component {
       <>
         <p>Notifications Page</p>
         {this.props.data.notifications.map((notification, i) => (
-          <p key={i}>{notification.body}</p>
+          <p key={i} dangerouslySetInnerHTML={{ __html: notification.body }} />
         ))}
       </>
     );

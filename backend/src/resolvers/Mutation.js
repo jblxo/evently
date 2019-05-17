@@ -527,23 +527,23 @@ const Mutations = {
           )
         );
 
-        // const mailRes = await transport.sendMail({
-        //   from: 'notifications@evently.com',
-        //   to: admin.email,
-        //   subject: 'New card has benn created',
-        //   html: cardCreated(
-        //     `
-        //   ${res.user.firstName} ${res.user.lastName} aka ${
-        //       res.user.username
-        //     } has created a new card - ${res.title}! \n\n
-        //   <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
-        //       res.list.board.event.id
-        //     }&board=${res.list.board.id}&list=${
-        //       res.list.id
-        //     }">Go check it out</a>
-        //   `
-        //   )
-        // });
+        const mailRes = await transport.sendMail({
+          from: 'notifications@evently.com',
+          to: admin.email,
+          subject: 'New card has benn created',
+          html: cardCreated(
+            `
+          ${res.user.firstName} ${res.user.lastName} aka ${
+              res.user.username
+            } has created a new card - ${res.title}! \n\n
+          <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
+              res.list.board.event.id
+            }&board=${res.list.board.id}&list=${
+              res.list.id
+            }">Go check it out</a>
+          `
+          )
+        });
       }
     };
 
@@ -842,10 +842,29 @@ const Mutations = {
 
     const card = await ctx.db.query.card(
       { where: { id: args.card } },
-      `{ id list { id board { id event { id } } } assignedUser { id username } user { id username } }`
+      `{ id title list { id board { id event { id } } } assignedUser { id username } user { id username } }`
     );
 
+    const assignedNotification = null;
+
     if (cardNotificationsAlerts.length > 0) {
+      const assignedNotification = await ctx.db.mutation.createNotification(
+        {
+          data: {
+            body: `<a href="${process.env.FRONTEND_URL}/card?card=${
+              card.id
+            }&event=${card.list.board.event.id}&board=${
+              card.list.board.id
+            }&list=${card.list.id}">You have been assigned to card "${
+              card.title
+            }" </a>`,
+            user: { connect: { id: args.user } },
+            viewed: false
+          }
+        },
+        `{ id body user { id username } viewed }`
+      );
+
       const mailRes = await transport.sendMail({
         from: 'notifications@evently.com',
         to: userToRecieveNotification.email,
@@ -861,8 +880,11 @@ const Mutations = {
         `
         )
       });
+
+      ctx.pubsub.publish('notificationAdded', {
+        notificationAdded: [assignedNotification]
+      });
     }
-    ctx.pubsub.publish('USER_ASSIGNED', { adminAssignedToCard: card });
 
     return res;
   },
