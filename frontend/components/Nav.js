@@ -3,6 +3,8 @@ import NavStyles from './styles/NavStyles';
 import User from './User';
 import Signout from './Signout';
 import { findDOMNode } from 'react-dom';
+import { Mutation } from 'react-apollo';
+import { TOGGLE_NOTIFICATIONS_MUTATION } from './NotificationsPage';
 
 class Nav extends React.Component {
   state = {
@@ -56,9 +58,13 @@ class Nav extends React.Component {
                 <Link href="/create">
                   <a>Create Your Own Event</a>
                 </Link>
-                <Link href="/notifications">
-                  <a>Notifications</a>
-                </Link>
+                <Mutation mutation={TOGGLE_NOTIFICATIONS_MUTATION}>
+                  {toggleNotificationsMutation => (
+                    <button onClick={toggleNotificationsMutation}>
+                      Notifications
+                    </button>
+                  )}
+                </Mutation>
                 <Signout />
               </>
             )}

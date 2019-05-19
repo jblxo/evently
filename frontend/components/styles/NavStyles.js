@@ -25,6 +25,7 @@ const NavStyles = styled.ul`
     text-decoration: none;
     color: ${props => props.theme.black};
     cursor: pointer;
+    outline: none;
     transition: all 0.2s;
 
     &:hover {

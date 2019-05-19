@@ -1,11 +1,13 @@
 import withApollo from 'next-with-apollo';
 import { createHttpLink } from 'apollo-link-http';
 import { ApolloClient } from 'apollo-client';
-import { ApolloLink, concat, split } from 'apollo-link';
+import { ApolloLink, split, from } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { getMainDefinition } from 'apollo-utilities';
 import { GRAPHQL_URL, GRAPHQL_URL_WS } from '../config';
+import { withClientState } from 'apollo-link-state';
+import { LOCAL_STATE_QUERY } from '../components/NotificationsPage';
 
 const wsLink = process.browser
   ? new WebSocketLink({
@@ -33,6 +35,29 @@ const link = split(
   httpLink
 );
 
+const cache = new InMemoryCache();
+
+const stateLink = new withClientState({
+  cache,
+  resolvers: {
+    Mutation: {
+      toggleNotifications(_, variables, { cache }) {
+        const { notificationsOpen } = cache.readQuery({
+          query: LOCAL_STATE_QUERY
+        });
+        const data = {
+          data: { notificationsOpen: !notificationsOpen }
+        };
+        cache.writeData(data);
+        return data;
+      }
+    }
+  },
+  defaults: {
+    notificationsOpen: false
+  }
+});
+
 const authMiddleware = headers =>
   new ApolloLink((operation, forward) => {
     operation.setContext({
@@ -48,7 +73,7 @@ const authMiddleware = headers =>
 export default withApollo(
   ({ headers }) =>
     new ApolloClient({
-      link: concat(authMiddleware(headers), link),
-      cache: new InMemoryCache()
+      cache,
+      link: from([stateLink, authMiddleware(headers), link])
     })
 );
