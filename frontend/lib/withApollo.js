@@ -54,7 +54,7 @@ const stateLink = new withClientState({
     }
   },
   defaults: {
-    notificationsOpen: false
+    notificationsOpen: true
   }
 });
 

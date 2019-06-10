@@ -33,15 +33,20 @@ class NotificationsPage extends React.Component {
                     &times;
                   </CloseButton>
                   <h2>Notifications Page</h2>
-                  <p>You Have __ Notifications</p>
+                  <p>
+                    You Have {this.props.data.notifications.length}{' '}
+                    Notifications
+                  </p>
                 </header>
                 <footer>
-                  {this.props.data.notifications.map((notification, i) => (
-                    <p
-                      key={i}
-                      dangerouslySetInnerHTML={{ __html: notification.body }}
-                    />
-                  ))}
+                  <ul>
+                    {this.props.data.notifications.map((notification, i) => (
+                      <li
+                        key={i}
+                        dangerouslySetInnerHTML={{ __html: notification.body }}
+                      />
+                    ))}
+                  </ul>
                 </footer>
               </NotificationsStyles>
             )}

@@ -527,23 +527,23 @@ const Mutations = {
           )
         );
 
-        const mailRes = await transport.sendMail({
-          from: 'notifications@evently.com',
-          to: admin.email,
-          subject: 'New card has benn created',
-          html: cardCreated(
-            `
-          ${res.user.firstName} ${res.user.lastName} aka ${
-              res.user.username
-            } has created a new card - ${res.title}! \n\n
-          <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
-              res.list.board.event.id
-            }&board=${res.list.board.id}&list=${
-              res.list.id
-            }">Go check it out</a>
-          `
-          )
-        });
+        // const mailRes = await transport.sendMail({
+        //   from: 'notifications@evently.com',
+        //   to: admin.email,
+        //   subject: 'New card has benn created',
+        //   html: cardCreated(
+        //     `
+        //   ${res.user.firstName} ${res.user.lastName} aka ${
+        //       res.user.username
+        //     } has created a new card - ${res.title}! \n\n
+        //   <a href="${process.env.FRONTEND_URL}/card?card=${res.id}&event=${
+        //       res.list.board.event.id
+        //     }&board=${res.list.board.id}&list=${
+        //       res.list.id
+        //     }">Go check it out</a>
+        //   `
+        //   )
+        // });
       }
     };
 
