@@ -4,9 +4,12 @@ import { Query } from 'react-apollo';
 import User from './User';
 import NotificationsPage from './NotificationsPage';
 
-const NOTIFICATIONS_QUERY = gql`
+export const NOTIFICATIONS_QUERY = gql`
   query NOTIFICATIONS_QUERY($user: Int!) {
-    notifications(where: { user: { id: $user }, viewed: false }) {
+    notifications(
+      where: { user: { id: $user }, viewed: false }
+      orderBy: id_DESC
+    ) {
       id
       body
       viewed
@@ -29,7 +32,11 @@ const Notifications = props => (
     {({ data: { me } }) => (
       <>
         {me && (
-          <Query query={NOTIFICATIONS_QUERY} variables={{ user: me.id }}>
+          <Query
+            query={NOTIFICATIONS_QUERY}
+            fetchPolicy="cache-and-network"
+            variables={{ user: me.id }}
+          >
             {({ subscribeToMore, ...result }) => (
               <NotificationsPage
                 {...result}

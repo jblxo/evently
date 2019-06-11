@@ -115,7 +115,7 @@ type Query {
   ): [Expense]!
   expensesConnection(where: ExpenseWhereInput): ExpenseConnection!
   expense(where: ExpenseWhereUniqueInput!): Expense
-  notifications(where: NotificationWhereInput!): [Notification]
+  notifications(where: NotificationWhereInput!, orderBy: NotificationOrderByInput): [Notification]
 }
 
 type Subscription {

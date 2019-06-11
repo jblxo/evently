@@ -46,6 +46,20 @@ const NotificationsStyles = styled.div`
     margin: 0;
     padding: 0;
     list-style: none;
+    height: 100%;
+
+    li {
+      display: inline-block;
+    }
+    span {
+      padding: 0.5rem;
+      font-size: 2rem;
+      margin-left: 1.3rem;
+      cursor: pointer;
+      &:hovert {
+        transform: scale(1.3);
+      }
+    }
   }
 `;
 
