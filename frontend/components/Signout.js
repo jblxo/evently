@@ -23,8 +23,8 @@ const Signout = props => (
   >
     {signout => (
       <button
-        onClick={async () => {
-          await Router.push('/');
+        onClick={() => {
+          Router.reload('/');
           signout();
         }}
       >

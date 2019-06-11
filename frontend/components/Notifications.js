@@ -6,7 +6,7 @@ import NotificationsPage from './NotificationsPage';
 
 const NOTIFICATIONS_QUERY = gql`
   query NOTIFICATIONS_QUERY($user: Int!) {
-    notifications(where: { user: { id: $user } }) {
+    notifications(where: { user: { id: $user }, viewed: false }) {
       id
       body
       viewed

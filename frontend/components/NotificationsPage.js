@@ -34,18 +34,24 @@ class NotificationsPage extends React.Component {
                   </CloseButton>
                   <h2>Notifications Page</h2>
                   <p>
-                    You Have {this.props.data.notifications.length}{' '}
+                    You Have{' '}
+                    {this.props.data.notifications
+                      ? this.props.data.notifications.length
+                      : 0}{' '}
                     Notifications
                   </p>
                 </header>
                 <footer>
                   <ul>
-                    {this.props.data.notifications.map((notification, i) => (
-                      <li
-                        key={i}
-                        dangerouslySetInnerHTML={{ __html: notification.body }}
-                      />
-                    ))}
+                    {this.props.data.notifications &&
+                      this.props.data.notifications.map((notification, i) => (
+                        <li
+                          key={i}
+                          dangerouslySetInnerHTML={{
+                            __html: notification.body
+                          }}
+                        />
+                      ))}
                   </ul>
                 </footer>
               </NotificationsStyles>
