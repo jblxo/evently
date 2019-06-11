@@ -89,6 +89,7 @@ type Mutation {
   ): Expense
   assignUserToTask(user: Int!, event: Int!, card: Int!): Card
   changeCardNotificationAlert(user: Int!, card: Int!): SuccessMessage
+  setNotificationViewed(notification: Int!): Notification
 }
 
 type Query {
