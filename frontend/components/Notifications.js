@@ -27,27 +27,32 @@ const NOTIFICATIONS_SUBSCRIPTION = gql`
 const Notifications = props => (
   <User>
     {({ data: { me } }) => (
-      <Query query={NOTIFICATIONS_QUERY} variables={{ user: me.id }}>
-        {({ subscribeToMore, ...result }) => (
-          <NotificationsPage
-            {...result}
-            subscribeToNewNotifications={() =>
-              subscribeToMore({
-                document: NOTIFICATIONS_SUBSCRIPTION,
-                variables: { user: me.id },
-                updateQuery: (prev, { subscriptionData }) => {
-                  if (!subscriptionData.data) return prev;
-                  const newFeedItem = subscriptionData.data.notificationAdded;
+      <>
+        {me && (
+          <Query query={NOTIFICATIONS_QUERY} variables={{ user: me.id }}>
+            {({ subscribeToMore, ...result }) => (
+              <NotificationsPage
+                {...result}
+                subscribeToNewNotifications={() =>
+                  subscribeToMore({
+                    document: NOTIFICATIONS_SUBSCRIPTION,
+                    variables: { user: me.id },
+                    updateQuery: (prev, { subscriptionData }) => {
+                      if (!subscriptionData.data) return prev;
+                      const newFeedItem =
+                        subscriptionData.data.notificationAdded;
 
-                  return Object.assign({}, prev, {
-                    notifications: [newFeedItem, ...prev.notifications]
-                  });
+                      return Object.assign({}, prev, {
+                        notifications: [newFeedItem, ...prev.notifications]
+                      });
+                    }
+                  })
                 }
-              })
-            }
-          />
+              />
+            )}
+          </Query>
         )}
-      </Query>
+      </>
     )}
   </User>
 );
