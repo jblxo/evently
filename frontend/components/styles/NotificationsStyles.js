@@ -51,6 +51,12 @@ const NotificationsStyles = styled.div`
     li {
       display: inline-block;
     }
+
+    .deleteNotification {
+      position: relative;
+      right: 0;
+    }
+
     span {
       padding: 0.5rem;
       font-size: 2rem;

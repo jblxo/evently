@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import Router from 'next/router';
 import uniqueUserArr from '../lib/uniqueUserArr';
 import ButtonSmall from './styles/ButtonSmall';
 import Button from './styles/Button';
@@ -172,53 +171,103 @@ class Admin extends React.Component {
                 </td>
               </tr>
             )}
-            <tr>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              {possiblePermissions.map(permission => (
-                <td key={permission}>
-                  <label htmlFor={`${user.id}-${permission}`}>
-                    <input
-                      id={`${user.id}-${permission}`}
-                      type="checkbox"
-                      checked={this.state.permissions.includes(permission)}
-                      value={permission}
-                      onChange={this.handlePermissionChange}
-                    />
-                  </label>
+            {user.permissions.includes('ADMIN') ? (
+              <tr style={{ color: 'red' }}>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                {possiblePermissions.map(permission => (
+                  <td key={permission}>
+                    <label htmlFor={`${user.id}-${permission}`}>
+                      <input
+                        id={`${user.id}-${permission}`}
+                        type="checkbox"
+                        checked={this.state.permissions.includes(permission)}
+                        value={permission}
+                        onChange={this.handlePermissionChange}
+                      />
+                    </label>
+                  </td>
+                ))}
+                <td>
+                  <ButtonSmall
+                    type="submit"
+                    disabled={loading}
+                    onClick={updateEventAdmins}
+                  >
+                    Updat{loading ? 'ing' : 'e'}
+                  </ButtonSmall>
                 </td>
-              ))}
-              <td>
-                <ButtonSmall
-                  type="submit"
-                  disabled={loading}
-                  onClick={updateEventAdmins}
-                >
-                  Updat{loading ? 'ing' : 'e'}
-                </ButtonSmall>
-              </td>
-              <td>
-                <ButtonSmall
-                  type="submit"
-                  disabled={
-                    loading ||
-                    this.props.usersCount < 2 ||
-                    user.permissions.includes('ADMIN')
-                  }
-                  onClick={() => {
-                    updateEventAdmins({
-                      variables: {
-                        permissions: [],
-                        userId: this.props.user.id,
-                        eventId: this.props.eventId
-                      }
-                    });
-                  }}
-                >
-                  Delet{loading ? 'ing' : 'e'}
-                </ButtonSmall>
-              </td>
-            </tr>
+                <td>
+                  <ButtonSmall
+                    type="submit"
+                    disabled={
+                      loading ||
+                      this.props.usersCount < 2 ||
+                      user.permissions.includes('ADMIN')
+                    }
+                    onClick={() => {
+                      updateEventAdmins({
+                        variables: {
+                          permissions: [],
+                          userId: this.props.user.id,
+                          eventId: this.props.eventId
+                        }
+                      });
+                    }}
+                  >
+                    Delet{loading ? 'ing' : 'e'}
+                  </ButtonSmall>
+                </td>
+              </tr>
+            ) : (
+              <tr>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                {possiblePermissions.map(permission => (
+                  <td key={permission}>
+                    <label htmlFor={`${user.id}-${permission}`}>
+                      <input
+                        id={`${user.id}-${permission}`}
+                        type="checkbox"
+                        checked={this.state.permissions.includes(permission)}
+                        value={permission}
+                        onChange={this.handlePermissionChange}
+                      />
+                    </label>
+                  </td>
+                ))}
+                <td>
+                  <ButtonSmall
+                    type="submit"
+                    disabled={loading}
+                    onClick={updateEventAdmins}
+                  >
+                    Updat{loading ? 'ing' : 'e'}
+                  </ButtonSmall>
+                </td>
+                <td>
+                  <ButtonSmall
+                    type="submit"
+                    disabled={
+                      loading ||
+                      this.props.usersCount < 2 ||
+                      user.permissions.includes('ADMIN')
+                    }
+                    onClick={() => {
+                      updateEventAdmins({
+                        variables: {
+                          permissions: [],
+                          userId: this.props.user.id,
+                          eventId: this.props.eventId
+                        }
+                      });
+                    }}
+                  >
+                    Delet{loading ? 'ing' : 'e'}
+                  </ButtonSmall>
+                </td>
+              </tr>
+            )}
           </>
         )}
       </Mutation>

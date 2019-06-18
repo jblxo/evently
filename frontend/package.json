@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next -p 7777",
     "build": "next build",
-    "start": "NODE_ENV=production next start"
+    "start": "SET NODE_ENV=production & next start"
   },
   "author": "Ondrej Hliba",
   "license": "MIT",

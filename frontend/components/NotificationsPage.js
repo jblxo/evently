@@ -34,8 +34,6 @@ class NotificationsPage extends React.Component {
   }
 
   render() {
-    console.log(this.props);
-
     return (
       <User>
         {({ data: { me } }) => (
@@ -85,6 +83,7 @@ class NotificationsPage extends React.Component {
                                           }}
                                         />
                                         <span
+                                          className="deleteNotification"
                                           key={notification.id}
                                           onClick={async e => {
                                             e.preventDefault();

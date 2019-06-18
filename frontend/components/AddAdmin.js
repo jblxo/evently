@@ -72,6 +72,7 @@ class AutoComplete extends Component {
   }, 350);
 
   render() {
+    console.log(this.props);
     return (
       <Mutation mutation={ADD_USER_AS_STEWARD}>
         {(updateEventAdmins, { loading, error }) => {
@@ -144,7 +145,7 @@ class AddAdmin extends Component {
     return (
       <div>
         <Title>Add Admin Page</Title>
-        <AutoComplete />
+        <AutoComplete id={this.props.id} />
       </div>
     );
   }
