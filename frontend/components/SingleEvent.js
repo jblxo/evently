@@ -195,7 +195,7 @@ class SingleEvent extends Component {
                       <p>
                         {moment(event.eventDate)
                           .utc()
-                          .format('DD.MM.YYYY HH:mm')}
+                          .format('DD.MM.YYYY')}
                       </p>
                       <h4>Address</h4>
                       <ul>

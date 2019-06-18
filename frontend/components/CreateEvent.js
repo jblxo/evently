@@ -6,6 +6,7 @@ import Router from 'next/router';
 import Form from './styles/Form';
 import Button from './styles/Button';
 import Error from './Error';
+import { SingleDatePicker } from 'react-dates';
 
 const CREATE_EVENT_MUTATION = gql`
   mutation CREATE_EVENT_MUTATION(
@@ -53,14 +54,13 @@ class CreateEvent extends Component {
     country: '',
     description: '',
     entranceTax: 0,
-    eventDate: moment()
-      .add(1, 'days')
-      .toISOString(),
+    eventDate: moment(),
     imageLarge: '',
     imageSmall: '',
     state: '',
     title: '',
-    zip: ''
+    zip: '',
+    calendarFocused: false
   };
 
   handleChange = e => {
@@ -100,6 +100,16 @@ class CreateEvent extends Component {
     });
   };
 
+  onDateChange = eventDate => {
+    if (eventDate) {
+      this.setState({ eventDate });
+    }
+  };
+
+  onFocusChange = ({ focused }) => {
+    this.setState({ calendarFocused: focused });
+  };
+
   render() {
     return (
       <Mutation
@@ -112,8 +122,13 @@ class CreateEvent extends Component {
           <Form
             onSubmit={async e => {
               e.preventDefault();
-              const entranceTax = parseFloat(this.state.entranceTax, 10);
-              const res = await createEvent({ variables: { entranceTax } });
+              const entranceTax = parseFloat(this.state.entranceTax, 10) * 100;
+              const res = await createEvent({
+                variables: {
+                  entranceTax,
+                  eventDate: this.state.eventDate.toISOString()
+                }
+              });
               Router.push({
                 pathname: '/event',
                 query: { id: res.data.createEvent.id }
@@ -241,6 +256,18 @@ class CreateEvent extends Component {
                   value={this.state.title}
                   onChange={this.handleChange}
                   required
+                />
+              </label>
+              <label htmlFor="date">
+                When?
+                <SingleDatePicker
+                  id="date"
+                  date={this.state.eventDate}
+                  onDateChange={this.onDateChange}
+                  focused={this.state.calendarFocused}
+                  onFocusChange={this.onFocusChange}
+                  numberOfMonths={1}
+                  isOutsideRange={() => false}
                 />
               </label>
               <label htmlFor="zip">

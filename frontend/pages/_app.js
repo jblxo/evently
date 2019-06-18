@@ -2,6 +2,7 @@ import App, { Container } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import withApollo from '../lib/withApollo';
 import Page from '../components/Page';
+import 'react-dates/initialize';
 
 class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {

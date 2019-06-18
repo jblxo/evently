@@ -5,6 +5,8 @@ import Router from 'next/router';
 import Form from './styles/Form';
 import Button from './styles/Button';
 import Error from './Error';
+import moment from 'moment';
+import { SingleDatePicker } from 'react-dates';
 
 const SINGLE_EVENT_QUERY = gql`
   query event($id: Int!) {
@@ -86,10 +88,12 @@ class UpdateEventForm extends Component {
     country: this.props.event ? this.props.event.country : '',
     description: this.props.event ? this.props.event.description : '',
     entranceTax: this.props.event ? this.props.event.entranceTax / 100 : '',
+    eventDate: this.props.event ? moment(this.props.event.eventDate) : moment(),
     imageSmall: this.props.event ? this.props.event.imageSmall : '',
     state: this.props.event ? this.props.event.state : '',
     title: this.props.event ? this.props.event.title : '',
-    zip: this.props.event ? this.props.event.zip : ''
+    zip: this.props.event ? this.props.event.zip : '',
+    calendarFocused: false
   };
 
   handleChange = e => {
@@ -129,6 +133,16 @@ class UpdateEventForm extends Component {
     });
   };
 
+  onDateChange = eventDate => {
+    if (eventDate) {
+      this.setState({ eventDate });
+    }
+  };
+
+  onFocusChange = ({ focused }) => {
+    this.setState({ calendarFocused: focused });
+  };
+
   render() {
     return (
       <Mutation
@@ -144,7 +158,10 @@ class UpdateEventForm extends Component {
               e.preventDefault();
               const entranceTax = parseFloat(this.state.entranceTax, 10) * 100;
               const res = await updateEvent({
-                variables: { entranceTax }
+                variables: {
+                  entranceTax,
+                  eventDate: this.state.eventDate.toISOString()
+                }
               });
               Router.push({
                 pathname: '/event',
@@ -275,6 +292,17 @@ class UpdateEventForm extends Component {
                   required
                 />
               </label>
+              <label htmlFor="date">When?</label>
+              <SingleDatePicker
+                id="date"
+                date={this.state.eventDate}
+                onDateChange={this.onDateChange}
+                focused={this.state.calendarFocused}
+                onFocusChange={this.onFocusChange}
+                numberOfMonths={1}
+                isOutsideRange={() => false}
+              />
+
               <label htmlFor="zip">
                 ZIP
                 <input
