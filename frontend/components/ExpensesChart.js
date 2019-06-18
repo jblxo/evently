@@ -9,8 +9,16 @@ class ExpensesChart extends Component {
     this.canvas = React.createRef();
   }
 
+  componentWillReceiveProps({ expenses }) {
+    this.prepareCanvas(expenses);
+  }
+
   componentDidMount() {
-    const expenses = this.props.expenses.map(({ amount, createdAt }) => {
+    this.prepareCanvas(this.props.expenses);
+  }
+
+  prepareCanvas = initExpenses => {
+    const expenses = initExpenses.map(({ amount, createdAt }) => {
       return {
         t: moment(createdAt).format('DD.MM.YYYY'),
         y: amount / 100
@@ -21,7 +29,7 @@ class ExpensesChart extends Component {
       return self.indexOf(value) === index;
     };
 
-    const dates = this.props.expenses.map(expense =>
+    const dates = initExpenses.map(expense =>
       moment(expense.createdAt).format('DD.MM.YYYY')
     );
 
@@ -38,8 +46,6 @@ class ExpensesChart extends Component {
       }
       return total;
     });
-
-    console.log(computedAmounts);
 
     const expensesChart = new Chart(this.canvas.current, {
       type: 'line',
@@ -72,7 +78,7 @@ class ExpensesChart extends Component {
         }
       }
     });
-  }
+  };
 
   render() {
     return <canvas ref={this.canvas} width="300" height="300" />;

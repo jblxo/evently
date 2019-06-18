@@ -865,21 +865,21 @@ const Mutations = {
         `{ id body user { id username } viewed }`
       );
 
-      const mailRes = await transport.sendMail({
-        from: 'notifications@evently.com',
-        to: userToRecieveNotification.email,
-        subject: 'You have been assigned to card',
-        html: assignedToCard(
-          `
-        You have been assigned to Card! \n\n
-        <a href="${process.env.FRONTEND_URL}/card?card=${card.id}&event=${
-            card.list.board.event.id
-          }&board=${card.list.board.id}&list=${
-            card.list.id
-          }">Go check it out</a>
-        `
-        )
-      });
+      // const mailRes = await transport.sendMail({
+      //   from: 'notifications@evently.com',
+      //   to: userToRecieveNotification.email,
+      //   subject: 'You have been assigned to card',
+      //   html: assignedToCard(
+      //     `
+      //   You have been assigned to Card! \n\n
+      //   <a href="${process.env.FRONTEND_URL}/card?card=${card.id}&event=${
+      //       card.list.board.event.id
+      //     }&board=${card.list.board.id}&list=${
+      //       card.list.id
+      //     }">Go check it out</a>
+      //   `
+      //   )
+      // });
 
       ctx.pubsub.publish('notificationAdded', {
         notificationAdded: [assignedNotification]
