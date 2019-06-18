@@ -10,19 +10,45 @@ class ExpensesChart extends Component {
   }
 
   componentDidMount() {
-    const amounts = this.props.expenses.map(({ amount }) => amount / 100);
+    const expenses = this.props.expenses.map(({ amount, createdAt }) => {
+      return {
+        t: moment(createdAt).format('DD.MM.YYYY'),
+        y: amount / 100
+      };
+    });
+
+    const distinct = (value, index, self) => {
+      return self.indexOf(value) === index;
+    };
+
     const dates = this.props.expenses.map(expense =>
       moment(expense.createdAt).format('DD.MM.YYYY')
     );
 
+    const distinctDates = dates.filter(distinct);
+
+    const computedAmounts = distinctDates.map(date => {
+      let i = expenses.length;
+      let total = 0;
+      while (i--) {
+        if (expenses[i].t === date) {
+          total += expenses[i].y;
+          expenses.splice(i, 1);
+        }
+      }
+      return total;
+    });
+
+    console.log(computedAmounts);
+
     const expensesChart = new Chart(this.canvas.current, {
       type: 'line',
       data: {
-        labels: dates,
+        labels: distinctDates,
         datasets: [
           {
             label: 'Amount ($)',
-            data: amounts,
+            data: computedAmounts,
             backgroundColor: ['rgba(255, 99, 132, 0.2)'],
             borderColor: ['rgba(255, 99, 132, 1)'],
             borderWidth: 1
